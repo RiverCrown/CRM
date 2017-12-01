@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="mainPage :: mainHead">
+
+</head>
+<body onload="roleDiff()">
+<!--模态框-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <label>please input the route:<input id="routeContent" type="text" placeholder="input"/></label>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelRoute" type="button" onclick="cancelRoute()" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button id="modifyRoute" type="button" onclick="modifyRoute()" class="btn btn-primary" data-dismiss="modal">修改</button>
+                <button id="deleteRoute" type="button" onclick="deleteRoute()" class="btn btn-primary" data-dismiss="modal">删除</button>
+                <button id="saveRoute" type="button" onclick="saveRoute()" class="btn btn-primary" data-dismiss="modal">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="wrapper">
+    <nav th:replace="mainPage :: navi" class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0"></nav>
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 id="test" class="page-header">行程计划管理</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--jQuery/jQuery-ui/moment-->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
+<!--FullCalendar/本地脚本js-->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/locale/zh-cn.js'></script>
+
+<script type="text/javascript">
+
+    var selectedStart;
+    var selectedEnd;
+    var routeContent = $('#routeContent');
+    var calendar = $('#calendar');
+    var saveBtn = $('#saveRoute');
+    var modifyBtn = $('#modifyRoute');
+    var deleteBtn = $('#deleteRoute');
+    var operatedEvent;
+
+    $(document).ready(function() {
+        /**
+         * 定义date，d，m,y
+         */
+        var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+
+
+        /**
+         * 初始化fullCalendar，便于后续其他js的调用
+         */
+        var modalF = $('#myModal');
+
+        calendar.fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay,listWeek'
+            },
+            defaultView: 'agendaWeek',
+            selectable: true,
+            selectHelper: true,
+
+            select: function(start, end) {
+                modifyBtn.hide();
+                deleteBtn.hide();
+                saveBtn.show();
+                selectedStart = start;
+                selectedEnd = end;
+                modalF.find('.modal-title').text(start.format().toString().replace("T", " ") + " 到 " + end.format().toString().replace("T", " ") + "的计划");
+                modalF.modal('show');
+            },
+
+            eventClick: function (event, jsEvent, view) {
+                if (view.name.toString() == 'agendaDay'){
+                    modifyBtn.show();
+                    deleteBtn.show();
+                    saveBtn.hide();
+                    modalF.find('.modal-title').text(event.start.format().toString().replace("T", " ") + " 到 " + event.end.format().toString().replace("T", " ") + "的计划");
+                    routeContent.val(event.title);
+                    operatedEvent = event;
+                    modalF.modal('show');
+                } else {
+                    calendar.fullCalendar('gotoDate',event.start);
+                    calendar.fullCalendar('changeView', 'agendaDay');
+                }
+
+            },
+            /*
+                editable: true allow user to edit events.
+            */
+            editable: true,
+
+            events: [{
+                title: '测试1',
+                start: new Date(y, m, 1),
+                end: new Date(y, m, 2)
+            }]
+        });
+    });
+
+    function cancelRoute() {
+        routeContent.val('');
+    }
+
+    function saveRoute() {
+        var title = routeContent.val();
+        /*
+            if title is enterd calendar will add title and event into fullCalendar.
+        */
+        if (title) {
+            calendar.fullCalendar('renderEvent', {
+                    title: title,
+                    start: selectedStart,
+                    end: selectedEnd,
+                    color: 'red',
+                    allDay: !selectedStart.hasTime(),
+                    editable: true
+                },
+                true // make the event "stick"
+            );
+        }
+        calendar.fullCalendar('unselect');
+        routeContent.val('');
+    }
+
+    function modifyRoute() {
+        operatedEvent.title = routeContent.val();
+        calendar.fullCalendar('updateEvent', operatedEvent);
+        routeContent.val('');
+    }
+
+    function deleteRoute() {
+        calendar.fullCalendar('removeEvents', function (operatedEvent) {
+            return true;
+        });
+        routeContent.val('');
+    }
+</script>
+</body>
+</html>

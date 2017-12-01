@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:include="mainPage :: mainHead">
+
+</head>
+<body onload="roleDiff()">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">修改个人信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">姓名</label>
+                    <input id="name" name="name" class="form-control" type="text" placeholder="姓名"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">年龄</label>
+                    <input id="age" name="age" class="form-control" type="text" placeholder="年龄"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">性别</label>
+                    <br/>
+                    <label class="radio-inline">
+                        <input type="radio" name="sex" id="man" value="man"/>男
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="sex" id="woman" value="woman"/>女
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">家庭住址</label>
+                    <input id="address" name="address" class="form-control" type="text" placeholder="家庭住址"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">电子邮箱</label>
+                    <input id="email" name="email" class="form-control" type="text" placeholder="电子邮箱"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">手机号码</label>
+                    <input id="phoneNumber" name="phoneNumber" class="form-control" type="text" placeholder="手机号码"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="modifyStaff()">
+                    修改
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modifyPasswordForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改密码</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">原密码</label>
+                    <input id="originalPassword" type="password" class="form-control" placeholder="原密码"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">新密码</label>
+                    <input id="newPassword" type="password" class="form-control" placeholder="新密码"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">确认密码</label>
+                    <input id="ensurePassword" type="password" class="form-control" placeholder="确认密码"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="modifyStaffPassword()">
+                    修改
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="prompt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body">
+                <p id="promptContent"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    确认
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="wrapper">
+    <nav th:replace="mainPage :: navi" class="navbar navbar-default navbar-fixed-top" role="navigation"
+         style="margin-bottom: 0"></nav>
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">个人信息</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        个人信息
+                        <div class="pull-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#myModal" onclick="modifyStaffBtn()">
+                                    修改基本信息
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#modifyPasswordForm" >
+                                    修改密码
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-lg-6">
+                            <label>姓名：</label>
+                            <p id="nameP" th:text="${session.staffObj.getName()}"></p>
+                            <label>年龄：</label>
+                            <p id="ageP" th:text="${session.staffObj.getAge()}"></p>
+                            <label>性别：</label>
+                            <p id="sexP"></p>
+                            <script th:inline="javascript" type="text/javascript">
+                                if ([[${session.staffObj.isSex()}]]) {
+                                    $('#sexP').html("男");
+                                } else {
+                                    $('#sexP').html("女");
+                                }
+                            </script>
+                            <label>职位：</label>
+                            <p id="roleP" th:text="${session.staffObj.getRole()}"></p>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>家庭住址：</label>
+                            <p id="addressP" th:text="${session.staffObj.getAddress()}"></p>
+                            <label>电子邮箱：</label>
+                            <p id="emailP" th:text="${session.staffObj.getEmail()}"></p>
+                            <label>手机号码：</label>
+                            <p id="phoneNumberP" th:text="${session.staffObj.getPhoneNumber()}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        个人信息
+                    </div>
+                    <div class="panel-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript" type="text/javascript">
+
+    function modifyStaff() {
+        var isMale;
+        if ($("input[name='sex']:checked").val() == "man") {
+            isMale = true;
+        } else {
+            isMale = false;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/staff/modifyStaff",
+            data: {
+                name: $('#name').val(),
+                age: parseInt($('#age').val()),
+                sex: isMale,
+                address: $('#address').val(),
+                email: $('#email').val(),
+                phoneNumber: $('#phoneNumber').val()
+            },
+            dataType: "json",
+            success: function (staff) {
+                $('#nameP').html(staff.name);
+                $('#ageP').html(staff.age);
+                $('#addressP').html(staff.address);
+                $('#emailP').html(staff.email);
+                $('#phoneNumberP').html(staff.phoneNumber);
+                if (staff.sex) {
+                    $('#sexP').html("男");
+                } else {
+                    $('#sexP').html("女");
+                }
+            }
+        });
+    }
+
+    function modifyStaffBtn() {
+        $('#name').val($('#nameP').html());
+        $('#age').val($('#ageP').html());
+        $('#address').val($('#addressP').html());
+        $('#email').val($('#emailP').html());
+        $('#phoneNumber').val($('#phoneNumberP').html());
+        if ($('#sexP').html() == "男"){
+            $("input[name='sex'][value='woman']").prop("checked", false);
+            $("input[name='sex'][value='man']").prop("checked", true);
+        } else {
+            $("input[name='sex'][value='man']").prop("checked", false);
+            $("input[name='sex'][value='woman']").prop("checked", true);
+        }
+    }
+
+    function modifyStaffPassword() {
+        var newPassword = $('#newPassword').val();
+        var ensurePassword = $('#ensurePassword').val();
+        if (newPassword != ensurePassword){
+            $('#promptContent').html('确认密码与新密码不同！');
+            $('#prompt').modal('show');
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/staff/modifyStaffPassword",
+                data: {
+                    originalPassword: $('#originalPassword').val(),
+                    newPassword: newPassword
+                },
+                dataType: "text",
+                success: function (msg) {
+                    if (msg != "success"){
+                        $('#promptContent').html('原密码错误！');
+                        $('#prompt').modal('show');
+                    } else {
+                        $('#promptContent').html('密码修改成功！');
+                        $('#prompt').modal('show');
+                    }
+                }
+            })
+        }
+
+    }
+</script>
+</body>
+</html>
