@@ -30,4 +30,23 @@ public class CustomerServiceImpl {
     public ArrayList<Customer> findAllCustomer(){
         return (ArrayList<Customer>) customerRepository.findAll();
     }
+
+    public ArrayList<Customer> searchCustomerByOption(String option1, String option2, String input){
+        try{
+            switch (option1) {
+                case "number":
+                    return customerRepository.findByIdAndMainBusiness(Integer.parseInt(input), option2);
+                case "name":
+                    return customerRepository.findByNameAndMainBusiness(input, option2);
+                case "contact":
+                    return customerRepository.findByRepresentativeNameAndMainBusiness(input, option2);
+                case "salesman":
+                    return customerRepository.findBySalesmanNameAndMainBusiness(input, option2);
+                default:
+                    return (ArrayList<Customer>)customerRepository.findAll();
+            }
+        } catch (NumberFormatException e) {
+            return new ArrayList<>();
+        }
+    }
 }

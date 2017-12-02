@@ -16,12 +16,23 @@ public class Customer {
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "contact_id")
     private Contact representative;
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "salesman_id")
+    private Staff salesman;
     private String mainBusiness;
     private String name;
     private int type;
 
     public Customer(){
 
+    }
+
+    public Staff getSalesman() {
+        return salesman;
+    }
+
+    public void setSalesman(Staff salesman) {
+        this.salesman = salesman;
     }
 
     public int getId() {

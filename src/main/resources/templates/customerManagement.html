@@ -146,39 +146,32 @@
                     </div>
                     <div class="panel-body">
                         <div class="form-group input-group">
-                            <input name="search" type="text" class="form-control" placeholder="输入搜索内容"/>
+                            <input name="search" id="search" type="text" class="form-control" placeholder="输入搜索内容"/>
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button" onclick="searchCustomer()"><i class="fa fa-search"></i></button>
                             </span>
                         </div>
                         <div class="form-group">
                             <label class="radio-inline">
-                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1"
+                                <input type="radio" name="customerSearchOption" id="number" value="number"
                                        checked=""/>按编号
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2"
-                                       value="option2"/>按客户姓名
+                                <input type="radio" name="customerSearchOption" id="name"
+                                       value="name"/>按公司名称
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3"
-                                       value="option3"/>按对接业务员
+                                <input type="radio" name="customerSearchOption" id="salesman"
+                                       value="salesman"/>按对接业务员
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="customerSearchOption" id="contact"
+                                       value="contact"/>按联系人
                             </label>
                             <div class="form-group form-inline pull-right">
-                                <label class="form-label">来源:
+                                <label class="form-label">主营业务：
                                     <select class="form-control">
-                                        <option>全部</option>
-                                        <option>跟踪</option>
-                                        <option>搁置</option>
-                                        <option>成功</option>
-                                        <option>失败</option>
-                                        <option>失效</option>
-                                    </select>
-                                </label>
-                                &nbsp;&nbsp;
-                                <label class="form-label">行业:
-                                    <select class="form-control">
-                                        <option>全部</option>
+                                        <option></option>
                                         <option>1/7 初期沟通</option>
                                         <option>2/7 立项评估</option>
                                         <option>3/7 需求分析</option>
@@ -208,7 +201,7 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example" width="100%">
                                 <thead>
                                 <tr>
                                     <th>编号</th>
@@ -216,10 +209,10 @@
                                     <th>联系人</th>
                                     <th>公司主营业务</th>
                                     <th>业务员</th>
-                                    <th>最近互动时间</th>
+                                    <th>最后联系时间</th>
                                 </tr>
                                 </thead>
-                                <tbody id="searchBody">
+                                <tbody id="tableBody">
 
                                 </tbody>
                             </table>
@@ -237,13 +230,29 @@
 <script src="/js/plugins/dataTables/jquery.dataTables.js"></script>
 <script src="/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 <script type="text/javascript">
+    //<![CDATA[
+    var table = $('#dataTables-example');
     $(document).ready(function() {
-        $('#dataTables-example').dataTable({
+        table.dataTable({
             language: {
                 url: "/json/dataTables_cn.json"
-            }
+            },
+            ajax: {
+                type: "GET",
+                url:"/staff/searchCustomer?searchOption1=&searchOption2=&searchInput=",
+                dataSrc: ''
+            },
+            columns: [
+                { data: 'id' },
+                { data: 'name' },
+                { data: 'representative.name' },
+                { data: 'mainBusiness' },
+                { data: 'type'},
+                { data: 'address'}
+            ]
         });
     });
+
     function addCustomer() {
         $.ajax({
             type: "POST",
@@ -275,31 +284,15 @@
         })
     }
 
-    //<![CDATA[
-    function searchCustomer() {
-        var tbody = $('#searchBody');
-        tbody.html("");
-        $.ajax({
-            type: "GET",
-            url: "/staff/searchCustomer",
-            data: {
 
-            },
-            dataType: "json",
-            success: function (customer) {
-                for (var i=0; i<customer.length; i++){
-                    var content = "<tr>";
-                    content += "<td>" + customer[i].id + "</td>" +
-                        "<td>" + customer[i].name + "</td>" +
-                        "<td>" + customer[i].representative.name + "</td>" +
-                        "<td>" + customer[i].mainBusiness + "</td>" +
-                        "<td></td>" +
-                        "<td></td></tr>";
-                    tbody.append(content);
-                }
-            }
-        })
-    } //]]>
+    function searchCustomer() {
+        var urlContent = "?";
+        urlContent += "searchOption1=" + $("input[name='customerSearchOption']:checked").val() + "&" +
+            "searchOption2=" +  "" + "&" +
+            "searchInput=" +  $('#search').val();
+        table.api().ajax.url('/staff/searchCustomer' + urlContent).load();
+    }
+    //]]>
 
 </script>
 </body>

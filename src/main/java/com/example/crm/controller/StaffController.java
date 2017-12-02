@@ -93,7 +93,10 @@ import java.util.ArrayList;
 
     @RequestMapping(value = "/searchCustomer")
     @ResponseBody
-    public ArrayList<Customer> searchCustomer() {
-        return customerService.findAllCustomer();
+    public ArrayList<Customer> searchCustomer(@RequestParam(value = "searchOption1") String option1,
+                                              @RequestParam(value = "searchOption2") String option2,
+                                              @RequestParam(value = "searchInput") String input) {
+
+        return customerService.searchCustomerByOption(option1, option2, input);
     }
 }
