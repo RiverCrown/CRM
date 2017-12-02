@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:include="mainPage :: mainHead">
-
 </head>
 <body onload="roleDiff()">
 <div class="modal fade" id="newCustomer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -239,11 +238,20 @@
             },
             ajax: {
                 type: "GET",
-                url:"/staff/searchCustomer?searchOption1=&searchOption2=&searchInput=",
+                url:"/customer/searchCustomer?searchOption1=&searchOption2=&searchInput=",
                 dataSrc: ''
             },
             columns: [
-                { data: 'id' },
+                {
+                    data: 'id',
+                    render: function (value, type, row) {
+                        if(value !=null){
+                            return '<a href=/customer/customerInfo?customerId='+value+'>'+value+'';
+                        }else{
+                            return "";
+                        }
+                    }
+                },
                 { data: 'name' },
                 { data: 'representative.name' },
                 { data: 'mainBusiness' },
@@ -256,7 +264,7 @@
     function addCustomer() {
         $.ajax({
             type: "POST",
-            url: "/staff/addCustomer",
+            url: "/customer/addCustomer",
             data: JSON.stringify({
                 isCompany: true,
                 tag: "",
@@ -290,7 +298,7 @@
         urlContent += "searchOption1=" + $("input[name='customerSearchOption']:checked").val() + "&" +
             "searchOption2=" +  "" + "&" +
             "searchInput=" +  $('#search').val();
-        table.api().ajax.url('/staff/searchCustomer' + urlContent).load();
+        table.api().ajax.url('/customer/searchCustomer' + urlContent).load();
     }
     //]]>
 

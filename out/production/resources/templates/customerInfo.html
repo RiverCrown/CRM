@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:include="mainPage :: mainHead">
+</head>
+<body onload="roleDiff()">
+
+<div id="wrapper">
+    <nav th:replace="mainPage :: navi" class="navbar navbar-default navbar-fixed-top" role="navigation"
+         style="margin-bottom: 0"></nav>
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 th:text="${customer.getName()+'公司'} + 'test'" class="page-header"></h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        基本信息
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="form-label">编号：</label>
+                            <p th:text="${customer.getId()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">公司名称：</label>
+                            <p th:text="${customer.getName()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">公司主营业务：</label>
+                            <p th:text="${customer.getMainBusiness()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">公司性质：</label>
+                            <p th:text="${customer.isCompany()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">公司地址：</label>
+                            <p th:text="${customer.getAddress()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">潜在客户：</label>
+                            <p th:text="${customer.isPotential()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">公司类型：</label>
+                            <p th:text="${customer.getType()}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        联系人信息
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="form-label">编号：</label>
+                            <p th:text="${customer.getRepresentative().getId()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人姓名：</label>
+                            <p th:text="${customer.getRepresentative().getName()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人年龄：</label>
+                            <p th:text="${customer.getRepresentative().getAge()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人性别：</label>
+                            <p th:text="${customer.getRepresentative().isSex()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人生日：</label>
+                            <p th:text="${customer.getRepresentative().getBirthday()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人住址：</label>
+                            <p th:text="${customer.getRepresentative().getAddress()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人电子邮箱：</label>
+                            <p th:text="${customer.getRepresentative().getEmail()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人兴趣爱好：</label>
+                            <p th:text="${customer.getRepresentative().getHobby()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人手机号码：</label>
+                            <p th:text="${customer.getRepresentative().getPhoneNumber()}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
