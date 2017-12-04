@@ -1,6 +1,7 @@
 package com.example.crm.controller;
 
 import com.example.crm.domain.Customer;
+import com.example.crm.domain.Staff;
 import com.example.crm.service.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 @Controller
@@ -30,7 +32,9 @@ public class CustomerController {
 
     @RequestMapping(value = "/addCustomer")
     @ResponseBody
-    public String addCustomer(@RequestBody Customer customer) {
+    public String addCustomer(@RequestBody Customer customer,
+                              HttpSession session) {
+        customer.setSalesman((Staff)session.getAttribute("staffObj"));
         customerService.addCustomer(customer);
         return "success";
     }
@@ -50,5 +54,11 @@ public class CustomerController {
         Customer customer = customerService.findCustomer(customerId);
         model.addAttribute("customer", customer);
         return "customerInfo";
+    }
+
+    @RequestMapping(value = "/getMainBusiness")
+    @ResponseBody
+    public ArrayList<String> getMainBusiness() {
+        return customerService.getCustomerMainBusiness();
     }
 }

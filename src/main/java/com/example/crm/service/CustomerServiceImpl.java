@@ -32,6 +32,8 @@ public class CustomerServiceImpl {
     }
 
     public ArrayList<Customer> searchCustomerByOption(String option1, String option2, String input){
+        if (input.equals(""))
+            return (ArrayList<Customer>)customerRepository.findAll();
         try{
             switch (option1) {
                 case "number":
@@ -48,5 +50,9 @@ public class CustomerServiceImpl {
         } catch (NumberFormatException e) {
             return new ArrayList<>();
         }
+    }
+
+    public ArrayList<String> getCustomerMainBusiness() {
+        return customerRepository.findMainBusiness();
     }
 }

@@ -16,7 +16,7 @@ public class Customer {
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "contact_id")
     private Contact representative;
-    @OneToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name = "salesman_id")
     private Staff salesman;
     private String mainBusiness;
