@@ -23,7 +23,7 @@ public class CustomerServiceImpl {
         return customerRepository.findOne(id);
     }
 
-    public void addCustomer(Customer customer){
+    public void addOrUpdateCustomer(Customer customer){
         customerRepository.save(customer);
     }
 
@@ -55,4 +55,9 @@ public class CustomerServiceImpl {
     public ArrayList<String> getCustomerMainBusiness() {
         return customerRepository.findMainBusiness();
     }
+
+    public void removeCustomer(int id) {
+        customerRepository.delete(id);
+    }
+
 }

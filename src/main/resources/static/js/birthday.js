@@ -15,6 +15,11 @@ $('document').ready(function(){
         monthHtml = monthHtml + "<option value='"+m+"'>"+m+"</option>";
     }
     month.html(monthHtml);//生成月份下拉菜单
+
+    for(d = 1; d <= 31; d++){
+        dayHtml = dayHtml + "<option value='" + d + "'>" + d + "</option>";
+    }
+    day.html(dayHtml);
     /*
      * 处理每个月有多少天---联动
      */

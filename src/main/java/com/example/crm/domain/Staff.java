@@ -1,6 +1,7 @@
 package com.example.crm.domain;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -12,6 +13,9 @@ public class Staff extends People{
     private Integer id;
     private String role;
     private String password;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "staff_id")
+    private List<Route> routes;
 
     public Staff(){
 

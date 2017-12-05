@@ -53,9 +53,16 @@
                         <div class="form-group">
                             <label class="form-label">公司类型
                                 <select id="companyType" class="form-control">
-                                    <option value="0">科技型</option>
-                                    <option value="1">传统型</option>
-                                    <option value="2">大型</option>
+                                    <option value="0"></option>
+                                    <option value="1">国有企业</option>
+                                    <option value="2">集体所有制</option>
+                                    <option value="3">私营企业</option>
+                                    <option value="4">股份制企业</option>
+                                    <option value="5">有限合伙企业</option>
+                                    <option value="6">联营企业</option>
+                                    <option value="7">外商投资企业</option>
+                                    <option value="8">个人独资企业</option>
+                                    <option value="9">股份合作企业</option>
                                 </select>
                             </label>
                         </div>
@@ -298,10 +305,6 @@
                 mainBusinessSelect.html(selectContent);
             }
         })
-    }
-
-    function cancel(formName) {
-        $('#' + formName)[0].reset();
     }
 
     function addCustomer() {

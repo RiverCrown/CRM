@@ -3,7 +3,168 @@
 <head th:include="mainPage :: mainHead">
 </head>
 <body onload="roleDiff()">
-
+<div class="modal fade" id="hintModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">提示：</h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:18px" id="hintContent"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="removeCustomer()" data-dismiss="modal">
+                    确认
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modifyCustomer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改客户</h4>
+            </div>
+                <div class="modal-body row">
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="form-label">客户单位名称</label>
+                            <textarea th:text="${customer.getName()}" class="form-control" placeholder="个体户填写联系人姓名，公司填写公司名称" style="resize: none;"
+                                      id="companyName" name="companyName"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">客户性质</label>
+                            <br/>
+                            <label class="radio-inline">
+                                <input th:checked="${customer.isCompany()}" type="radio" name="customerType" id="company" value="true"/>企业公司
+                            </label>
+                            <label class="radio-inline">
+                                <input th:checked="${!customer.isCompany()}" type="radio" name="customerType" id="self" value="false"/>个体户
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">潜在客户</label>
+                            <br/>
+                            <label class="radio-inline">
+                                <input th:checked="${customer.isPotential()}" type="radio" name="potential" id="potential" value="true"/>是
+                            </label>
+                            <label class="radio-inline">
+                                <input th:checked="${!customer.isPotential()}" type="radio" name="potential" id="notPotential" value="false"/>否
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">客户主要业务</label>
+                            <textarea th:text="${customer.getMainBusiness()}" class="form-control" placeholder="客户公司的主营业务" style="resize: none;"
+                                      id="mainBusiness"
+                                      name="mainBusiness"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">客户单位地址</label>
+                            <input th:value="${customer.getAddress()}" type="text" class="form-control" placeholder="个体户填写联系人地址，公司填写公司地址"
+                                   id="companyAddress" name="companyAddress"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">公司类型
+                                <select id="companyType" class="form-control">
+                                    <option value="0" th:selected="${customer.getType()==0}"></option>
+                                    <option value="1" th:selected="${customer.getType()==1}">国有企业</option>
+                                    <option value="2" th:selected="${customer.getType()==2}">集体所有制</option>
+                                    <option value="3" th:selected="${customer.getType()==3}">私营企业</option>
+                                    <option value="4" th:selected="${customer.getType()==4}">股份制企业</option>
+                                    <option value="5" th:selected="${customer.getType()==5}">有限合伙企业</option>
+                                    <option value="6" th:selected="${customer.getType()==6}">联营企业</option>
+                                    <option value="7" th:selected="${customer.getType()==7}">外商投资企业</option>
+                                    <option value="8" th:selected="${customer.getType()==8}">个人独资企业</option>
+                                    <option value="9" th:selected="${customer.getType()==9}">股份合作企业</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="form-group">
+                            <label class="form-label">联系人姓名</label>
+                            <input th:value="${customer.getRepresentative().getName()}" id="contactName" name="contactName" class="form-control" type="text"
+                                   placeholder="联系人姓名"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人年龄</label>
+                            <input th:value="${customer.getRepresentative().getAge()}" id="contactAge" name="contactAge" class="form-control" type="text"
+                                   placeholder="联系人年龄"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人性别</label>
+                            <br/>
+                            <label class="radio-inline">
+                                <input th:checked="${customer.getRepresentative().isSex()}" type="radio" name="sex" id="man" value="true"/>男
+                            </label>
+                            <label class="radio-inline">
+                                <input th:checked="${!customer.getRepresentative().isSex()}" type="radio" name="sex" id="woman" value="false"/>女
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人手机号码</label>
+                            <input th:value="${customer.getRepresentative().getPhoneNumber()}" id="contactPhoneNumber" name="contactPhoneNumber" class="form-control" type="text"
+                                   placeholder="联系人手机号码"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人邮箱</label>
+                            <input th:value="${customer.getRepresentative().getEmail()}" id="contactEmail" name="contactEmail" class="form-control" type="text"
+                                   placeholder="联系人邮箱"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人住址</label>
+                            <input th:value="${customer.getRepresentative().getAddress()}" id="contactAddress" name="contactAddress" class="form-control" type="text"
+                                   placeholder="联系人住址"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人兴趣爱好</label>
+                            <input th:value="${customer.getRepresentative().getHobby()}" id="contactHobby" name="contactHobby" class="form-control" type="text"
+                                   placeholder="联系人兴趣爱好"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人生日</label>
+                            <div class="form-inline">
+                                <label class="form-label">
+                                    <select class="form-control" id="year">
+                                    </select>
+                                    年
+                                </label>
+                                <label class="form-label">
+                                    <select class="form-control" id="month">
+                                    </select>
+                                    月
+                                </label>
+                                <label class="form-label">
+                                    <select class="form-control" id="day">
+                                    </select>
+                                    日
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="modifyCustomer()">
+                        修改
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="resetCustomer()">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-default" onclick="resetCustomer()">
+                        重置
+                    </button>
+                </div>
+        </div>
+    </div>
+</div>
 <div id="wrapper">
     <nav th:replace="mainPage :: navi" class="navbar navbar-default navbar-fixed-top" role="navigation"
          style="margin-bottom: 0"></nav>
@@ -16,9 +177,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="form-group pull-right">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newCustomer">修改信息
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyCustomer">修改信息
                     </button>
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#newCustomer">删除
+                    <button type="button" class="btn btn-danger" onclick="removeModal()">删除
                     </button>
                     <button type="button" class="btn btn-default" onclick="location='/customer/customerManagement'">返回
                     </button>
@@ -46,7 +207,10 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">公司性质：</label>
-                            <p th:text="${customer.isCompany()}"></p>
+                            <th:block th:switch="${customer.isCompany()}">
+                                <p th:case="true">企业公司</p>
+                                <p th:case="false">个体户</p>
+                            </th:block>
                         </div>
                         <div class="form-group">
                             <label class="form-label">公司地址：</label>
@@ -54,11 +218,25 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">潜在客户：</label>
-                            <p th:text="${customer.isPotential()}"></p>
+                            <th:block th:switch="${customer.isPotential()}">
+                                <p th:case="true">是</p>
+                                <p th:case="false">否</p>
+                            </th:block>
                         </div>
                         <div class="form-group">
                             <label class="form-label">公司类型：</label>
-                            <p th:text="${customer.getType()}"></p>
+                            <th:block th:switch="${customer.getType()}">
+                                <p th:case="0"></p>
+                                <p th:case="1">国有企业</p>
+                                <p th:case="2">集体所有制</p>
+                                <p th:case="3">私营企业</p>
+                                <p th:case="4">股份制企业</p>
+                                <p th:case="5">有限合伙企业</p>
+                                <p th:case="6">联营企业</p>
+                                <p th:case="7">外商投资企业</p>
+                                <p th:case="8">个人独资企业</p>
+                                <p th:case="9">股份合作企业</p>
+                            </th:block>
                         </div>
                     </div>
                 </div>
@@ -83,11 +261,14 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">联系人性别：</label>
-                            <p th:text="${customer.getRepresentative().isSex()}"></p>
+                            <th:block th:switch="${customer.getRepresentative().isSex()}">
+                                <p th:case="true">男</p>
+                                <p th:case="false">女</p>
+                            </th:block>
                         </div>
                         <div class="form-group">
                             <label class="form-label">联系人生日：</label>
-                            <p th:text="${customer.getRepresentative().getBirthday()}"></p>
+                            <p th:text="${customer.getRepresentative().getFormatBirthday(0)}"></p>
                         </div>
                         <div class="form-group">
                             <label class="form-label">联系人住址：</label>
@@ -111,5 +292,104 @@
         </div>
     </div>
 </div>
+<script src="/js/birthday.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    $('document').ready(function () {
+        $('#year').val([[${customer.getRepresentative().getFormatBirthday(1)}]]);
+        $('#month').val([[${customer.getRepresentative().getFormatBirthday(2)}]]);
+        $('#day').val([[${customer.getRepresentative().getFormatBirthday(3)}]]);
+    });
+
+    function removeModal() {
+        $('#hintContent').html("删除客户： " + [[${customer.getName()}]]);
+        $('#hintModal').modal('show');
+    }
+
+    function removeCustomer() {
+        $.ajax({
+            type: "POST",
+            url: "/customer/removeCustomer",
+            data: {
+                id: [[${customer.getId()}]]
+            },
+            success: function() {
+                window.location.href = "/customer/customerManagement";
+            }
+        })
+    }
+
+    function resetCustomer() {
+        var isCompany = [[${customer.isCompany()}]];
+        var isPotential = [[${customer.isPotential()}]];
+        var isMale = [[${customer.getRepresentative().isSex()}]];
+        $('#companyName').val([[${customer.getName()}]]);
+        $('#mainBusiness').val([[${customer.getMainBusiness()}]]);
+        $('#year').val([[${customer.getRepresentative().getFormatBirthday(1)}]]);
+        $('#month').val([[${customer.getRepresentative().getFormatBirthday(2)}]]);
+        $('#day').val([[${customer.getRepresentative().getFormatBirthday(3)}]]);
+        $('#companyAddress').val([[${customer.getAddress()}]]);
+        $('#companyType').val([[${customer.getType()}]]);
+        $('#contactName').val([[${customer.getRepresentative().getName()}]]);
+        $('#contactAge').val([[${customer.getRepresentative().getAge()}]]);
+        $('#contactAddress').val([[${customer.getRepresentative().getAddress()}]]);
+        $('#contactEmail').val([[${customer.getRepresentative().getEmail()}]]);
+        $('#contactHobby').val([[${customer.getRepresentative().getHobby()}]]);
+        $('#contactPhoneNumber').val([[${customer.getRepresentative().getPhoneNumber()}]]);
+        if (isCompany)
+            $("input[name=customerType][value=true]").prop("checked", true);
+        else
+            $("input[name=customerType][value=false]").prop("checked", true);
+
+        if (isPotential)
+            $("input[name=potential][value=true]").prop("checked", true);
+        else
+            $("input[name=potential][value=false]").prop("checked", true);
+
+        if (isMale)
+            $("input[name=sex][value=true]").prop("checked", true);
+        else
+            $("input[name=sex][value=false]").prop("checked", true);
+    }
+
+    function modifyCustomer() {
+        var isCompany = ($("input[name='customerType']:checked").val() == "true");
+        var isPotential = ($("input[name='potential']:checked").val() == "true");
+        var sex = ($("input[name='sex']:checked").val() == "true");
+        var date;
+        var year = $('#year').find("option:selected").text().toString();
+        var month = $('#month').find("option:selected").text().toString();
+        var day = $('#day').find("option:selected").text().toString();
+        date = year + "-" + month + "-" + day;
+        $.ajax({
+            type: "POST",
+            url: "/customer/modifyCustomer",
+            data: JSON.stringify({
+                id: [[${customer.getId()}]],
+                isCompany: isCompany,
+                tag: "",
+                isPotential: isPotential,
+                address: $('#companyAddress').val(),
+                mainBusiness: $('#mainBusiness').val(),
+                name: $('#companyName').val(),
+                type: $('#companyType').find("option:selected").val(),
+                representative: {
+                    id: [[${customer.getRepresentative().getId()}]],
+                    hobby: $('#contactHobby').val(),
+                    birthday: date,
+                    name: $('#contactName').val(),
+                    sex: sex,
+                    age: $('#contactAge').val(),
+                    address: $('#contactAddress').val(),
+                    phoneNumber: $('#contactPhoneNumber').val(),
+                    email: $('#contactEmail').val()
+                }
+            }),
+            contentType: "application/json;charset=utf-8",
+            success: function () {
+                window.location.href = "/customer/customerInfo?customerId=" + [[${customer.getId()}]];
+            }
+        })
+    }
+</script>
 </body>
 </html>

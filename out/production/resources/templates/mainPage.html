@@ -76,6 +76,9 @@
                     break;
             }
         }
+        function cancel(formName) {
+            $('#' + formName)[0].reset();
+        }
     </script>
 </head>
 <body onload="roleDiff()">

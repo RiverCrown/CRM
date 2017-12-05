@@ -35,7 +35,7 @@ public class CustomerController {
     public String addCustomer(@RequestBody Customer customer,
                               HttpSession session) {
         customer.setSalesman((Staff)session.getAttribute("staffObj"));
-        customerService.addCustomer(customer);
+        customerService.addOrUpdateCustomer(customer);
         return "success";
     }
 
@@ -60,5 +60,20 @@ public class CustomerController {
     @ResponseBody
     public ArrayList<String> getMainBusiness() {
         return customerService.getCustomerMainBusiness();
+    }
+
+    @RequestMapping(value = "/modifyCustomer")
+    @ResponseBody
+    public String modifyCustomer(@RequestBody Customer customer, HttpSession session) {
+        customer.setSalesman((Staff)session.getAttribute("staffObj"));
+        customerService.addOrUpdateCustomer(customer);
+        return "customerInfo";
+    }
+
+    @RequestMapping(value = "/removeCustomer")
+    @ResponseBody
+    public String removeCustomer(int id) {
+        customerService.removeCustomer(id);
+        return "customerManagement";
     }
 }
