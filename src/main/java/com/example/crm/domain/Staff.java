@@ -13,7 +13,7 @@ public class Staff extends People{
     private Integer id;
     private String role;
     private String password;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "staff_id")
     private List<Route> routes;
 
@@ -51,4 +51,13 @@ public class Staff extends People{
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public List<Route> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(List<Route> routes) {
+        this.routes = routes;
+    }
+
 }

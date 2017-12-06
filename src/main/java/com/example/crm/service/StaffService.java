@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface StaffService {
 
-    public void modifyStaff(Staff staff);
+    public Staff modifyStaff(Staff staff);
     public void createStaff(String name, boolean sex);
     public Staff getStaff(Integer id);
     public boolean validateStaffAccount(HttpServletRequest request, HttpServletResponse response);

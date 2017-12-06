@@ -15,8 +15,8 @@ public class Route {
     private int taskLevel;
     private int status;
     private String title;
-    private Calendar startDate;
-    private Calendar endDate;
+    private String start;
+    private String end;
     private String detail;
 
     public int getId() {
@@ -51,20 +51,20 @@ public class Route {
         this.title = title;
     }
 
-    public Calendar getStartDate() {
-        return startDate;
+    public String getStart() {
+        return start;
     }
 
-    public void setStartDate(Calendar startDate) {
-        this.startDate = startDate;
+    public void setStart(String start) {
+        this.start = start;
     }
 
-    public Calendar getEndDate() {
-        return endDate;
+    public String getEnd() {
+        return end;
     }
 
-    public void setEndDate(Calendar endDate) {
-        this.endDate = endDate;
+    public void setEnd(String end) {
+        this.end = end;
     }
 
     public String getDetail() {
