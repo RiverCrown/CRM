@@ -34,4 +34,7 @@ public class RouteServiceImpl {
         return routes;
     }
 
+    public void deleteRoute(int id) {
+        routeRepository.delete(id);
+    }
 }

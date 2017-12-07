@@ -3,6 +3,7 @@ package com.example.crm.service;
 import com.example.crm.dao.CustomerRepository;
 import com.example.crm.dao.StaffRepository;
 import com.example.crm.domain.Customer;
+import com.example.crm.domain.Route;
 import com.example.crm.domain.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @Service
@@ -33,6 +35,24 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public void createStaff(String name, boolean sex) {
 
+    }
+
+    public void modifyRoute(List<Route> routes, Route route) {
+        for (int i=0; i<routes.size(); i++) {
+            if (routes.get(i).getId() == route.getId()) {
+                routes.set(i, route);
+                break;
+            }
+        }
+    }
+
+    public void removeRoute(List<Route> routes, int routeId) {
+        for (int i=0; i<routes.size(); i++) {
+            if (routes.get(i).getId() == routeId) {
+                routes.remove(i);
+                break;
+            }
+        }
     }
 
     @Override

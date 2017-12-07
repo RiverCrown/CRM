@@ -267,9 +267,7 @@
             },
             success: function (serverRoutes) {
                 routes = serverRoutes;
-                calendar.fullCalendar('removeEvents', function (operatedEvent) {
-                    return true;
-                });
+                calendar.fullCalendar('removeEvents', operatedEvent.id);
             }
         });
         cancelRoute();

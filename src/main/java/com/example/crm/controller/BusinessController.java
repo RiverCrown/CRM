@@ -71,13 +71,7 @@ public class BusinessController {
     @ResponseBody
     public List<Route> modifyRoute(@RequestBody Route route, HttpSession session) {
         Staff staff = (Staff)session.getAttribute("staffObj");
-        List<Route> routes = staff.getRoutes();
-        for (int i=0; i<routes.size(); i++) {
-            if (routes.get(i).getId() == route.getId()) {
-                routes.set(i, route);
-                break;
-            }
-        }
+        staffService.modifyRoute(staff.getRoutes(), route);
         staff = staffService.modifyStaff(staff);
         session.setAttribute("staffObj", staff);
         return staff.getRoutes();
@@ -88,14 +82,9 @@ public class BusinessController {
     public List<Route> deleteRoute(@RequestParam(value = "id") int id,
                                    HttpSession session) {
         Staff staff = (Staff)session.getAttribute("staffObj");
-        List<Route> routes = staff.getRoutes();
-        for (int i=0; i<routes.size(); i++) {
-            if (routes.get(i).getId() == id) {
-                routes.remove(i);
-                break;
-            }
-        }
+        staffService.removeRoute(staff.getRoutes(), id);
         staff = staffService.modifyStaff(staff);
+        routeService.deleteRoute(id);
         session.setAttribute("staffObj", staff);
         return staff.getRoutes();
     }
