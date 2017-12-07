@@ -4,8 +4,154 @@
 
 </head>
 <body onload="roleDiff()">
-<div id="wrapper">
+<div class="modal fade" id="newOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">新建跟单</h4>
+            </div>
+                <div class="modal-body row">
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="form-label">摘要：</label>
+                            <textarea class="form-control" placeholder="跟单概要内容" style="resize: none;"
+                                      id="digest"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">客户：</label>
+                            <input class="form-control" type="text" placeholder=""/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">客户：</label>
+                            <input class="form-control" type="text" placeholder=""/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"></label>
+                            <br/>
+                            <label class="radio-inline">
+                                <input type="radio" name="customerType" id="company" value="company"/>企业公司
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="customerType" id="self" value="self"/>个体户
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">潜在客户</label>
+                            <br/>
+                            <label class="radio-inline">
+                                <input type="radio" name="potential" id="potential" value="potential"/>是
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="potential" id="notPotential" value="notPotential"/>否
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">客户主要业务</label>
+                            <textarea class="form-control" placeholder="客户公司的主营业务" style="resize: none;"
+                                      id="mainBusiness"
+                                      name="mainBusiness"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">客户单位地址</label>
+                            <input type="text" class="form-control" placeholder="个体户填写联系人地址，公司填写公司地址"
+                                   id="companyAddress" name="companyAddress"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">公司类型
+                                <select id="companyType" class="form-control">
+                                    <option value="0"></option>
+                                    <option value="1">国有企业</option>
+                                    <option value="2">集体所有制</option>
+                                    <option value="3">私营企业</option>
+                                    <option value="4">股份制企业</option>
+                                    <option value="5">有限合伙企业</option>
+                                    <option value="6">联营企业</option>
+                                    <option value="7">外商投资企业</option>
+                                    <option value="8">个人独资企业</option>
+                                    <option value="9">股份合作企业</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="form-group">
+                            <label class="form-label">联系人姓名</label>
+                            <input id="contactName" name="contactName" class="form-control" type="text"
+                                   placeholder="联系人姓名"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人年龄</label>
+                            <input id="contactAge" name="contactAge" class="form-control" type="text"
+                                   placeholder="联系人年龄"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人性别</label>
+                            <br/>
+                            <label class="radio-inline">
+                                <input type="radio" name="sex" id="man" value="woman"/>男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="sex" id="woman" value="woman"/>女
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人手机号码</label>
+                            <input id="contactPhoneNumber" name="contactPhoneNumber" class="form-control" type="text"
+                                   placeholder="联系人手机号码"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人邮箱</label>
+                            <input id="contactEmail" name="contactEmail" class="form-control" type="text"
+                                   placeholder="联系人邮箱"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人住址</label>
+                            <input id="contactAddress" name="contactAddress" class="form-control" type="text"
+                                   placeholder="联系人住址"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人兴趣爱好</label>
+                            <input id="contactHobby" name="contactHobby" class="form-control" type="text"
+                                   placeholder="联系人兴趣爱好"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">联系人生日</label>
+                            <div class="form-inline">
+                                <label class="form-label">
+                                    <select class="form-control" id="year">
+                                    </select>
+                                    年
+                                </label>
+                                <label class="form-label">
+                                    <select class="form-control" id="month">
+                                    </select>
+                                    月
+                                </label>
+                                <label class="form-label">
+                                    <select class="form-control" id="day">
+                                    </select>
+                                    日
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="addCustomer()">
+                        提交
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="cancel('addCustomerForm')">
+                        取消
+                    </button>
+                    <input type="reset" class="btn btn-default" value="重置"/>
+                </div>
+        </div>
+    </div>
+</div>
 
+<div id="wrapper">
     <nav th:replace="mainPage :: navi" class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0"></nav>
     <div id="page-wrapper">
         <div class="row">
@@ -15,7 +161,9 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <button type="button" class="btn btn-primary">新建跟单</button>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#">新建跟单</button>
+                </div>
             </div>
         </div>
         <br/>
@@ -100,22 +248,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="gradeC">
-                                    <td>Misc</td>
-                                    <td>PSP browser</td>
-                                    <td>PSP</td>
-                                    <td class="center">-</td>
-                                    <td class="center">C</td>
-                                    <td class="center">C</td>
-                                </tr>
-                                <tr class="gradeU">
-                                    <td>Other browsers</td>
-                                    <td>All others</td>
-                                    <td>-</td>
-                                    <td class="center">-</td>
-                                    <td class="center">C</td>
-                                    <td class="center">U</td>
-                                </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -133,9 +266,62 @@
 <script src="/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
 <script>
+    //<![CDATA[
+    var table = $('#dataTables-example');
     $(document).ready(function() {
-        $('#dataTables-example').dataTable();
+        var idToName;
+        table.dataTable({
+            language: {
+                url: "/json/dataTables_cn.json"
+            },
+            ajax: {
+                type: "GET",
+                url: "/customer/searchCustomer?searchOption1=&searchOption2=&searchInput=",
+                dataSrc: ''
+            },
+            columns: [
+                {
+                    data: 'id',
+                    render: function (value, type, row) {
+                        if (value != null) {
+                            idToName = value;
+                            return value;
+                        } else {
+                            idToName = "";
+                            return "";
+                        }
+                    }
+                },
+                {
+                    data: 'name',
+                    render: function (value, type, row) {
+                        if (value != null) {
+                            return '<a href=/customer/customerInfo?customerId=' + idToName + '>' + value + '</a>';
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                {data: 'representative.name'},
+                {data: 'mainBusiness'},
+                {
+                    data: 'company',
+                    render: function (value, type, row) {
+                        if (value != null) {
+                            if (value == true)
+                                return '企业公司';
+                            else
+                                return '个体户';
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                {data: 'salesman.name'}
+            ]
+        });
     });
+    //]]>
 </script>
 </body>
 

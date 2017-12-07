@@ -133,9 +133,62 @@
 <script src="/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
 <script>
+    //<![CDATA[
+    var table = $('#dataTables-example');
     $(document).ready(function() {
-        $('#dataTables-example').dataTable();
+        var idToName;
+        table.dataTable({
+            language: {
+                url: "/json/dataTables_cn.json"
+            },
+            ajax: {
+                type: "GET",
+                url: "/customer/searchCustomer?searchOption1=&searchOption2=&searchInput=",
+                dataSrc: ''
+            },
+            columns: [
+                {
+                    data: 'id',
+                    render: function (value, type, row) {
+                        if (value != null) {
+                            idToName = value;
+                            return value;
+                        } else {
+                            idToName = "";
+                            return "";
+                        }
+                    }
+                },
+                {
+                    data: 'name',
+                    render: function (value, type, row) {
+                        if (value != null) {
+                            return '<a href=/customer/customerInfo?customerId=' + idToName + '>' + value + '</a>';
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                {data: 'representative.name'},
+                {data: 'mainBusiness'},
+                {
+                    data: 'company',
+                    render: function (value, type, row) {
+                        if (value != null) {
+                            if (value == true)
+                                return '企业公司';
+                            else
+                                return '个体户';
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                {data: 'salesman.name'}
+            ]
+        });
     });
+    //]]>
 </script>
 </body>
 

@@ -12,12 +12,8 @@ public class Order {
     @Id
     @GeneratedValue
     private int id;
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "salesman_id")
-    private Staff salesman;
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    private Integer salesmanId;
+    private Integer customerId;
     private Integer status;
     private String digest;
     private Date startDate;
@@ -30,7 +26,7 @@ public class Order {
     private Integer possibility;
     private Integer phase;
     private String product;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private List<Comment> comments;
 
@@ -42,20 +38,20 @@ public class Order {
         this.id = id;
     }
 
-    public Staff getSalesman() {
-        return salesman;
+    public Integer getSalesmanId() {
+        return salesmanId;
     }
 
-    public void setSalesman(Staff salesman) {
-        this.salesman = salesman;
+    public void setSalesmanId(Integer salesmanId) {
+        this.salesmanId = salesmanId;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
     public Integer getStatus() {
