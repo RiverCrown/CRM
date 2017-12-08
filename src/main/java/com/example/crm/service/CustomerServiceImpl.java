@@ -37,13 +37,25 @@ public class CustomerServiceImpl {
         try{
             switch (option1) {
                 case "number":
-                    return customerRepository.findByIdAndMainBusiness(Integer.parseInt(input), option2);
+                    if (option2.equals(""))
+                        return customerRepository.findById(Integer.parseInt(input));
+                    else
+                        return customerRepository.findByIdAndMainBusiness(Integer.parseInt(input), option2);
                 case "name":
-                    return customerRepository.findByNameAndMainBusiness(input, option2);
+                    if (option2.equals(""))
+                        return customerRepository.findByName(input);
+                    else
+                        return customerRepository.findByNameAndMainBusiness(input, option2);
                 case "contact":
-                    return customerRepository.findByRepresentativeNameAndMainBusiness(input, option2);
+                    if (option2.equals(""))
+                        return customerRepository.findByRepresentative(input);
+                    else
+                        return customerRepository.findByRepresentativeNameAndMainBusiness(input, option2);
                 case "salesman":
-                    return customerRepository.findBySalesmanNameAndMainBusiness(input, option2);
+                    if (option2.equals(""))
+                        return customerRepository.findBySalesman(input);
+                    else
+                        return customerRepository.findBySalesmanNameAndMainBusiness(input, option2);
                 default:
                     return (ArrayList<Customer>)customerRepository.findAll();
             }

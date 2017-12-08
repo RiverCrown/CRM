@@ -4,8 +4,27 @@
 
 </head>
 <body onload="roleDiff()">
-<div id="wrapper">
+<div class="modal fade" id="selectCustomer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">提示：</h4>
+            </div>
+            <div class="modal-body">
+                账号或密码错误！
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div id="wrapper">
     <nav th:replace="mainPage :: navi" class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0"></nav>
     <div id="page-wrapper">
         <div class="row">
@@ -15,7 +34,9 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <button type="button" class="btn btn-primary">新建跟单</button>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" onclick="window.location.href = '/business/newOrderPage'">新建跟单</button>
+                </div>
             </div>
         </div>
         <br/>
@@ -100,22 +121,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="gradeC">
-                                    <td>Misc</td>
-                                    <td>PSP browser</td>
-                                    <td>PSP</td>
-                                    <td class="center">-</td>
-                                    <td class="center">C</td>
-                                    <td class="center">C</td>
-                                </tr>
-                                <tr class="gradeU">
-                                    <td>Other browsers</td>
-                                    <td>All others</td>
-                                    <td>-</td>
-                                    <td class="center">-</td>
-                                    <td class="center">C</td>
-                                    <td class="center">U</td>
-                                </tr>
+
                                 </tbody>
                             </table>
                         </div>

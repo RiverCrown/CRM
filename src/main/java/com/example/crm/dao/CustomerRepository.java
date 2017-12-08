@@ -15,12 +15,27 @@ import java.util.ArrayList;
 @Table(name = "customer")
 @Qualifier("customerRepository")
 public interface CustomerRepository extends CrudRepository<Customer, Integer> {
+
     ArrayList<Customer> findByIdAndMainBusiness(int id, String mainBusiness);
+
     ArrayList<Customer> findByNameAndMainBusiness(String name, String mainBusiness);
+
     @Query("select customer from Customer customer join customer.representative contact where contact.name = ?1 and customer.mainBusiness = ?2")
     ArrayList<Customer> findByRepresentativeNameAndMainBusiness(String contactName, String mainBusiness);
+
     @Query("select customer from Customer customer join customer.salesman salesman where salesman.name = ?1 and customer.mainBusiness = ?2")
     ArrayList<Customer> findBySalesmanNameAndMainBusiness(String salesmanName, String mainBusiness);
+
     @Query("select distinct customer.mainBusiness from Customer customer")
     ArrayList<String> findMainBusiness();
+
+    ArrayList<Customer> findById(int id);
+
+    ArrayList<Customer> findByName(String name);
+
+    @Query("select customer from Customer customer join customer.salesman salesman where salesman.name = ?1")
+    ArrayList<Customer> findBySalesman(String salesmanName);
+
+    @Query("select customer from Customer customer join customer.representative contact where contact.name = ?1")
+    ArrayList<Customer> findByRepresentative(String contactName);
 }

@@ -247,8 +247,11 @@
 <script src="/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 <script type="text/javascript" th:inline="javascript">
     //<![CDATA[
+    var globalCustomerId;
     var table = $('#dataTables-example');
     $(document).ready(function () {
+        var initDate = new Date();
+        timeSelectGenerate('year', 'month', 'day', 1900, initDate.getFullYear());
         table.dataTable({
             language: {
                 url: "/json/dataTables_cn.json"
@@ -263,13 +266,24 @@
                     data: 'id',
                     render: function (value, type, row) {
                         if (value != null) {
-                            return '<a href=/customer/customerInfo?customerId=' + value + '>' + value + '</a>';
+                            globalCustomerId = value;
+                            return value;
+                        } else {
+                            globalCustomerId = "";
+                            return "";
+                        }
+                    }
+                },
+                {
+                    data: 'name',
+                    render: function (value, type, row) {
+                        if (value != null) {
+                            return '<a href=/customer/customerInfo?customerId=' + globalCustomerId + '>' + value + '</a>';
                         } else {
                             return "";
                         }
                     }
                 },
-                {data: 'name'},
                 {data: 'representative.name'},
                 {data: 'mainBusiness'},
                 {

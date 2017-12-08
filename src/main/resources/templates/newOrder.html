@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="mainPage :: mainHead">
+
+</head>
+<body onload="roleDiff()">
+<div id="wrapper">
+    <nav th:replace="mainPage :: navi" class="navbar navbar-default navbar-fixed-top" role="navigation"
+         style="margin-bottom: 0"></nav>
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">新建跟单</h2>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="nav nav-tabs">
+                    <li id="first" class="active col-lg-4 lead" style="text-align: center"><a href="#basicInfo"
+                                                                                              data-toggle="tab">第一步></a>
+                    </li>
+                    <li id="second" class="col-lg-4 lead" style="text-align: center"><a href="#customer"
+                                                                                        data-toggle="tab">第二步></a>
+                    </li>
+                    <li id="third" class="col-lg-4 lead" style="text-align: center"><a href="#expected"
+                                                                                       data-toggle="tab">第三步></a>
+                    </li>
+                </ul>
+                <br/><br/><br/>
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="basicInfo">
+                        <div class="row">
+                            <div class="col-lg-10 col-lg-offset-1">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h4 style="text-align: center">设置订单基本信息</h4>
+                                    </div>
+                                    <br/>
+                                    <div class="panel-body">
+                                        <div class="col-lg-6 col-lg-offset-3">
+                                            <div class="form-group">
+                                                <label class="form-label">摘要：</label>
+                                                <textarea class="form-control" placeholder="订单概述"
+                                                          style="resize: none"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">状态：
+                                                    <select class="form-control">
+                                                        <option value="0"></option>
+                                                        <option value="1">跟踪</option>
+                                                        <option value="2">搁置</option>
+                                                        <option value="3">成功</option>
+                                                        <option value="4">失效</option>
+                                                        <option value="5">失败</option>
+                                                    </select>
+                                                </label>
+                                                <label class="form-label pull-right">阶段：
+                                                    <select class="form-control">
+                                                        <option value="0"></option>
+                                                        <option value="1">1/7 初期沟通</option>
+                                                        <option value="2">2/7 立项评估</option>
+                                                        <option value="3">3/7 需求分析</option>
+                                                        <option value="4">4/7 方案制定</option>
+                                                        <option value="5">5/7 招投标竞争</option>
+                                                        <option value="6">6/7 商务谈判</option>
+                                                        <option value="7">7/7 合同签约</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">开始时间：</label>
+                                                <div class="form-inline">
+                                                    <label class="form-label">
+                                                        <select class="form-control" id="startYear">
+                                                        </select>
+                                                        年
+                                                    </label>
+                                                    <label class="form-label">
+                                                        <select class="form-control" id="startMonth">
+                                                        </select>
+                                                        月
+                                                    </label>
+                                                    <label class="form-label">
+                                                        <select class="form-control" id="startDay">
+                                                        </select>
+                                                        日
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">最近推进时间：</label>
+                                                <div class="form-inline">
+                                                    <label class="form-label">
+                                                        <select class="form-control" id="latestYear">
+                                                        </select>
+                                                        年
+                                                    </label>
+                                                    <label class="form-label">
+                                                        <select class="form-control" id="latestMonth">
+                                                        </select>
+                                                        月
+                                                    </label>
+                                                    <label class="form-label">
+                                                        <select class="form-control" id="latestDay">
+                                                        </select>
+                                                        日
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">详细内容：</label>
+                                                <textarea class="form-control" placeholder="和客户交流的详细内容..."
+                                                          style="resize: none"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-lg-offset-3">
+                                                <button type="button" class="btn btn-lg btn-success btn-block"
+                                                        data-toggle="tab" data-target="#customer"
+                                                        onclick="switchTab('first')">
+                                                    下一步
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="customer">
+                        <div class="row">
+                            <div class="col-lg-10 col-lg-offset-1">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h4 style="text-align: center">设置订单客户</h4>
+                                    </div>
+                                    <br/>
+                                    <div class="panel-body">
+                                        <div class="col-lg-10 col-lg-offset-1">
+                                            <div class="panel-group" id="accordion">
+                                                <div class="panel panel-info">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a data-toggle="collapse" data-parent="#accordion"
+                                                               href="#collapseOne" onclick="chooseCustomerWay('exist')" class="">选择已录入客户</a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseOne" class="panel-collapse collapse in"
+                                                         style="height: auto;">
+                                                        <div class="panel-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-10 col-lg-offset-1">
+                                                                    <label>
+                                                                        选中的客户为：
+                                                                    </label>
+                                                                    <br/>
+                                                                    <div class="table-responsive">
+                                                                        <table class="table table-bordered table-striped">
+                                                                            <thead>
+                                                                            <tr>
+                                                                                <th>编号</th>
+                                                                                <th>公司名称</th>
+                                                                                <th>联系人</th>
+                                                                                <th>公司主营业务</th>
+                                                                                <th>公司性质</th>
+                                                                                <th>业务员</th>
+                                                                            </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                            <tr>
+                                                                                <td id="selectedId"></td>
+                                                                                <td id="selectedName"></td>
+                                                                                <td id="selectedContact"></td>
+                                                                                <td id="selectedMainBusiness"></td>
+                                                                                <td id="selectedType"></td>
+                                                                                <td id="selectedSalesman"></td>
+                                                                            </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br/><br/>
+                                                            <div class="row">
+                                                                <div class="col-lg-10 col-lg-offset-1">
+                                                                    <div class="table-responsive">
+                                                                        <table class="table table-striped table-bordered table-hover" id="dataTables-example"
+                                                                               width="100%">
+                                                                            <thead>
+                                                                            <tr>
+                                                                                <th>编号</th>
+                                                                                <th>公司名称</th>
+                                                                                <th>联系人</th>
+                                                                                <th>公司主营业务</th>
+                                                                                <th>公司性质</th>
+                                                                                <th>业务员</th>
+                                                                            </tr>
+                                                                            </thead>
+                                                                            <tbody>
+
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-info">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a data-toggle="collapse" data-parent="#accordion"
+                                                               href="#collapseTwo" onclick="chooseCustomerWay('notExist')" class="collapsed">录入新客户</a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseTwo" class="panel-collapse collapse"
+                                                         style="height: 0px;">
+                                                        <div class="panel-body">
+                                                            <div class="col-lg-10 col-lg-offset-1">
+                                                                <div class="col-lg-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">客户单位名称</label>
+                                                                        <textarea class="form-control"
+                                                                                  placeholder="个体户填写联系人姓名，公司填写公司名称"
+                                                                                  style="resize: none;"
+                                                                                  id="companyName"
+                                                                                  name="companyName"></textarea>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">客户性质</label>
+                                                                        <br/>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="customerType"
+                                                                                   id="company"
+                                                                                   value="company"/>企业公司
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="customerType"
+                                                                                   id="self" value="self"/>个体户
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">潜在客户</label>
+                                                                        <br/>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="potential"
+                                                                                   id="potential"
+                                                                                   value="potential"/>是
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="potential"
+                                                                                   id="notPotential"
+                                                                                   value="notPotential"/>否
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">客户主要业务</label>
+                                                                        <textarea class="form-control"
+                                                                                  placeholder="客户公司的主营业务"
+                                                                                  style="resize: none;"
+                                                                                  id="mainBusiness"
+                                                                                  name="mainBusiness"></textarea>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">客户单位地址</label>
+                                                                        <input type="text" class="form-control"
+                                                                               placeholder="个体户填写联系人地址，公司填写公司地址"
+                                                                               id="companyAddress"
+                                                                               name="companyAddress"/>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">公司类型
+                                                                            <select id="companyType"
+                                                                                    class="form-control">
+                                                                                <option value="0"></option>
+                                                                                <option value="1">国有企业</option>
+                                                                                <option value="2">集体所有制</option>
+                                                                                <option value="3">私营企业</option>
+                                                                                <option value="4">股份制企业</option>
+                                                                                <option value="5">有限合伙企业</option>
+                                                                                <option value="6">联营企业</option>
+                                                                                <option value="7">外商投资企业</option>
+                                                                                <option value="8">个人独资企业</option>
+                                                                                <option value="9">股份合作企业</option>
+                                                                            </select>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">联系人姓名</label>
+                                                                        <input id="contactName" name="contactName"
+                                                                               class="form-control"
+                                                                               type="text"
+                                                                               placeholder="联系人姓名"/>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">联系人年龄</label>
+                                                                        <input id="contactAge" name="contactAge"
+                                                                               class="form-control"
+                                                                               type="text"
+                                                                               placeholder="联系人年龄"/>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">联系人性别</label>
+                                                                        <br/>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="sex" id="man"
+                                                                                   value="woman"/>男
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="sex" id="woman"
+                                                                                   value="woman"/>女
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">联系人手机号码</label>
+                                                                        <input id="contactPhoneNumber"
+                                                                               name="contactPhoneNumber"
+                                                                               class="form-control" type="text"
+                                                                               placeholder="联系人手机号码"/>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">联系人邮箱</label>
+                                                                        <input id="contactEmail" name="contactEmail"
+                                                                               class="form-control"
+                                                                               type="text"
+                                                                               placeholder="联系人邮箱"/>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">联系人住址</label>
+                                                                        <input id="contactAddress" name="contactAddress"
+                                                                               class="form-control" type="text"
+                                                                               placeholder="联系人住址"/>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">联系人兴趣爱好</label>
+                                                                        <input id="contactHobby" name="contactHobby"
+                                                                               class="form-control"
+                                                                               type="text"
+                                                                               placeholder="联系人兴趣爱好"/>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">联系人生日</label>
+                                                                        <div class="form-inline">
+                                                                            <label class="form-label">
+                                                                                <select class="form-control" id="year">
+                                                                                </select>
+                                                                                年
+                                                                            </label>
+                                                                            <label class="form-label">
+                                                                                <select class="form-control" id="month">
+                                                                                </select>
+                                                                                月
+                                                                            </label>
+                                                                            <label class="form-label">
+                                                                                <select class="form-control" id="day">
+                                                                                </select>
+                                                                                日
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-lg-offset-3">
+                                                <button type="button" class="btn btn-lg btn-success btn-block"
+                                                        data-toggle="tab" data-target="#expected"
+                                                        onclick="switchTab('second')">
+                                                    下一步
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="expected">
+                        <div class="row">
+                            <div class="col-lg-10 col-lg-offset-1">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h4 style="text-align: center">设置订单预期</h4>
+                                    </div>
+                                    <br/>
+                                    <div class="panel-body">
+                                        <div class="col-lg-6 col-lg-offset-3">
+                                            <div class="form-group">
+                                                <label class="form-label">产品大致信息：</label>
+                                                <textarea style="resize: none" class="form-control" placeholder="客户所需产品信息"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">预计收入：</label>
+                                                <input type="text" class="form-control" placeholder="预计收入"/>元
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label pull-right">成功可能性：
+                                                    <select class="form-control">
+                                                        <option value="0">0%</option>
+                                                        <option value="1">10%</option>
+                                                        <option value="2">20%</option>
+                                                        <option value="3">30%</option>
+                                                        <option value="4">40%</option>
+                                                        <option value="5">50%</option>
+                                                        <option value="6">60%</option>
+                                                        <option value="7">70%</option>
+                                                        <option value="8">80%</option>
+                                                        <option value="9">90%</option>
+                                                        <option value="10">100%</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">预计结束时间：</label>
+                                                <div class="form-inline">
+                                                    <label class="form-label">
+                                                        <select class="form-control" id="expectedEndYear">
+                                                        </select>
+                                                        年
+                                                    </label>
+                                                    <label class="form-label">
+                                                        <select class="form-control" id="expectedEndMonth">
+                                                        </select>
+                                                        月
+                                                    </label>
+                                                    <label class="form-label">
+                                                        <select class="form-control" id="expectedEndDay">
+                                                        </select>
+                                                        日
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">下次推进时间：</label>
+                                                <div class="form-inline">
+                                                    <label class="form-label">
+                                                        <select class="form-control" id="nextYear">
+                                                        </select>
+                                                        年
+                                                    </label>
+                                                    <label class="form-label">
+                                                        <select class="form-control" id="nextMonth">
+                                                        </select>
+                                                        月
+                                                    </label>
+                                                    <label class="form-label">
+                                                        <select class="form-control" id="nextDay">
+                                                        </select>
+                                                        日
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-lg-offset-3">
+                                                <button type="button" class="btn btn-lg btn-success btn-block"
+                                                        onclick="switchTab('third')">
+                                                    提交
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/js/birthday.js"></script>
+<script src="/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    //<![CDATA[
+    var customerWay = "exist";
+    var table = $('#dataTables-example');
+    var salesmanName = [[${session.staffObj.getName()}]];
+    $('document').ready(function () {
+        var date = new Date();
+        timeSelectGenerate('year', 'month', 'day', 1900, date.getFullYear());
+        timeSelectGenerate('startYear', 'startMonth', 'startDay', date.getFullYear() - 3, date.getFullYear() + 1);
+        timeSelectGenerate('latestYear', 'latestMonth', 'latestDay', date.getFullYear() - 3, date.getFullYear() + 1);
+        timeSelectGenerate('nextYear', 'nextMonth', 'nextDay', date.getFullYear() - 3, date.getFullYear() + 2);
+        timeSelectGenerate('expectedEndYear', 'expectedEndMonth', 'expectedEndDay', date.getFullYear() - 3, date.getFullYear() + 2);
+        table.dataTable({
+            language: {
+                url: "/json/dataTables_cn.json"
+            },
+            ajax: {
+                type: "GET",
+                url: "/customer/searchCustomer?searchOption1=salesman&searchOption2=&searchInput=" + salesmanName,
+                dataSrc: ''
+            },
+            columns: [
+                { data: 'id'},
+                { data: 'name'},
+                {data: 'representative.name'},
+                {data: 'mainBusiness'},
+                {
+                    data: 'company',
+                    render: function (value, type, row) {
+                        if (value != null) {
+                            if (value == true)
+                                return '企业公司';
+                            else
+                                return '个体户';
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                {data: 'salesman.name'}
+            ]
+        });
+        table.find("tbody").on('click', 'tr', function () {
+            var selectedNo = $(this).context._DT_RowIndex;
+            var nTrs = table.fnGetData();
+            $('#selectedId').html(nTrs[selectedNo].id);
+            $('#selectedName').html(nTrs[selectedNo].name);
+            $('#selectedContact').html(nTrs[selectedNo].representative.name);
+            $('#selectedMainBusiness').html(nTrs[selectedNo].mainBusiness);
+            if (nTrs[selectedNo].company) {
+                $('#selectedType').html("企业公司");
+            } else {
+                $('#selectedType').html("个体户");
+            }
+            $('#selectedSalesman').html(nTrs[selectedNo].salesman.name);
+        })
+    });
+
+    function chooseCustomerWay(way) {
+        customerWay = way;
+    }
+
+    function switchTab(which) {
+        var firstTab = $('#first');
+        var secondTab = $('#second');
+        var thirdTab = $('#third');
+        switch (which) {
+            case "first":
+                firstTab.removeClass("active");
+                secondTab.addClass("active");
+                break;
+            case "second":
+                secondTab.removeClass("active");
+                thirdTab.addClass("active");
+                break;
+            case "third":
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    //]]>
+</script>
+</body>
+</html>

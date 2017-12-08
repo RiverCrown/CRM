@@ -4,149 +4,22 @@
 
 </head>
 <body onload="roleDiff()">
-<div class="modal fade" id="newOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="selectCustomer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">新建跟单</h4>
+                <h4 class="modal-title" id="myModalLabel">提示：</h4>
             </div>
-                <div class="modal-body row">
-                    <div class="col-lg-5">
-                        <div class="form-group">
-                            <label class="form-label">摘要：</label>
-                            <textarea class="form-control" placeholder="跟单概要内容" style="resize: none;"
-                                      id="digest"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">客户：</label>
-                            <input class="form-control" type="text" placeholder=""/>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">客户：</label>
-                            <input class="form-control" type="text" placeholder=""/>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label"></label>
-                            <br/>
-                            <label class="radio-inline">
-                                <input type="radio" name="customerType" id="company" value="company"/>企业公司
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="customerType" id="self" value="self"/>个体户
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">潜在客户</label>
-                            <br/>
-                            <label class="radio-inline">
-                                <input type="radio" name="potential" id="potential" value="potential"/>是
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="potential" id="notPotential" value="notPotential"/>否
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">客户主要业务</label>
-                            <textarea class="form-control" placeholder="客户公司的主营业务" style="resize: none;"
-                                      id="mainBusiness"
-                                      name="mainBusiness"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">客户单位地址</label>
-                            <input type="text" class="form-control" placeholder="个体户填写联系人地址，公司填写公司地址"
-                                   id="companyAddress" name="companyAddress"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">公司类型
-                                <select id="companyType" class="form-control">
-                                    <option value="0"></option>
-                                    <option value="1">国有企业</option>
-                                    <option value="2">集体所有制</option>
-                                    <option value="3">私营企业</option>
-                                    <option value="4">股份制企业</option>
-                                    <option value="5">有限合伙企业</option>
-                                    <option value="6">联营企业</option>
-                                    <option value="7">外商投资企业</option>
-                                    <option value="8">个人独资企业</option>
-                                    <option value="9">股份合作企业</option>
-                                </select>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-lg-7">
-                        <div class="form-group">
-                            <label class="form-label">联系人姓名</label>
-                            <input id="contactName" name="contactName" class="form-control" type="text"
-                                   placeholder="联系人姓名"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">联系人年龄</label>
-                            <input id="contactAge" name="contactAge" class="form-control" type="text"
-                                   placeholder="联系人年龄"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">联系人性别</label>
-                            <br/>
-                            <label class="radio-inline">
-                                <input type="radio" name="sex" id="man" value="woman"/>男
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="sex" id="woman" value="woman"/>女
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">联系人手机号码</label>
-                            <input id="contactPhoneNumber" name="contactPhoneNumber" class="form-control" type="text"
-                                   placeholder="联系人手机号码"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">联系人邮箱</label>
-                            <input id="contactEmail" name="contactEmail" class="form-control" type="text"
-                                   placeholder="联系人邮箱"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">联系人住址</label>
-                            <input id="contactAddress" name="contactAddress" class="form-control" type="text"
-                                   placeholder="联系人住址"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">联系人兴趣爱好</label>
-                            <input id="contactHobby" name="contactHobby" class="form-control" type="text"
-                                   placeholder="联系人兴趣爱好"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">联系人生日</label>
-                            <div class="form-inline">
-                                <label class="form-label">
-                                    <select class="form-control" id="year">
-                                    </select>
-                                    年
-                                </label>
-                                <label class="form-label">
-                                    <select class="form-control" id="month">
-                                    </select>
-                                    月
-                                </label>
-                                <label class="form-label">
-                                    <select class="form-control" id="day">
-                                    </select>
-                                    日
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="addCustomer()">
-                        提交
-                    </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="cancel('addCustomerForm')">
-                        取消
-                    </button>
-                    <input type="reset" class="btn btn-default" value="重置"/>
-                </div>
+            <div class="modal-body">
+                账号或密码错误！
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -162,7 +35,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#">新建跟单</button>
+                    <button type="button" class="btn btn-primary" onclick="window.location.href = '/business/newOrderPage'">新建跟单</button>
                 </div>
             </div>
         </div>

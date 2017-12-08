@@ -28,6 +28,11 @@ public class BusinessController {
         this.routeService = routeService;
     }
 
+    @RequestMapping(value = "/newOrderPage")
+    public String newOrderPage() {
+        return "newOrder";
+    }
+
     @RequestMapping(value = "/orderManagement")
     public String orderManagement(){
         return "orderManagement";

@@ -292,9 +292,10 @@
         </div>
     </div>
 </div>
-<script src="/js/birthday.js"></script>
+<script type="text/javascript" src="/js/birthday.js"></script>
 <script type="text/javascript" th:inline="javascript">
     $('document').ready(function () {
+        timeSelectGenerate('year', 'month', 'day', 1900, 2017);
         $('#year').val([[${customer.getRepresentative().getFormatBirthday(1)}]]);
         $('#month').val([[${customer.getRepresentative().getFormatBirthday(2)}]]);
         $('#day').val([[${customer.getRepresentative().getFormatBirthday(3)}]]);

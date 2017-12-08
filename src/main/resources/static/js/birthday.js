@@ -1,12 +1,12 @@
-$('document').ready(function(){
-    var year = $('#year');
-    var month = $('#month');
-    var day = $('#day');
+function timeSelectGenerate(yearId, monthId, dayId, yearBegin, yearEnd){
+    var year = $('#' + yearId);
+    var month = $('#' + monthId);
+    var day = $('#' + dayId);
     var y, m, d=0;
-    var yearHtml = "";
-    var monthHtml = "";
-    var dayHtml = "";
-    for(y = 1900; y < 2017; y++){
+    var yearHtml = "<option value='0'></option>";
+    var monthHtml = "<option value='0'></option>";
+    var dayHtml = "<option value='0'></option>";
+    for(y = yearBegin; y < yearEnd; y++){
         yearHtml = yearHtml + "<option value='"+y+"'>"+y+"</option>";
     }
     year.html(yearHtml);//生成年份下拉菜单
@@ -53,9 +53,10 @@ $('document').ready(function(){
             default:
                 break;
         }
+        dayHtml = "<option value='0'></option>";
         for(d = 1;d <= total;d++){
             dayHtml = dayHtml + "<option value='"+d+"'>"+d+"</option>";
         }
         day.html(dayHtml);//生成日期下拉菜单
     })
-});
+}
