@@ -58,4 +58,10 @@ public class StaffController {
         return "failure";
     }
 
+    @RequestMapping(value = "/getStaffById")
+    @ResponseBody
+    public Staff getStaffById(@RequestParam(value = "staffId") int staffId) {
+        return staffService.getStaff(staffId);
+    }
+
 }

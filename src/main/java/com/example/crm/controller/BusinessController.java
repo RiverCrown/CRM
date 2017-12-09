@@ -1,7 +1,10 @@
 package com.example.crm.controller;
 
+import com.example.crm.domain.FollowOrder;
+import com.example.crm.domain.FollowOrderView;
 import com.example.crm.domain.Route;
 import com.example.crm.domain.Staff;
+import com.example.crm.service.OrderServiceImpl;
 import com.example.crm.service.RouteServiceImpl;
 import com.example.crm.service.StaffServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.Calendar;
 import java.util.List;
 
 @Controller
@@ -21,16 +23,34 @@ public class BusinessController {
 
     private RouteServiceImpl routeService;
     private StaffServiceImpl staffService;
+    private OrderServiceImpl orderService;
 
     @Autowired
-    public BusinessController(RouteServiceImpl routeService, StaffServiceImpl staffService) {
+    public BusinessController(RouteServiceImpl routeService, StaffServiceImpl staffService,
+                              OrderServiceImpl orderService) {
         this.staffService = staffService;
         this.routeService = routeService;
+        this.orderService = orderService;
+    }
+
+    @RequestMapping(value = "/addOrder")
+    @ResponseBody
+    public void addOrder(@RequestBody FollowOrder followOrder) {
+        orderService.addOrUpdateOrder(followOrder);
     }
 
     @RequestMapping(value = "/newOrderPage")
     public String newOrderPage() {
         return "newOrder";
+    }
+
+    @RequestMapping(value = "/searchOrder")
+    @ResponseBody
+    public List<FollowOrderView> searchOrder(@RequestParam(value = "by") String by,
+                                             @RequestParam(value = "status") String status,
+                                             @RequestParam(value = "phase") String phase,
+                                             @RequestParam(value = "input") String input) {
+        return orderService.searchOrder(by, status, phase, input);
     }
 
     @RequestMapping(value = "/orderManagement")

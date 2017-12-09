@@ -19,12 +19,12 @@ public class CustomerServiceImpl {
         this.customerRepository = customerRepository;
     }
 
-    public Customer findCustomer(Integer id){
+    public Customer getCustomerById(Integer id){
         return customerRepository.findOne(id);
     }
 
-    public void addOrUpdateCustomer(Customer customer){
-        customerRepository.save(customer);
+    public Customer addOrUpdateCustomer(Customer customer){
+        return customerRepository.save(customer);
     }
 
     public ArrayList<Customer> findAllCustomer(){

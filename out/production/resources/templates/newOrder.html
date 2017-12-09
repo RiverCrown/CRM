@@ -41,12 +41,12 @@
                                         <div class="col-lg-6 col-lg-offset-3">
                                             <div class="form-group">
                                                 <label class="form-label">摘要：</label>
-                                                <textarea class="form-control" placeholder="订单概述"
+                                                <textarea id="digest" class="form-control" placeholder="订单概述"
                                                           style="resize: none"></textarea>
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">状态：
-                                                    <select class="form-control">
+                                                    <select id="status" class="form-control">
                                                         <option value="0"></option>
                                                         <option value="1">跟踪</option>
                                                         <option value="2">搁置</option>
@@ -56,7 +56,7 @@
                                                     </select>
                                                 </label>
                                                 <label class="form-label pull-right">阶段：
-                                                    <select class="form-control">
+                                                    <select id="phase" class="form-control">
                                                         <option value="0"></option>
                                                         <option value="1">1/7 初期沟通</option>
                                                         <option value="2">2/7 立项评估</option>
@@ -110,7 +110,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">详细内容：</label>
-                                                <textarea class="form-control" placeholder="和客户交流的详细内容..."
+                                                <textarea id="detail" class="form-control" placeholder="和客户交流的详细内容..."
                                                           style="resize: none"></textarea>
                                             </div>
                                         </div>
@@ -398,15 +398,15 @@
                                         <div class="col-lg-6 col-lg-offset-3">
                                             <div class="form-group">
                                                 <label class="form-label">产品大致信息：</label>
-                                                <textarea style="resize: none" class="form-control" placeholder="客户所需产品信息"></textarea>
+                                                <textarea id="productInfo" style="resize: none" class="form-control" placeholder="客户所需产品信息"></textarea>
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">预计收入：</label>
-                                                <input type="text" class="form-control" placeholder="预计收入"/>元
+                                                <input id="expectedIncome" type="text" class="form-control" placeholder="预计收入"/>元
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label pull-right">成功可能性：
-                                                    <select class="form-control">
+                                                    <select id="possibility" class="form-control">
                                                         <option value="0">0%</option>
                                                         <option value="1">10%</option>
                                                         <option value="2">20%</option>
@@ -552,6 +552,7 @@
         var firstTab = $('#first');
         var secondTab = $('#second');
         var thirdTab = $('#third');
+        var customerId;
         switch (which) {
             case "first":
                 firstTab.removeClass("active");
@@ -562,7 +563,72 @@
                 thirdTab.addClass("active");
                 break;
             case "third":
-
+                if (customerWay == "exist") {
+                    customerId = $('#selectedId').html();
+                } else {
+                    var isCompany = ($("input[name='customerType']:checked").val() == "company");
+                    var isPotential = ($("input[name='potential']:checked").val() == "potential");
+                    var sex = ($("input[name='sex']:checked").val() == "man");
+                    var date;
+                    var year = $('#year').find("option:selected").text().toString();
+                    var month = $('#month').find("option:selected").text().toString();
+                    var day = $('#day').find("option:selected").text().toString();
+                    date = year + "-" + month + "-" + day;
+                    $.ajax({
+                        async: false,
+                        type: "POST",
+                        url: "/customer/addCustomer",
+                        data: JSON.stringify({
+                            isCompany: isCompany,
+                            tag: "",
+                            isPotential: isPotential,
+                            address: $('#companyAddress').val(),
+                            mainBusiness: $('#mainBusiness').val(),
+                            name: $('#companyName').val(),
+                            type: $('#companyType').find("option:selected").val(),
+                            representative: {
+                                hobby: $('#contactHobby').val(),
+                                birthday: date,
+                                name: $('#contactName').val(),
+                                sex: sex,
+                                age: $('#contactAge').val(),
+                                address: $('#contactAddress').val(),
+                                phoneNumber: $('#contactPhoneNumber').val(),
+                                email: $('#contactEmail').val()
+                            }
+                        }),
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function (customer) {
+                            customerId = customer.id;
+                        }
+                    });
+                }
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: "/business/addOrder",
+                    data: JSON.stringify({
+                        salesmanId: [[${session.staffObj.getId()}]],
+                        customerId: customerId,
+                        status: $('#status').val(),
+                        digest: $('#digest').val(),
+                        detail: $('#detail').val(),
+                        expectedIncome: $('#expectedIncome').val(),
+                        possibility: $('#possibility').val(),
+                        phase: $('#phase').val(),
+                        product: $('#productInfo').val(),
+                        startDate: $('#startYear').val() + "-" + $('#startMonth').val() + "-" + $('#startDay').val(),
+                        latestPushDate: $('#latestYear').val() + "-" + $('#latestMonth').val() + "-" + $('#latestDay').val(),
+                        nextPushDate: $('#nextYear').val() + "-" + $('#nextMonth').val() + "-" + $('#nextDay').val(),
+                        expectedEndDate: $('#expectedEndYear').val() + "-" + $('#expectedEndMonth').val() + "-" + $('#expectedEndDay').val()
+                    }),
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function () {
+                        window.location.href = "/business/orderManagement"
+                    }
+                });
                 break;
             default:
                 break;

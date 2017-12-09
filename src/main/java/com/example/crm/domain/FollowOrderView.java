@@ -1,20 +1,13 @@
 package com.example.crm.domain;
 
-import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
-@Entity
-@Table(name = "followOrder")
-public class Order {
+public class FollowOrderView {
 
-    @Id
-    @GeneratedValue
     private int id;
-    private Integer salesmanId;
-    private Integer customerId;
-    private Integer status;
+    private String salesmanName;
+    private String customerName;
+    private String status;
     private String digest;
     private Date startDate;
     private Date endDate;
@@ -24,11 +17,8 @@ public class Order {
     private Date expectedEndDate;
     private Double expectedIncome;
     private Integer possibility;
-    private Integer phase;
+    private String phase;
     private String product;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_id")
-    private List<Comment> comments;
 
     public int getId() {
         return id;
@@ -38,27 +28,27 @@ public class Order {
         this.id = id;
     }
 
-    public Integer getSalesmanId() {
-        return salesmanId;
+    public String getSalesmanName() {
+        return salesmanName;
     }
 
-    public void setSalesmanId(Integer salesmanId) {
-        this.salesmanId = salesmanId;
+    public void setSalesmanName(String salesmanName) {
+        this.salesmanName = salesmanName;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -134,11 +124,11 @@ public class Order {
         this.possibility = possibility;
     }
 
-    public Integer getPhase() {
+    public String getPhase() {
         return phase;
     }
 
-    public void setPhase(Integer phase) {
+    public void setPhase(String phase) {
         this.phase = phase;
     }
 
@@ -148,13 +138,5 @@ public class Order {
 
     public void setProduct(String product) {
         this.product = product;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
     }
 }

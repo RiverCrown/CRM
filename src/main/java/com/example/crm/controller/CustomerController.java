@@ -32,11 +32,10 @@ public class CustomerController {
 
     @RequestMapping(value = "/addCustomer")
     @ResponseBody
-    public String addCustomer(@RequestBody Customer customer,
+    public Customer addCustomer(@RequestBody Customer customer,
                               HttpSession session) {
         customer.setSalesman((Staff)session.getAttribute("staffObj"));
-        customerService.addOrUpdateCustomer(customer);
-        return "success";
+        return customerService.addOrUpdateCustomer(customer);
     }
 
     @RequestMapping(value = "/searchCustomer")
@@ -51,7 +50,7 @@ public class CustomerController {
     @RequestMapping(value = "/customerInfo")
     public String customerInfo(@RequestParam(value = "customerId") int customerId,
                                Model model) {
-        Customer customer = customerService.findCustomer(customerId);
+        Customer customer = customerService.getCustomerById(customerId);
         model.addAttribute("customer", customer);
         return "customerInfo";
     }
@@ -75,5 +74,11 @@ public class CustomerController {
     public String removeCustomer(int id) {
         customerService.removeCustomer(id);
         return "customerManagement";
+    }
+
+    @RequestMapping(value = "/getCustomerById")
+    @ResponseBody
+    public Customer getCustomerById(@RequestParam(value = "customerId") int customerId) {
+        return customerService.getCustomerById(customerId);
     }
 }
