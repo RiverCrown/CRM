@@ -1,9 +1,8 @@
 package com.example.crm.domain;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "followOrder")
@@ -12,16 +11,17 @@ public class FollowOrder {
     @Id
     @GeneratedValue
     private int id;
+    private Integer groupId;
     private Integer salesmanId;
     private Integer customerId;
     private Integer status;
     private String digest;
-    private Date startDate;
-    private Date endDate;
-    private Date latestPushDate;
-    private Date nextPushDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private LocalDateTime latestPushDate;
+    private LocalDateTime nextPushDate;
     private String detail;
-    private Date expectedEndDate;
+    private LocalDateTime expectedEndDate;
     private Double expectedIncome;
     private Integer possibility;
     private Integer phase;
@@ -36,6 +36,14 @@ public class FollowOrder {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
     public Integer getSalesmanId() {
@@ -70,37 +78,6 @@ public class FollowOrder {
         this.digest = digest;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public Date getLatestPushDate() {
-        return latestPushDate;
-    }
-
-    public void setLatestPushDate(Date latestPushDate) {
-        this.latestPushDate = latestPushDate;
-    }
-
-    public Date getNextPushDate() {
-        return nextPushDate;
-    }
-
-    public void setNextPushDate(Date nextPushDate) {
-        this.nextPushDate = nextPushDate;
-    }
 
     public String getDetail() {
         return detail;
@@ -108,14 +85,6 @@ public class FollowOrder {
 
     public void setDetail(String detail) {
         this.detail = detail;
-    }
-
-    public Date getExpectedEndDate() {
-        return expectedEndDate;
-    }
-
-    public void setExpectedEndDate(Date expectedEndDate) {
-        this.expectedEndDate = expectedEndDate;
     }
 
     public Double getExpectedIncome() {
@@ -156,5 +125,45 @@ public class FollowOrder {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public LocalDateTime getLatestPushDate() {
+        return latestPushDate;
+    }
+
+    public void setLatestPushDate(LocalDateTime latestPushDate) {
+        this.latestPushDate = latestPushDate;
+    }
+
+    public LocalDateTime getNextPushDate() {
+        return nextPushDate;
+    }
+
+    public void setNextPushDate(LocalDateTime nextPushDate) {
+        this.nextPushDate = nextPushDate;
+    }
+
+    public LocalDateTime getExpectedEndDate() {
+        return expectedEndDate;
+    }
+
+    public void setExpectedEndDate(LocalDateTime expectedEndDate) {
+        this.expectedEndDate = expectedEndDate;
     }
 }

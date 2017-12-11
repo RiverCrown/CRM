@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="mainPage :: mainHead">
+
+</head>
+<body onload="roleDiff()">
+<div class="modal fade" id="modifyOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改跟单</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label">
+                                摘要：
+                            </label>
+                            <textarea th:text="${order.getDigest()}" style="resize: none" class="form-control" placeholder="大致摘要">
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">状态：
+                                <select class="form-control">
+                                    <option th:selected="${order.getStatus()==''}" value="0"></option>
+                                    <option th:selected="${order.getStatus()=='跟踪'}" value="1">跟踪</option>
+                                    <option th:selected="${order.getStatus()=='搁置'}" value="2">搁置</option>
+                                    <option th:selected="${order.getStatus()=='成功'}" value="3">成功</option>
+                                    <option th:selected="${order.getStatus()=='失效'}" value="4">失效</option>
+                                    <option th:selected="${order.getStatus()=='失败'}" value="5">失败</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">阶段：
+                                <select class="form-control">
+                                    <option th:selected="${order.getPhase()==''}" value="0"></option>
+                                    <option th:selected="${order.getPhase()=='1/7 初期沟通'}" value="1">1/7 初期沟通</option>
+                                    <option th:selected="${order.getPhase()=='2/7 立项评估'}" value="2">2/7 立项评估</option>
+                                    <option th:selected="${order.getPhase()=='3/7 需求分析'}" value="3">3/7 需求分析</option>
+                                    <option th:selected="${order.getPhase()=='4/7 方案制定'}" value="4">4/7 方案制定</option>
+                                    <option th:selected="${order.getPhase()=='5/7 招投标竞争'}" value="5">5/7 招投标竞争</option>
+                                    <option th:selected="${order.getPhase()=='6/7 商务谈判'}" value="6">6/7 商务谈判</option>
+                                    <option th:selected="${order.getPhase()=='7/7 合同签约'}" value="7">7/7 合同签约</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label">
+                                测试：
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="modifyCustomer()">
+                    修改
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="resetCustomer()">
+                    取消
+                </button>
+                <button type="button" class="btn btn-default" onclick="resetCustomer()">
+                    重置
+                </button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="wrapper">
+    <nav th:replace="mainPage :: navi" class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0"></nav>
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">跟单信息</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group pull-right">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#transferOrder">跟单移交
+                    </button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyOrder">修改
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="">删除
+                    </button>
+                    <button type="button" class="btn btn-default" onclick="location='/business/orderManagement'">返回
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        基本信息
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    编号：
+                                </label>
+                                <p th:text="${order.getId()}">无</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    摘要：
+                                </label>
+                                <p th:text="${order.getDigest()}">无</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    客户名：
+                                </label>
+                                <br/>
+                                <a th:href="'/customer/customerInfo?customerId='+${order.getCustomerId()}" th:text="${order.getCustomerName()}">无</a>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    业务员：
+                                </label>
+                                <p th:text="${order.getSalesmanName()}">无</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    状态：
+                                </label>
+                                <th:block th:switch="${order.getStatus()}">
+                                    <p th:case="0">无</p>
+                                    <p th:case="1">跟踪</p>
+                                    <p th:case="2">搁置</p>
+                                    <p th:case="3">成功</p>
+                                    <p th:case="4">失败</p>
+                                    <p th:case="5">失效</p>
+                                </th:block>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    阶段：
+                                </label>
+                                <th:block th:switch="${order.getPhase()}">
+                                    <p th:case="0">无</p>
+                                    <p th:case="1">1/7 初期沟通</p>
+                                    <p th:case="2">2/7 立项评估</p>
+                                    <p th:case="3">3/7 需求分析</p>
+                                    <p th:case="4">4/7 方案制定</p>
+                                    <p th:case="5">5/7 招投标竞争</p>
+                                    <p th:case="6">6/7 商务谈判</p>
+                                    <p th:case="7">7/7 合同签约</p>
+                                </th:block>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    开始时间：
+                                </label>
+                                <p th:text="${order.getStartDate()}">无</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    推进时间：
+                                </label>
+                                <p th:text="${order.getLatestPushDate()}">无</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    结束时间：
+                                </label>
+                                <p th:text="${order.getEndDate()}">无</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    预计结束时间：
+                                </label>
+                                <p th:text="${order.getExpectedEndDate()}">无</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    下次推进时间：
+                                </label>
+                                <p th:text="${order.getNextPushDate()}">无</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    成功可能性：
+                                </label>
+                                <th:block th:switch="${order.getPossibility()}">
+                                    <p th:case="0">0%</p>
+                                    <p th:case="1">10%</p>
+                                    <p th:case="2">20%</p>
+                                    <p th:case="3">30%</p>
+                                    <p th:case="4">40%</p>
+                                    <p th:case="5">50%</p>
+                                    <p th:case="6">60%</p>
+                                    <p th:case="7">70%</p>
+                                    <p th:case="8">80%</p>
+                                    <p th:case="9">90%</p>
+                                    <p th:case="10">100%</p>
+                                </th:block>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    产品大致信息：
+                                </label>
+                                <p th:text="${order.getProduct()}">无</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    预计收入：
+                                </label>
+                                <p th:text="${order.getExpectedIncome()}">无</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    跟单详细记录：
+                                </label>
+                                <p th:text="${order.getDetail()}">无</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        评注
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>评论的日期</th>
+                                    <th>评论的员工</th>
+                                    <th>评论的内容</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="comment : ${order.getComments()}">
+                                    <td th:text="${comment.getDate()}">无</td>
+                                    <td th:text="${comment.getReviewerName()}">无</td>
+                                    <td th:text="${comment.getContent()}">无</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-lg-offset-4">
+                <div class="form-group">
+                    <button type="button" class="btn btn-lg btn-block btn-success">
+                        推进跟单
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        跟单历史
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>状态</th>
+                                    <th>阶段</th>
+                                    <th>可能性</th>
+                                    <th>推进时间</th>
+                                    <th>推进摘要</th>
+                                    <th>业务员</th>
+                                </tr>
+                                </thead>
+                                <tbody id="historyBody">
+                                <tr th:each="orderH : ${orderHistory}">
+                                    <td th:text="${orderH.getId()}"></td>
+                                    <th:block th:switch="${orderH.getStatus()}">
+                                        <td th:case="0">无</td>
+                                        <td th:case="1">跟踪</td>
+                                        <td th:case="2">搁置</td>
+                                        <td th:case="3">成功</td>
+                                        <td th:case="4">失败</td>
+                                        <td th:case="5">失效</td>
+                                    </th:block>
+                                    <th:block th:switch="${orderH.getPhase()}">
+                                        <td th:case="0">无</td>
+                                        <td th:case="1">1/7 初期沟通</td>
+                                        <td th:case="2">2/7 立项评估</td>
+                                        <td th:case="3">3/7 需求分析</td>
+                                        <td th:case="4">4/7 方案制定</td>
+                                        <td th:case="5">5/7 招投标竞争</td>
+                                        <td th:case="6">6/7 商务谈判</td>
+                                        <td th:case="7">7/7 合同签约</td>
+                                    </th:block>
+                                    <th:block th:switch="${orderH.getPossibility()}">
+                                        <td th:case="0">0%</td>
+                                        <td th:case="1">10%</td>
+                                        <td th:case="2">20%</td>
+                                        <td th:case="3">30%</td>
+                                        <td th:case="4">40%</td>
+                                        <td th:case="5">50%</td>
+                                        <td th:case="6">60%</td>
+                                        <td th:case="7">70%</td>
+                                        <td th:case="8">80%</td>
+                                        <td th:case="9">90%</td>
+                                        <td th:case="10">100%</td>
+                                    </th:block>
+                                    <td th:text="${orderH.getLatestPushDate()}"></td>
+                                    <td th:text="${orderH.getDigest()}"></td>
+                                    <td th:text="${orderH.getSalesmanName()}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:inline="javascript">
+    $(document).ready(function () {
+
+    })
+</script>
+</body>
+</html>

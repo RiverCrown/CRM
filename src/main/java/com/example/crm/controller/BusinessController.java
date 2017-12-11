@@ -1,14 +1,12 @@
 package com.example.crm.controller;
 
-import com.example.crm.domain.FollowOrder;
-import com.example.crm.domain.FollowOrderView;
-import com.example.crm.domain.Route;
-import com.example.crm.domain.Staff;
+import com.example.crm.domain.*;
 import com.example.crm.service.OrderServiceImpl;
 import com.example.crm.service.RouteServiceImpl;
 import com.example.crm.service.StaffServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +34,7 @@ public class BusinessController {
     @RequestMapping(value = "/addOrder")
     @ResponseBody
     public void addOrder(@RequestBody FollowOrder followOrder) {
-        orderService.addOrUpdateOrder(followOrder);
+        orderService.addOrder(followOrder);
     }
 
     @RequestMapping(value = "/newOrderPage")
@@ -112,5 +110,15 @@ public class BusinessController {
         routeService.deleteRoute(id);
         session.setAttribute("staffObj", staff);
         return staff.getRoutes();
+    }
+
+    @RequestMapping(value = "/orderInfo")
+    public String orderInfo(@RequestParam(value = "id") int id,
+                            Model model) {
+        FollowOrderView followOrderView = orderService.getOrderById(id);
+        List<FollowOrderView> history = orderService.getHistoryByGroupId(followOrderView.getId());
+        model.addAttribute("orderHistory", history);
+        model.addAttribute("order", followOrderView);
+        return "orderInfo";
     }
 }

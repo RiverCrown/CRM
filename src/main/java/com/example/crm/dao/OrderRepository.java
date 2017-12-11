@@ -14,6 +14,8 @@ import java.util.List;
 @Qualifier("followOrderRepository")
 public interface OrderRepository extends CrudRepository<FollowOrder, Integer>{
 
+    List<FollowOrder> findByGroupId(int groupId);
+
     List<FollowOrder> findById(int id);
 
     List<FollowOrder> findBySalesmanId(Integer salesmanId);

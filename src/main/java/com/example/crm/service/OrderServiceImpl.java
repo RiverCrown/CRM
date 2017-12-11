@@ -3,10 +3,7 @@ package com.example.crm.service;
 import com.example.crm.dao.CustomerRepository;
 import com.example.crm.dao.OrderRepository;
 import com.example.crm.dao.StaffRepository;
-import com.example.crm.domain.Customer;
-import com.example.crm.domain.FollowOrder;
-import com.example.crm.domain.FollowOrderView;
-import com.example.crm.domain.Staff;
+import com.example.crm.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +27,25 @@ public class OrderServiceImpl {
         this.orderRepository = orderRepository;
     }
 
-    public void addOrUpdateOrder(FollowOrder followOrder) {
+    public FollowOrderView getOrderById(int id) {
+        FollowOrderView followOrderView = new FollowOrderView();
+        List<FollowOrder> container = new ArrayList<>();
+        FollowOrder followOrder = orderRepository.findOne(id);
+        if (followOrder != null) {
+            container.add(followOrder);
+            followOrderView = transferFollowOrder(container).get(0);
+        }
+        return followOrderView;
+    }
+
+    public void addOrder(FollowOrder followOrder) {
+        followOrder = orderRepository.save(followOrder);
+        followOrder.setGroupId(followOrder.getId());
         orderRepository.save(followOrder);
+    }
+
+    public List<FollowOrderView> getHistoryByGroupId(int groupId) {
+        return transferFollowOrder(orderRepository.findByGroupId(groupId));
     }
 
     private List<FollowOrderView> transferFollowOrder(List<FollowOrder> followOrders) {
@@ -40,56 +54,34 @@ public class OrderServiceImpl {
             return followOrderViews;
         for (FollowOrder followOrder : followOrders) {
             FollowOrderView temp = new FollowOrderView();
-            switch (followOrder.getStatus()) {
-                case 1:
-                    temp.setStatus("跟踪");
-                    break;
-                case 2:
-                    temp.setStatus("搁置");
-                    break;
-                case 3:
-                    temp.setStatus("成功");
-                    break;
-                case 4:
-                    temp.setStatus("失败");
-                    break;
-                case 5:
-                    temp.setStatus("失效");
-                    break;
-                default:
-                    temp.setStatus("无");
-                    break;
-            }
-            switch (followOrder.getPhase()) {
-                case 1:
-                    temp.setPhase("1/7 初期沟通");
-                    break;
-                case 2:
-                    temp.setPhase("2/7 立项评估");
-                    break;
-                case 3:
-                    temp.setPhase("3/7 需求分析");
-                    break;
-                case 4:
-                    temp.setPhase("4/7 方案制定");
-                    break;
-                case 5:
-                    temp.setPhase("5/7 招投标竞争");
-                    break;
-                case 6:
-                    temp.setPhase("6/7 商务谈判");
-                    break;
-                case 7:
-                    temp.setPhase("7/7 合同签约");
-                    break;
-                default:
-                    temp.setPhase("无");
-                    break;
-            }
+            List<CommentView> commentViews = new ArrayList<>();
             temp.setId(followOrder.getId());
             temp.setDigest(followOrder.getDigest());
             temp.setSalesmanName(staffRepository.findOne(followOrder.getSalesmanId()).getName());
             temp.setCustomerName(customerRepository.findOne(followOrder.getCustomerId()).getName());
+            temp.setStartDate(followOrder.getStartDate());
+            temp.setEndDate(followOrder.getEndDate());
+            temp.setLatestPushDate(followOrder.getLatestPushDate());
+            temp.setNextPushDate(followOrder.getNextPushDate());
+            temp.setDetail(followOrder.getDetail());
+            temp.setExpectedEndDate(followOrder.getExpectedEndDate());
+            temp.setExpectedIncome(followOrder.getExpectedIncome());
+            temp.setPossibility(followOrder.getPossibility());
+            temp.setStatus(followOrder.getStatus());
+            temp.setPhase(followOrder.getPhase());
+            temp.setProduct(followOrder.getProduct());
+            temp.setGroupId(followOrder.getGroupId());
+            temp.setCustomerId(followOrder.getCustomerId());
+            temp.setSalesmanId(followOrder.getSalesmanId());
+            for (int i=0; i<followOrder.getComments().size(); i++) {
+                CommentView commentView = new CommentView();
+                commentView.setId(followOrder.getComments().get(i).getId());
+                commentView.setContent(followOrder.getComments().get(i).getContent());
+                commentView.setDate(followOrder.getComments().get(i).getDate());
+                commentView.setReviewerName(staffRepository.findOne(followOrder.getComments().get(i).getReviewerId()).getName());
+                commentViews.add(commentView);
+            }
+            temp.setComments(commentViews);
             followOrderViews.add(temp);
         }
         return followOrderViews;

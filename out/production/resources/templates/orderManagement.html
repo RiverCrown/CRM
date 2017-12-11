@@ -138,7 +138,6 @@
     //<![CDATA[
     var table = $('#dataTables-example');
     $(document).ready(function() {
-        var idToName;
         table.dataTable({
             language: {
                 url: "/json/dataTables_cn.json"
@@ -149,11 +148,60 @@
                 dataSrc: ''
             },
             columns: [
-                {data: 'id'},
-                {data: 'status'},
+                {
+                    data: 'id',
+                    render: function (value, type, row) {
+                        if (value) {
+                            return "<a href='/business/orderInfo?id=" + value + "'>" + value + "</a>";
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                {
+                    data: 'status',
+                    render: function (value, type, row) {
+                        switch (value) {
+                            case 1:
+                                return "跟踪";
+                            case 2:
+                                return "搁置";
+                            case 3:
+                                return "成功";
+                            case 4:
+                                return "失败";
+                            case 5:
+                                return "失效";
+                            default:
+                                return "";
+                        }
+                    }
+                },
                 {data: 'customerName'},
                 {data: 'digest'},
-                {data: 'phase'},
+                {
+                    data: 'phase',
+                    render: function (value, type, row) {
+                        switch (value) {
+                            case 1:
+                                return "1/7 初期沟通";
+                            case 2:
+                                return "2/7 立项评估";
+                            case 3:
+                                return "3/7 需求分析";
+                            case 4:
+                                return "4/7 方案制定";
+                            case 5:
+                                return "5/7 招投标竞争";
+                            case 6:
+                                return "6/7 商务谈判";
+                            case 7:
+                                return "7/7 合同签约";
+                            default:
+                                return "";
+                        }
+                    }
+                },
                 {data: 'salesmanName'}
             ]
         });

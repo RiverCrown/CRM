@@ -1,24 +1,33 @@
 package com.example.crm.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class FollowOrderView {
 
     private int id;
+    private Integer groupId;
+    private Integer salesmanId;
     private String salesmanName;
+    private Integer customerId;
     private String customerName;
-    private String status;
+    private Integer status;
     private String digest;
-    private Date startDate;
-    private Date endDate;
-    private Date latestPushDate;
-    private Date nextPushDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private LocalDateTime latestPushDate;
+    private LocalDateTime nextPushDate;
     private String detail;
-    private Date expectedEndDate;
+    private LocalDateTime expectedEndDate;
     private Double expectedIncome;
     private Integer possibility;
-    private String phase;
+    private Integer phase;
     private String product;
+    private List<CommentView> comments;
+
+    public FollowOrderView(){
+
+    }
 
     public int getId() {
         return id;
@@ -26,6 +35,22 @@ public class FollowOrderView {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
+
+    public Integer getSalesmanId() {
+        return salesmanId;
+    }
+
+    public void setSalesmanId(Integer salesmanId) {
+        this.salesmanId = salesmanId;
     }
 
     public String getSalesmanName() {
@@ -36,6 +61,14 @@ public class FollowOrderView {
         this.salesmanName = salesmanName;
     }
 
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
+
     public String getCustomerName() {
         return customerName;
     }
@@ -44,11 +77,11 @@ public class FollowOrderView {
         this.customerName = customerName;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -60,52 +93,12 @@ public class FollowOrderView {
         this.digest = digest;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public Date getLatestPushDate() {
-        return latestPushDate;
-    }
-
-    public void setLatestPushDate(Date latestPushDate) {
-        this.latestPushDate = latestPushDate;
-    }
-
-    public Date getNextPushDate() {
-        return nextPushDate;
-    }
-
-    public void setNextPushDate(Date nextPushDate) {
-        this.nextPushDate = nextPushDate;
-    }
-
     public String getDetail() {
         return detail;
     }
 
     public void setDetail(String detail) {
         this.detail = detail;
-    }
-
-    public Date getExpectedEndDate() {
-        return expectedEndDate;
-    }
-
-    public void setExpectedEndDate(Date expectedEndDate) {
-        this.expectedEndDate = expectedEndDate;
     }
 
     public Double getExpectedIncome() {
@@ -124,11 +117,11 @@ public class FollowOrderView {
         this.possibility = possibility;
     }
 
-    public String getPhase() {
+    public Integer getPhase() {
         return phase;
     }
 
-    public void setPhase(String phase) {
+    public void setPhase(Integer phase) {
         this.phase = phase;
     }
 
@@ -138,5 +131,53 @@ public class FollowOrderView {
 
     public void setProduct(String product) {
         this.product = product;
+    }
+
+    public List<CommentView> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentView> comments) {
+        this.comments = comments;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public LocalDateTime getLatestPushDate() {
+        return latestPushDate;
+    }
+
+    public void setLatestPushDate(LocalDateTime latestPushDate) {
+        this.latestPushDate = latestPushDate;
+    }
+
+    public LocalDateTime getNextPushDate() {
+        return nextPushDate;
+    }
+
+    public void setNextPushDate(LocalDateTime nextPushDate) {
+        this.nextPushDate = nextPushDate;
+    }
+
+    public LocalDateTime getExpectedEndDate() {
+        return expectedEndDate;
+    }
+
+    public void setExpectedEndDate(LocalDateTime expectedEndDate) {
+        this.expectedEndDate = expectedEndDate;
     }
 }
