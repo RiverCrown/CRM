@@ -5,77 +5,207 @@
 </head>
 <body onload="roleDiff()">
 <div class="modal fade" id="modifyOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form>
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">修改跟单</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="form-label">
-                                摘要：
-                            </label>
-                            <textarea th:text="${order.getDigest()}" style="resize: none" class="form-control" placeholder="大致摘要">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">修改跟单</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    摘要：
+                                </label>
+                                <textarea th:text="${order.getDigest()}" style="resize: none" class="form-control"
+                                          placeholder="大致摘要">
                             </textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">状态：
+                                    <select class="form-control">
+                                        <option th:selected="${order.getStatus()==0}" value="0"></option>
+                                        <option th:selected="${order.getStatus()==1}" value="1">跟踪</option>
+                                        <option th:selected="${order.getStatus()==2}" value="2">搁置</option>
+                                        <option th:selected="${order.getStatus()==3}" value="3">成功</option>
+                                        <option th:selected="${order.getStatus()==4}" value="4">失效</option>
+                                        <option th:selected="${order.getStatus()==5}" value="5">失败</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">阶段：
+                                    <select class="form-control">
+                                        <option th:selected="${order.getPhase()==0}" value="0"></option>
+                                        <option th:selected="${order.getPhase()==1}" value="1">1/7 初期沟通</option>
+                                        <option th:selected="${order.getPhase()==2}" value="2">2/7 立项评估</option>
+                                        <option th:selected="${order.getPhase()==3}" value="3">3/7 需求分析</option>
+                                        <option th:selected="${order.getPhase()==4}" value="4">4/7 方案制定</option>
+                                        <option th:selected="${order.getPhase()==5}" value="5">5/7 招投标竞争</option>
+                                        <option th:selected="${order.getPhase()==6}" value="6">6/7 商务谈判</option>
+                                        <option th:selected="${order.getPhase()==7}" value="7">7/7 合同签约</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">开始时间：</label>
+                                <div class="form-inline">
+                                    <label class="form-label">
+                                        <select id="startYear" class="form-control">
+                                        </select>
+                                        年
+                                    </label>
+                                    <label class="form-label">
+                                        <select id="startMonth" class="form-control">
+                                        </select>
+                                        月
+                                    </label>
+                                    <label class="form-label">
+                                        <select id="startDay" class="form-control">
+                                        </select>
+                                        日
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">推进时间：</label>
+                                <div class="form-inline">
+                                    <label class="form-label">
+                                        <select id="pushYear" class="form-control">
+                                        </select>
+                                        年
+                                    </label>
+                                    <label class="form-label">
+                                        <select id="pushMonth" class="form-control">
+                                        </select>
+                                        月
+                                    </label>
+                                    <label class="form-label">
+                                        <select id="pushDay" class="form-control">
+                                        </select>
+                                        日
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">状态：
-                                <select class="form-control">
-                                    <option th:selected="${order.getStatus()==''}" value="0"></option>
-                                    <option th:selected="${order.getStatus()=='跟踪'}" value="1">跟踪</option>
-                                    <option th:selected="${order.getStatus()=='搁置'}" value="2">搁置</option>
-                                    <option th:selected="${order.getStatus()=='成功'}" value="3">成功</option>
-                                    <option th:selected="${order.getStatus()=='失效'}" value="4">失效</option>
-                                    <option th:selected="${order.getStatus()=='失败'}" value="5">失败</option>
-                                </select>
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">阶段：
-                                <select class="form-control">
-                                    <option th:selected="${order.getPhase()==''}" value="0"></option>
-                                    <option th:selected="${order.getPhase()=='1/7 初期沟通'}" value="1">1/7 初期沟通</option>
-                                    <option th:selected="${order.getPhase()=='2/7 立项评估'}" value="2">2/7 立项评估</option>
-                                    <option th:selected="${order.getPhase()=='3/7 需求分析'}" value="3">3/7 需求分析</option>
-                                    <option th:selected="${order.getPhase()=='4/7 方案制定'}" value="4">4/7 方案制定</option>
-                                    <option th:selected="${order.getPhase()=='5/7 招投标竞争'}" value="5">5/7 招投标竞争</option>
-                                    <option th:selected="${order.getPhase()=='6/7 商务谈判'}" value="6">6/7 商务谈判</option>
-                                    <option th:selected="${order.getPhase()=='7/7 合同签约'}" value="7">7/7 合同签约</option>
-                                </select>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="form-label">
-                                测试：
-                            </label>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label">结束时间：</label>
+                                <div class="form-inline">
+                                    <label class="form-label">
+                                        <select id="endYear" class="form-control">
+                                        </select>
+                                        年
+                                    </label>
+                                    <label class="form-label">
+                                        <select id="endMonth" class="form-control">
+                                        </select>
+                                        月
+                                    </label>
+                                    <label class="form-label">
+                                        <select id="endDay" class="form-control">
+                                        </select>
+                                        日
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">预计结束时间：</label>
+                                <div class="form-inline">
+                                    <label class="form-label">
+                                        <select id="expectedEndYear" class="form-control">
+                                        </select>
+                                        年
+                                    </label>
+                                    <label class="form-label">
+                                        <select id="expectedEndMonth" class="form-control">
+                                        </select>
+                                        月
+                                    </label>
+                                    <label class="form-label">
+                                        <select id="expectedEndDay" class="form-control">
+                                        </select>
+                                        日
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">下次推进时间：</label>
+                                <div class="form-inline">
+                                    <label class="form-label">
+                                        <select id="nextYear" class="form-control">
+                                        </select>
+                                        年
+                                    </label>
+                                    <label class="form-label">
+                                        <select id="nextMonth" class="form-control">
+                                        </select>
+                                        月
+                                    </label>
+                                    <label class="form-label">
+                                        <select id="nextDay" class="form-control">
+                                        </select>
+                                        日
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">成功可能性：
+                                    <select class="form-control">
+                                        <option th:selected="${order.getPossibility()==0}" value="0">0%</option>
+                                        <option th:selected="${order.getPossibility()==1}" value="1">10%</option>
+                                        <option th:selected="${order.getPossibility()==2}" value="2">20%</option>
+                                        <option th:selected="${order.getPossibility()==3}" value="3">30%</option>
+                                        <option th:selected="${order.getPossibility()==4}" value="4">40%</option>
+                                        <option th:selected="${order.getPossibility()==5}" value="5">50%</option>
+                                        <option th:selected="${order.getPossibility()==6}" value="6">60%</option>
+                                        <option th:selected="${order.getPossibility()==7}" value="7">70%</option>
+                                        <option th:selected="${order.getPossibility()==8}" value="8">80%</option>
+                                        <option th:selected="${order.getPossibility()==9}" value="9">90%</option>
+                                        <option th:selected="${order.getPossibility()==10}" value="10">100%</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">产品大致信息：</label>
+                                <textarea style="resize: none" th:text="${order.getProduct()}" class="form-control" placeholder="">
+                                </textarea>
+                            </div>
+                            <label class="form-label">预计收入：</label>
+                            <div class="form-group input-group">
+                                <input th:value="${order.getExpectedIncome()}" class="form-control" placeholder=""/>
+                                <span class="input-group-addon">￥</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">跟单详细记录： </label>
+                                <textarea th:text="${order.getDetail()}" style="resize: none" class="form-control" placeholder="">
+                                </textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="modifyCustomer()">
-                    修改
-                </button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="resetCustomer()">
-                    取消
-                </button>
-                <button type="button" class="btn btn-default" onclick="resetCustomer()">
-                    重置
-                </button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="modifyCustomer()">
+                        修改
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="resetCustomer()">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-default" onclick="resetCustomer()">
+                        重置
+                    </button>
+                </div>
             </form>
         </div>
     </div>
 </div>
 <div id="wrapper">
-    <nav th:replace="mainPage :: navi" class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0"></nav>
+    <nav th:replace="mainPage :: navi" class="navbar navbar-default navbar-fixed-top" role="navigation"
+         style="margin-bottom: 0"></nav>
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
@@ -121,7 +251,8 @@
                                     客户名：
                                 </label>
                                 <br/>
-                                <a th:href="'/customer/customerInfo?customerId='+${order.getCustomerId()}" th:text="${order.getCustomerName()}">无</a>
+                                <a th:href="'/customer/customerInfo?customerId='+${order.getCustomerId()}"
+                                   th:text="${order.getCustomerName()}">无</a>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
@@ -161,13 +292,15 @@
                                 <label class="form-label">
                                     开始时间：
                                 </label>
-                                <p th:text="${order.getStartDate()}">无</p>
+                                <p th:if="${order.getStartDate()!=null}"
+                                   th:text="${order.getStartDate().toString().substring(0,10)}">无</p>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
                                     推进时间：
                                 </label>
-                                <p th:text="${order.getLatestPushDate()}">无</p>
+                                <p th:if="${order.getLatestPushDate()!=null}"
+                                   th:text="${order.getLatestPushDate().toString().substring(0,10)}">无</p>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -175,19 +308,22 @@
                                 <label class="form-label">
                                     结束时间：
                                 </label>
-                                <p th:text="${order.getEndDate()}">无</p>
+                                <p th:if="${order.getEndDate()!=null}"
+                                   th:text="${order.getEndDate().toString().substring(0,10)}">无</p>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
                                     预计结束时间：
                                 </label>
-                                <p th:text="${order.getExpectedEndDate()}">无</p>
+                                <p th:if="${order.getExpectedEndDate()!=null}"
+                                   th:text="${order.getExpectedEndDate().toString().substring(0,10)}">无</p>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
                                     下次推进时间：
                                 </label>
-                                <p th:text="${order.getNextPushDate()}">无</p>
+                                <p th:if="${order.getNextPushDate()!=null}"
+                                   th:text="${order.getNextPushDate().toString().substring(0,10)}">无</p>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
@@ -246,7 +382,9 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="comment : ${order.getComments()}">
-                                    <td th:text="${comment.getDate()}">无</td>
+                                    <td th:if="${comment.getDate()!=null}"
+                                        th:text="${comment.getDate().toString().replace('T',' ')}">无
+                                    </td>
                                     <td th:text="${comment.getReviewerName()}">无</td>
                                     <td th:text="${comment.getContent()}">无</td>
                                 </tr>
@@ -320,7 +458,8 @@
                                         <td th:case="9">90%</td>
                                         <td th:case="10">100%</td>
                                     </th:block>
-                                    <td th:text="${orderH.getLatestPushDate()}"></td>
+                                    <td th:if="${orderH.getLatestPushDate()!=null}"
+                                        th:text="${orderH.getLatestPushDate().toString().substring(0,10)}"></td>
                                     <td th:text="${orderH.getDigest()}"></td>
                                     <td th:text="${orderH.getSalesmanName()}"></td>
                                 </tr>
@@ -333,8 +472,15 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/js/birthday.js"></script>
 <script type="text/javascript" th:inline="javascript">
     $(document).ready(function () {
+        var date = new Date();
+        timeSelectGenerate('endYear', 'endMonth', 'endDay', date.getFullYear() - 3, date.getFullYear() + 2);
+        timeSelectGenerate('startYear', 'startMonth', 'startDay', date.getFullYear() - 3, date.getFullYear() + 1);
+        timeSelectGenerate('pushYear', 'pushMonth', 'pushDay', date.getFullYear() - 3, date.getFullYear() + 1);
+        timeSelectGenerate('nextYear', 'nextMonth', 'nextDay', date.getFullYear() - 3, date.getFullYear() + 2);
+        timeSelectGenerate('expectedEndYear', 'expectedEndMonth', 'expectedEndDay', date.getFullYear() - 3, date.getFullYear() + 2);
 
     })
 </script>
