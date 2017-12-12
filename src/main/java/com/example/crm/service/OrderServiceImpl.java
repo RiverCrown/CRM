@@ -48,6 +48,13 @@ public class OrderServiceImpl {
         return transferFollowOrder(orderRepository.findByGroupId(groupId));
     }
 
+    public FollowOrderView updateOrder(FollowOrder followOrder) {
+        followOrder = orderRepository.save(followOrder);
+        List<FollowOrder> container = new ArrayList<>();
+        container.add(followOrder);
+        return transferFollowOrder(container).get(0);
+    }
+
     private List<FollowOrderView> transferFollowOrder(List<FollowOrder> followOrders) {
         List<FollowOrderView> followOrderViews = new ArrayList<>();
         if (followOrders == null)
@@ -78,6 +85,7 @@ public class OrderServiceImpl {
                 commentView.setId(followOrder.getComments().get(i).getId());
                 commentView.setContent(followOrder.getComments().get(i).getContent());
                 commentView.setDate(followOrder.getComments().get(i).getDate());
+                commentView.setReviewerId(followOrder.getComments().get(i).getReviewerId());
                 commentView.setReviewerName(staffRepository.findOne(followOrder.getComments().get(i).getReviewerId()).getName());
                 commentViews.add(commentView);
             }

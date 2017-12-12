@@ -27,8 +27,9 @@ public class Comment {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setDate(String date) {
+        if (date != null && !date.equals(""))
+            this.date = LocalDateTime.parse(date);
     }
 
     public Integer getReviewerId() {

@@ -7,6 +7,7 @@ public class CommentView {
 
     private int id;
     private LocalDateTime date;
+    private Integer reviewerId;
     private String reviewerName;
     private String content;
 
@@ -16,6 +17,14 @@ public class CommentView {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Integer getReviewerId() {
+        return reviewerId;
+    }
+
+    public void setReviewerId(Integer reviewerId) {
+        this.reviewerId = reviewerId;
     }
 
     public LocalDateTime getDate() {

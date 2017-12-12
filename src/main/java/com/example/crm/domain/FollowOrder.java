@@ -1,6 +1,7 @@
 package com.example.crm.domain;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,12 +17,12 @@ public class FollowOrder {
     private Integer customerId;
     private Integer status;
     private String digest;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private LocalDateTime latestPushDate;
-    private LocalDateTime nextPushDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDate latestPushDate;
+    private LocalDate nextPushDate;
     private String detail;
-    private LocalDateTime expectedEndDate;
+    private LocalDate expectedEndDate;
     private Double expectedIncome;
     private Integer possibility;
     private Integer phase;
@@ -127,43 +128,48 @@ public class FollowOrder {
         this.comments = comments;
     }
 
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
+    public void setStartDate(String startDate) {
+        if (startDate != null && !startDate.equals(""))
+            this.startDate = LocalDate.parse(startDate);
     }
 
-    public LocalDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
+    public void setEndDate(String endDate) {
+        if (endDate != null && !endDate.equals(""))
+            this.endDate = LocalDate.parse(endDate);
     }
 
-    public LocalDateTime getLatestPushDate() {
+    public LocalDate getLatestPushDate() {
         return latestPushDate;
     }
 
-    public void setLatestPushDate(LocalDateTime latestPushDate) {
-        this.latestPushDate = latestPushDate;
+    public void setLatestPushDate(String latestPushDate) {
+        if (latestPushDate != null && !latestPushDate.equals(""))
+            this.latestPushDate = LocalDate.parse(latestPushDate);
     }
 
-    public LocalDateTime getNextPushDate() {
+    public LocalDate getNextPushDate() {
         return nextPushDate;
     }
 
-    public void setNextPushDate(LocalDateTime nextPushDate) {
-        this.nextPushDate = nextPushDate;
+    public void setNextPushDate(String nextPushDate) {
+        if (nextPushDate != null && !nextPushDate.equals(""))
+            this.nextPushDate = LocalDate.parse(nextPushDate);
     }
 
-    public LocalDateTime getExpectedEndDate() {
+    public LocalDate getExpectedEndDate() {
         return expectedEndDate;
     }
 
-    public void setExpectedEndDate(LocalDateTime expectedEndDate) {
-        this.expectedEndDate = expectedEndDate;
+    public void setExpectedEndDate(String expectedEndDate) {
+        if (expectedEndDate != null && !expectedEndDate.equals(""))
+            this.expectedEndDate = LocalDate.parse(expectedEndDate);
     }
 }

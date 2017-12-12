@@ -7,7 +7,7 @@
 <div class="modal fade" id="modifyOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form role="form">
+            <form role="form" id="modifyOrderForm">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span>
@@ -18,16 +18,21 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
+                                <input name="groupId" th:value="${order.getGroupId()}" type="text" placeholder="" hidden="hidden"/>
+                                <input name="id" th:value="${order.getId()}" type="text" placeholder="" hidden="hidden"/>
+                                <input name="customerId" th:value="${order.getCustomerId()}" type="text" placeholder="" hidden="hidden"/>
+                                <input name="salesmanId" th:value="${order.getSalesmanId()}" type="text" placeholder="" hidden="hidden"/>
                                 <label class="form-label">
                                     摘要：
                                 </label>
-                                <textarea name="digest" th:text="${order.getDigest()}" style="resize: none" class="form-control"
+                                <textarea name="digest" th:text="${order.getDigest()}" style="resize: none"
+                                          class="form-control"
                                           placeholder="大致摘要">
                             </textarea>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">状态：
-                                    <select class="form-control">
+                                    <select name="status" class="form-control">
                                         <option th:selected="${order.getStatus()==0}" value="0"></option>
                                         <option th:selected="${order.getStatus()==1}" value="1">跟踪</option>
                                         <option th:selected="${order.getStatus()==2}" value="2">搁置</option>
@@ -39,7 +44,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">阶段：
-                                    <select class="form-control">
+                                    <select name="phase" class="form-control">
                                         <option th:selected="${order.getPhase()==0}" value="0"></option>
                                         <option th:selected="${order.getPhase()==1}" value="1">1/7 初期沟通</option>
                                         <option th:selected="${order.getPhase()==2}" value="2">2/7 立项评估</option>
@@ -53,110 +58,34 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">开始时间：</label>
-                                <div class="form-inline">
-                                    <label class="form-label">
-                                        <select id="startYear" class="form-control">
-                                        </select>
-                                        年
-                                    </label>
-                                    <label class="form-label">
-                                        <select id="startMonth" class="form-control">
-                                        </select>
-                                        月
-                                    </label>
-                                    <label class="form-label">
-                                        <select id="startDay" class="form-control">
-                                        </select>
-                                        日
-                                    </label>
-                                </div>
+                                <input name="startDate" th:value="${order.getStartDate()}" type="date" class="form-control"
+                                       placeholder="开始时间"/>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">推进时间：</label>
-                                <div class="form-inline">
-                                    <label class="form-label">
-                                        <select id="pushYear" class="form-control">
-                                        </select>
-                                        年
-                                    </label>
-                                    <label class="form-label">
-                                        <select id="pushMonth" class="form-control">
-                                        </select>
-                                        月
-                                    </label>
-                                    <label class="form-label">
-                                        <input class="form-control" type="datetime-local" placeholder="hahah"/>
-                                        <select id="pushDay" class="form-control">
-                                        </select>
-                                        日
-                                    </label>
-                                </div>
+                                <input name="latestPushDate" th:value="${order.getLatestPushDate()}" class="form-control" type="date"
+                                       placeholder="推进时间"/>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-label">结束时间：</label>
-                                <div class="form-inline">
-                                    <label class="form-label">
-                                        <select id="endYear" class="form-control">
-                                        </select>
-                                        年
-                                    </label>
-                                    <label class="form-label">
-                                        <select id="endMonth" class="form-control">
-                                        </select>
-                                        月
-                                    </label>
-                                    <label class="form-label">
-                                        <select id="endDay" class="form-control">
-                                        </select>
-                                        日
-                                    </label>
-                                </div>
+                                <input name="endDate" th:value="${order.getEndDate()}" class="form-control" type="date"
+                                       placeholder="结束时间"/>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">预计结束时间：</label>
-                                <div class="form-inline">
-                                    <label class="form-label">
-                                        <select id="expectedEndYear" class="form-control">
-                                        </select>
-                                        年
-                                    </label>
-                                    <label class="form-label">
-                                        <select id="expectedEndMonth" class="form-control">
-                                        </select>
-                                        月
-                                    </label>
-                                    <label class="form-label">
-                                        <select id="expectedEndDay" class="form-control">
-                                        </select>
-                                        日
-                                    </label>
-                                </div>
+                                <input name="expectedEndDate" th:value="${order.getExpectedEndDate()}" class="form-control" type="date"
+                                       placeholder="预计结束时间"/>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">下次推进时间：</label>
-                                <div class="form-inline">
-                                    <label class="form-label">
-                                        <select id="nextYear" class="form-control">
-                                        </select>
-                                        年
-                                    </label>
-                                    <label class="form-label">
-                                        <select id="nextMonth" class="form-control">
-                                        </select>
-                                        月
-                                    </label>
-                                    <label class="form-label">
-                                        <select id="nextDay" class="form-control">
-                                        </select>
-                                        日
-                                    </label>
-                                </div>
+                                <input name="nextPushDate" th:value="${order.getNextPushDate()}" class="form-control" type="date"
+                                       placeholder="下次推进时间"/>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">成功可能性：
-                                    <select class="form-control">
+                                    <select name="possibility" class="form-control">
                                         <option th:selected="${order.getPossibility()==0}" value="0">0%</option>
                                         <option th:selected="${order.getPossibility()==1}" value="1">10%</option>
                                         <option th:selected="${order.getPossibility()==2}" value="2">20%</option>
@@ -173,30 +102,32 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">产品大致信息：</label>
-                                <textarea style="resize: none" th:text="${order.getProduct()}" class="form-control" placeholder="">
+                                <textarea name="product" style="resize: none" th:text="${order.getProduct()}" class="form-control"
+                                          placeholder="">
                                 </textarea>
                             </div>
                             <label class="form-label">预计收入：</label>
                             <div class="form-group input-group">
-                                <input th:value="${order.getExpectedIncome()}" class="form-control" placeholder=""/>
+                                <input type="number" step="0.01" name="expectedIncome" th:value="${order.getExpectedIncome()}" class="form-control" placeholder=""/>
                                 <span class="input-group-addon">￥</span>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">跟单详细记录： </label>
-                                <textarea th:text="${order.getDetail()}" style="resize: none" class="form-control" placeholder="">
+                                <textarea name="detail" th:text="${order.getDetail()}" style="resize: none" class="form-control"
+                                          placeholder="">
                                 </textarea>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="modifyCustomer()">
+                    <button type="button" class="btn btn-primary" onclick="modifyOrder()">
                         修改
                     </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">
                         取消
                     </button>
-                    <button type="reset" class="btn btn-default" >
+                    <button type="reset" class="btn btn-default">
                         重置
                     </button>
                 </div>
@@ -293,15 +224,13 @@
                                 <label class="form-label">
                                     开始时间：
                                 </label>
-                                <p th:if="${order.getStartDate()!=null}"
-                                   th:text="${order.getStartDate().toString().substring(0,10)}">无</p>
+                                <p th:text="${order.getStartDate()}">无</p>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
                                     推进时间：
                                 </label>
-                                <p th:if="${order.getLatestPushDate()!=null}"
-                                   th:text="${order.getLatestPushDate().toString().substring(0,10)}">无</p>
+                                <p th:text="${order.getLatestPushDate()}">无</p>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -309,22 +238,19 @@
                                 <label class="form-label">
                                     结束时间：
                                 </label>
-                                <p th:if="${order.getEndDate()!=null}"
-                                   th:text="${order.getEndDate().toString().substring(0,10)}">无</p>
+                                <p th:text="${order.getEndDate()}">无</p>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
                                     预计结束时间：
                                 </label>
-                                <p th:if="${order.getExpectedEndDate()!=null}"
-                                   th:text="${order.getExpectedEndDate().toString().substring(0,10)}">无</p>
+                                <p th:text="${order.getExpectedEndDate()}">无</p>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
                                     下次推进时间：
                                 </label>
-                                <p th:if="${order.getNextPushDate()!=null}"
-                                   th:text="${order.getNextPushDate().toString().substring(0,10)}">无</p>
+                                <p th:text="${order.getNextPushDate()}">无</p>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
@@ -459,8 +385,7 @@
                                         <td th:case="9">90%</td>
                                         <td th:case="10">100%</td>
                                     </th:block>
-                                    <td th:if="${orderH.getLatestPushDate()!=null}"
-                                        th:text="${orderH.getLatestPushDate().toString().substring(0,10)}"></td>
+                                    <td th:text="${orderH.getLatestPushDate()}"></td>
                                     <td th:text="${orderH.getDigest()}"></td>
                                     <td th:text="${orderH.getSalesmanName()}"></td>
                                 </tr>
@@ -473,42 +398,48 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="/js/birthday.js"></script>
 <script type="text/javascript" th:inline="javascript">
+    //<![CDATA[
     $(document).ready(function () {
-        var date = new Date();
-        timeSelectGenerate('endYear', 'endMonth', 'endDay', date.getFullYear() - 3, date.getFullYear() + 2);
-        timeSelectGenerate('startYear', 'startMonth', 'startDay', date.getFullYear() - 3, date.getFullYear() + 1);
-        timeSelectGenerate('pushYear', 'pushMonth', 'pushDay', date.getFullYear() - 3, date.getFullYear() + 1);
-        timeSelectGenerate('nextYear', 'nextMonth', 'nextDay', date.getFullYear() - 3, date.getFullYear() + 2);
-        timeSelectGenerate('expectedEndYear', 'expectedEndMonth', 'expectedEndDay', date.getFullYear() - 3, date.getFullYear() + 2);
-        var tempDate;
-        if ([[${order.getEndDate()!=null}]]){
-            tempDate = [[${order.getEndDate()}]];
-            setTimeDefault('end', tempDate.year, tempDate.monthValue, tempDate.dayOfMonth);
-        }
-        if ([[${order.getStartDate()!=null}]]) {
-            tempDate = [[${order.getStartDate()}]];
-            setTimeDefault('start', tempDate.year, tempDate.monthValue, tempDate.dayOfMonth);
-        }
-        if ([[${order.getLatestPushDate()!=null}]]) {
-            tempDate = [[${order.getLatestPushDate()}]];
-            setTimeDefault('push', tempDate.year, tempDate.monthValue, tempDate.dayOfMonth);
-        }
-        if ([[${order.getNextPushDate()!=null}]]) {
-            tempDate = [[${order.getNextPushDate()}]];
-            setTimeDefault('next', tempDate.year, tempDate.monthValue, tempDate.dayOfMonth);
-        }
-        if ([[${order.getExpectedEndDate()!=null}]]) {
-            tempDate = [[${order.getExpectedEndDate()}]];
-            setTimeDefault('expectedEnd', tempDate.year, tempDate.monthValue, tempDate.dayOfMonth);
-        }
+
     });
-    function setTimeDefault(prefix, year, month, day) {
-        $('#' + prefix + 'Year').val(year);
-        $('#' + prefix + 'Month').val(month);
-        $('#' + prefix + 'Day').val(day);
+    function timeFormatDigits(formatNumber) {
+        if (formatNumber < 10)
+            return "0" + formatNumber;
+        else
+            return formatNumber;
     }
+    function modifyOrder() {
+        var originalComments = [[${order.getComments()}]];
+        var data = {};
+        var comments = [];
+        $('#modifyOrderForm').serializeArray().map(function (value) { data[value.name]=value.value });
+        for (var i=0; i<originalComments.length; i++) {
+            var month = timeFormatDigits(originalComments[i].date.monthValue);
+            var day = timeFormatDigits(originalComments[i].date.dayOfMonth);
+            var hour = timeFormatDigits(originalComments[i].date.hour);
+            var minute = timeFormatDigits(originalComments[i].date.minute);
+            var comment = {
+                id: originalComments[i].id,
+                date: originalComments[i].date.year + "-" + month + "-" + day + "T" + hour + ":" + minute,
+                reviewerId: originalComments[i].reviewerId,
+                content: originalComments[i].content
+            };
+            comments.push(comment);
+        }
+        data["comments"] = comments;
+        $.ajax({
+            type: "POST",
+            url: "/business/modifyOrder",
+            data: JSON.stringify(data),
+            contentType: "application/json;charset=utf-8",
+            dataType: "text",
+            success: function (id) {
+                window.location.href = "/business/orderInfo?id=" + id;
+            }
+        })
+    }
+    //]]>
 </script>
 </body>
 </html>

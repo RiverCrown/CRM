@@ -1,5 +1,6 @@
 package com.example.crm.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,12 +14,12 @@ public class FollowOrderView {
     private String customerName;
     private Integer status;
     private String digest;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private LocalDateTime latestPushDate;
-    private LocalDateTime nextPushDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDate latestPushDate;
+    private LocalDate nextPushDate;
     private String detail;
-    private LocalDateTime expectedEndDate;
+    private LocalDate expectedEndDate;
     private Double expectedIncome;
     private Integer possibility;
     private Integer phase;
@@ -141,43 +142,43 @@ public class FollowOrderView {
         this.comments = comments;
     }
 
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
-    public LocalDateTime getLatestPushDate() {
+    public LocalDate getLatestPushDate() {
         return latestPushDate;
     }
 
-    public void setLatestPushDate(LocalDateTime latestPushDate) {
+    public void setLatestPushDate(LocalDate latestPushDate) {
         this.latestPushDate = latestPushDate;
     }
 
-    public LocalDateTime getNextPushDate() {
+    public LocalDate getNextPushDate() {
         return nextPushDate;
     }
 
-    public void setNextPushDate(LocalDateTime nextPushDate) {
+    public void setNextPushDate(LocalDate nextPushDate) {
         this.nextPushDate = nextPushDate;
     }
 
-    public LocalDateTime getExpectedEndDate() {
+    public LocalDate getExpectedEndDate() {
         return expectedEndDate;
     }
 
-    public void setExpectedEndDate(LocalDateTime expectedEndDate) {
+    public void setExpectedEndDate(LocalDate expectedEndDate) {
         this.expectedEndDate = expectedEndDate;
     }
 }
