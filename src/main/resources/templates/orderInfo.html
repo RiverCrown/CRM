@@ -7,7 +7,7 @@
 <div class="modal fade" id="modifyOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form>
+            <form role="form">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span>
@@ -21,7 +21,7 @@
                                 <label class="form-label">
                                     摘要：
                                 </label>
-                                <textarea th:text="${order.getDigest()}" style="resize: none" class="form-control"
+                                <textarea name="digest" th:text="${order.getDigest()}" style="resize: none" class="form-control"
                                           placeholder="大致摘要">
                             </textarea>
                             </div>
@@ -85,6 +85,7 @@
                                         月
                                     </label>
                                     <label class="form-label">
+                                        <input class="form-control" type="datetime-local" placeholder="hahah"/>
                                         <select id="pushDay" class="form-control">
                                         </select>
                                         日
@@ -192,10 +193,10 @@
                     <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="modifyCustomer()">
                         修改
                     </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="resetCustomer()">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">
                         取消
                     </button>
-                    <button type="button" class="btn btn-default" onclick="resetCustomer()">
+                    <button type="reset" class="btn btn-default" >
                         重置
                     </button>
                 </div>
@@ -481,8 +482,33 @@
         timeSelectGenerate('pushYear', 'pushMonth', 'pushDay', date.getFullYear() - 3, date.getFullYear() + 1);
         timeSelectGenerate('nextYear', 'nextMonth', 'nextDay', date.getFullYear() - 3, date.getFullYear() + 2);
         timeSelectGenerate('expectedEndYear', 'expectedEndMonth', 'expectedEndDay', date.getFullYear() - 3, date.getFullYear() + 2);
-
-    })
+        var tempDate;
+        if ([[${order.getEndDate()!=null}]]){
+            tempDate = [[${order.getEndDate()}]];
+            setTimeDefault('end', tempDate.year, tempDate.monthValue, tempDate.dayOfMonth);
+        }
+        if ([[${order.getStartDate()!=null}]]) {
+            tempDate = [[${order.getStartDate()}]];
+            setTimeDefault('start', tempDate.year, tempDate.monthValue, tempDate.dayOfMonth);
+        }
+        if ([[${order.getLatestPushDate()!=null}]]) {
+            tempDate = [[${order.getLatestPushDate()}]];
+            setTimeDefault('push', tempDate.year, tempDate.monthValue, tempDate.dayOfMonth);
+        }
+        if ([[${order.getNextPushDate()!=null}]]) {
+            tempDate = [[${order.getNextPushDate()}]];
+            setTimeDefault('next', tempDate.year, tempDate.monthValue, tempDate.dayOfMonth);
+        }
+        if ([[${order.getExpectedEndDate()!=null}]]) {
+            tempDate = [[${order.getExpectedEndDate()}]];
+            setTimeDefault('expectedEnd', tempDate.year, tempDate.monthValue, tempDate.dayOfMonth);
+        }
+    });
+    function setTimeDefault(prefix, year, month, day) {
+        $('#' + prefix + 'Year').val(year);
+        $('#' + prefix + 'Month').val(month);
+        $('#' + prefix + 'Day').val(day);
+    }
 </script>
 </body>
 </html>
