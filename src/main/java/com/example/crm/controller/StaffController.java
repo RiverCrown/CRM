@@ -4,6 +4,7 @@ import com.example.crm.domain.Customer;
 import com.example.crm.domain.Staff;
 import com.example.crm.service.CustomerServiceImpl;
 import com.example.crm.service.StaffService;
+import com.example.crm.service.StaffServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,17 +15,18 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
 @RequestMapping(value = "/staff")
 public class StaffController {
 
-    private StaffService staffService;//声明接口变量，自动装配会在容器中查找并引用实现了这个接口的实例
+    private StaffServiceImpl staffService;//声明接口变量，自动装配会在容器中查找并引用实现了这个接口的实例
     private CustomerServiceImpl customerService;
 
     @Autowired
-    public StaffController(StaffService staffService, CustomerServiceImpl customerService) {
+    public StaffController(StaffServiceImpl staffService, CustomerServiceImpl customerService) {
         this.customerService = customerService;
         this.staffService = staffService;
     }
@@ -56,6 +58,20 @@ public class StaffController {
             return "success";
         }
         return "failure";
+    }
+
+    @RequestMapping(value = "/findAllStaffsButSelf")
+    @ResponseBody
+    public List<Staff> findAllStaffsButSelf(HttpSession session) {
+        List<Staff> staffs = staffService.findAllStaffs();
+        Staff user = (Staff)session.getAttribute("staffObj");
+        for (int i=0; i<staffs.size(); i++) {
+            if (user.getId() == staffs.get(i).getId()) {
+                staffs.remove(i);
+                break;
+            }
+        }
+        return staffs;
     }
 
     @RequestMapping(value = "/getStaffById")

@@ -43,28 +43,12 @@ public class Customer {
         this.id = id;
     }
 
-    public boolean isCompany() {
-        return isCompany;
-    }
-
-    public void setCompany(boolean company) {
-        isCompany = company;
-    }
-
     public String getTag() {
         return tag;
     }
 
     public void setTag(String tag) {
         this.tag = tag;
-    }
-
-    public boolean isPotential() {
-        return isPotential;
-    }
-
-    public void setPotential(boolean potential) {
-        isPotential = potential;
     }
 
     public String getAddress() {
@@ -105,5 +89,21 @@ public class Customer {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public boolean isCompany() {
+        return isCompany;
+    }
+
+    public void setCompany(boolean company) {
+        isCompany = company;
+    }
+
+    public boolean isPotential() {
+        return isPotential;
+    }
+
+    public void setPotential(boolean potential) {
+        isPotential = potential;
     }
 }

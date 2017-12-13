@@ -2,7 +2,6 @@ package com.example.crm.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity

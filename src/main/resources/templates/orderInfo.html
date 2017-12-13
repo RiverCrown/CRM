@@ -4,6 +4,60 @@
 
 </head>
 <body onload="roleDiff()">
+<div class="modal fade" id="newComment" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form role="form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">新增评论：</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">评论内容：</label>
+                        <textarea id="commentContent" class="form-control" style="resize: none" placeholder="">
+
+                        </textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="addComment()" data-dismiss="modal">
+                        发表
+                    </button>
+                    <button type="reset" class="btn btn-default">
+                        重置
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        关闭
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="hintModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">提示：</h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:18px" id="hintContent"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="removeOrder()" data-dismiss="modal">
+                    确认
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="modifyOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -147,11 +201,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="form-group pull-right">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#transferOrder">跟单移交
+                    <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#transferOrder">跟单移交
                     </button>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyOrder">修改
+                    <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyOrder">修改
                     </button>
-                    <button type="button" class="btn btn-danger" onclick="">删除
+                    <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()}" type="button" class="btn btn-danger" onclick="hintContent('确认删除该跟单？')" data-toggle="modal" data-target="#hintModal">删除
                     </button>
                     <button type="button" class="btn btn-default" onclick="location='/business/orderManagement'">返回
                     </button>
@@ -319,13 +373,22 @@
                             </table>
                         </div>
                     </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-lg-6 col-lg-offset-3">
+                                <button type="button" data-toggle="modal" data-target="#newComment" class="btn btn-block btn-lg btn-success">
+                                    评论
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-4 col-lg-offset-4">
                 <div class="form-group">
-                    <button type="button" class="btn btn-lg btn-block btn-success">
+                    <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()}" type="button" class="btn btn-lg btn-block btn-success">
                         推进跟单
                     </button>
                 </div>
@@ -408,6 +471,45 @@
             return "0" + formatNumber;
         else
             return formatNumber;
+    }
+
+    function addComment() {
+        var date = new Date();
+        var dateS = "";
+        dateS += date.getFullYear() + "-" + timeFormatDigits(date.getMonth()+1) + "-" +
+            timeFormatDigits(date.getDate()) + "T" + timeFormatDigits(date.getHours()) + ":" +
+            timeFormatDigits(date.getMinutes());
+        $.ajax({
+            type: "POST",
+            url: "/business/addComment",
+            data: {
+                content: $('#commentContent').val(),
+                date: dateS,
+                reviewerId: [[${session.staffObj.getId()}]],
+                orderId: [[${order.getId()}]]
+            },
+            success: function () {
+                window.location.href = "/business/orderInfo?id=" + [[${order.getId()}]];
+            }
+        })
+
+    }
+    
+    function removeOrder() {
+        $.ajax({
+            type: "POST",
+            url: "/business/removeOrder",
+            data: {
+                id: [[${order.getId()}]]
+            },
+            success: function () {
+                window.location.href = "/business/orderManagement"
+            }
+        })
+    }
+    
+    function hintContent(text) {
+        $('#hintContent').html(text);
     }
     function modifyOrder() {
         var originalComments = [[${order.getComments()}]];

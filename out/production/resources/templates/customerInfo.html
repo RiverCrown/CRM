@@ -3,6 +3,79 @@
 <head th:include="mainPage :: mainHead">
 </head>
 <body onload="roleDiff()">
+<div class="modal fade" id="transferCustomer" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" th:text="${'移交客户：'+customer.getName()}">移交客户：</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <label>
+                            选中的员工为：
+                        </label>
+                        <br/>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>职位</th>
+                                    <th>手机号码</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td id="selectedId"></td>
+                                    <td id="selectedName"></td>
+                                    <td id="selectedSex"></td>
+                                    <td id="selectedRole"></td>
+                                    <td id="selectedPhoneNumber"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br/><br/>
+                <div class="row">
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example"
+                                   width="100%">
+                                <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>职位</th>
+                                    <th>手机号码</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="transferCustomer()">
+                    确认
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="hintModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -177,9 +250,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="form-group pull-right">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyCustomer">修改信息
+                    <button th:disabled="${session.staffObj.getId()!=customer.getSalesman().getId()}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyCustomer">修改信息
                     </button>
-                    <button type="button" class="btn btn-danger" onclick="removeModal()">删除
+                    <button th:disabled="${session.staffObj.getId()!=customer.getSalesman().getId()}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#transferCustomer">移交客户
+                    </button>
+                    <button th:disabled="${session.staffObj.getId()!=customer.getSalesman().getId()}" type="button" class="btn btn-danger" onclick="removeModal()">删除
                     </button>
                     <button type="button" class="btn btn-default" onclick="location='/customer/customerManagement'">返回
                     </button>
@@ -293,12 +368,56 @@
     </div>
 </div>
 <script type="text/javascript" src="/js/birthday.js"></script>
+<script src="/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 <script type="text/javascript" th:inline="javascript">
+    var table = $('#dataTables-example');
     $('document').ready(function () {
         timeSelectGenerate('year', 'month', 'day', 1900, 2017);
         $('#year').val([[${customer.getRepresentative().getFormatBirthday(1)}]]);
         $('#month').val([[${customer.getRepresentative().getFormatBirthday(2)}]]);
         $('#day').val([[${customer.getRepresentative().getFormatBirthday(3)}]]);
+        table.dataTable({
+            language: {
+                url: "/json/dataTables_cn.json"
+            },
+            ajax: {
+                type: "POST",
+                url: "/staff/findAllStaffsButSelf",
+                dataSrc: ''
+            },
+            columns: [
+                {data: 'id'},
+                {data: 'name'},
+                {
+                    data: 'sex',
+                    render:function (value, type, row) {
+                        if (value != null) {
+                            if (value == true)
+                                return "男";
+                            else
+                                return "女";
+                        } else
+                            return "";
+                    }
+                },
+                {data: 'role'},
+                {data: 'phoneNumber'}
+            ]
+        });
+        table.find("tbody").on('click', 'tr', function () {
+            var selectedNo = $(this).context._DT_RowIndex;
+            var nTrs = table.fnGetData();
+            $('#selectedId').html(nTrs[selectedNo].id);
+            $('#selectedName').html(nTrs[selectedNo].name);
+            $('#selectedPhoneNumber').html(nTrs[selectedNo].phoneNumber);
+            $('#selectedRole').html(nTrs[selectedNo].role);
+            if (nTrs[selectedNo].sex) {
+                $('#selectedSex').html("男");
+            } else {
+                $('#selectedSex').html("女");
+            }
+        })
     });
 
     function removeModal() {
@@ -352,10 +471,24 @@
             $("input[name=sex][value=false]").prop("checked", true);
     }
 
+    function transferCustomer() {
+        $.ajax({
+            type: "POST",
+            url: "/customer/transferCustomer",
+            data: {
+                staffId: $('#selectedId').html(),
+                customerId: [[${customer.getId()}]]
+            },
+            success: function () {
+                window.location.href = "/customer/customerInfo?customerId=" + [[${customer.getId()}]];
+            }
+        })
+    }
+
     function modifyCustomer() {
-        var isCompany = ($("input[name='customerType']:checked").val() == "true");
-        var isPotential = ($("input[name='potential']:checked").val() == "true");
-        var sex = ($("input[name='sex']:checked").val() == "true");
+        var isCompany = $("input[name='customerType']:checked").val();
+        var isPotential = $("input[name='potential']:checked").val();
+        var sex = $("input[name='sex']:checked").val();
         var date;
         var year = $('#year').find("option:selected").text().toString();
         var month = $('#month').find("option:selected").text().toString();
@@ -366,9 +499,9 @@
             url: "/customer/modifyCustomer",
             data: JSON.stringify({
                 id: [[${customer.getId()}]],
-                isCompany: isCompany,
+                company: isCompany,
                 tag: "",
-                isPotential: isPotential,
+                potential: isPotential,
                 address: $('#companyAddress').val(),
                 mainBusiness: $('#mainBusiness').val(),
                 name: $('#companyName').val(),

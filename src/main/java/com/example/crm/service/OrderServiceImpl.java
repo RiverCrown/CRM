@@ -38,6 +38,10 @@ public class OrderServiceImpl {
         return followOrderView;
     }
 
+    public FollowOrder findOrderById(int id) {
+        return orderRepository.findOne(id);
+    }
+
     public void addOrder(FollowOrder followOrder) {
         followOrder = orderRepository.save(followOrder);
         followOrder.setGroupId(followOrder.getId());
@@ -151,5 +155,9 @@ public class OrderServiceImpl {
             default:
                 return transferFollowOrder(result);
         }
+    }
+
+    public void removeOrder(int id) {
+        orderRepository.delete(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.crm.controller;
 
 import com.example.crm.domain.*;
+import com.example.crm.service.CommentServiceImpl;
 import com.example.crm.service.OrderServiceImpl;
 import com.example.crm.service.RouteServiceImpl;
 import com.example.crm.service.StaffServiceImpl;
@@ -19,13 +20,15 @@ public class BusinessController {
     private RouteServiceImpl routeService;
     private StaffServiceImpl staffService;
     private OrderServiceImpl orderService;
+    private CommentServiceImpl commentService;
 
     @Autowired
     public BusinessController(RouteServiceImpl routeService, StaffServiceImpl staffService,
-                              OrderServiceImpl orderService) {
+                              OrderServiceImpl orderService, CommentServiceImpl commentService) {
         this.staffService = staffService;
         this.routeService = routeService;
         this.orderService = orderService;
+        this.commentService = commentService;
     }
 
     @RequestMapping(value = "/addOrder")
@@ -123,5 +126,20 @@ public class BusinessController {
     @ResponseBody
     public String modifyOrder(@RequestBody FollowOrder followOrder) {
         return String.valueOf(orderService.updateOrder(followOrder).getId());
+    }
+
+    @RequestMapping(value = "/removeOrder")
+    @ResponseBody
+    public void removeOrder(@RequestParam(value = "id") int id) {
+        orderService.removeOrder(id);
+    }
+
+    @RequestMapping(value = "/addComment")
+    @ResponseBody
+    public void addComment(Comment comment,
+                           @RequestParam(value = "orderId") int orderId) {
+        FollowOrder followOrder = orderService.findOrderById(orderId);
+        followOrder.getComments().add(comment);
+        orderService.updateOrder(followOrder);
     }
 }

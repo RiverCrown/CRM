@@ -81,4 +81,11 @@ public class CustomerController {
     public Customer getCustomerById(@RequestParam(value = "customerId") int customerId) {
         return customerService.getCustomerById(customerId);
     }
+
+    @RequestMapping(value = "/transferCustomer")
+    @ResponseBody
+    public void transferCustomer(@RequestParam(value = "staffId") int staffId,
+                                 @RequestParam(value = "customerId") int customerId) {
+        customerService.transferCustomer(customerId, staffId);
+    }
 }

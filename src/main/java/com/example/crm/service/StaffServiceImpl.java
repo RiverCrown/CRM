@@ -13,6 +13,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,6 +36,10 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public void createStaff(String name, boolean sex) {
 
+    }
+
+    public List<Staff> findAllStaffs() {
+        return (ArrayList<Staff>)staffRepository.findAll();
     }
 
     public void modifyRoute(List<Route> routes, Route route) {

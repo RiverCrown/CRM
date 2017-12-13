@@ -82,7 +82,7 @@
                             <label class="form-label">联系人性别</label>
                             <br/>
                             <label class="radio-inline">
-                                <input type="radio" name="sex" id="man" value="woman"/>男
+                                <input type="radio" name="sex" id="man" value="man"/>男
                             </label>
                             <label class="radio-inline">
                                 <input type="radio" name="sex" id="woman" value="woman"/>女
@@ -334,9 +334,9 @@
             type: "POST",
             url: "/customer/addCustomer",
             data: JSON.stringify({
-                isCompany: isCompany,
+                company: isCompany,
                 tag: "",
-                isPotential: isPotential,
+                potential: isPotential,
                 address: $('#companyAddress').val(),
                 mainBusiness: $('#mainBusiness').val(),
                 name: $('#companyName').val(),
