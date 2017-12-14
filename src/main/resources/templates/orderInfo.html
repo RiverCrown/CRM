@@ -4,6 +4,79 @@
 
 </head>
 <body onload="roleDiff()">
+<div class="modal fade" id="transferOrder" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">移交跟单</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <label>
+                            选中的员工为：
+                        </label>
+                        <br/>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>职位</th>
+                                    <th>手机号码</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td id="selectedId"></td>
+                                    <td id="selectedName"></td>
+                                    <td id="selectedSex"></td>
+                                    <td id="selectedRole"></td>
+                                    <td id="selectedPhoneNumber"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br/><br/>
+                <div class="row">
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example"
+                                   width="100%">
+                                <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>职位</th>
+                                    <th>手机号码</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="transferOrder()">
+                    确认
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="newComment" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -201,7 +274,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="form-group pull-right">
-                    <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#transferOrder">跟单移交
+                    <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()||order.getStatus()==3||order.getStatus()==4}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#transferOrder">跟单移交
                     </button>
                     <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyOrder">修改
                     </button>
@@ -251,12 +324,12 @@
                                     状态：
                                 </label>
                                 <th:block th:switch="${order.getStatus()}">
-                                    <p th:case="0">无</p>
-                                    <p th:case="1">跟踪</p>
-                                    <p th:case="2">搁置</p>
-                                    <p th:case="3">成功</p>
-                                    <p th:case="4">失败</p>
-                                    <p th:case="5">失效</p>
+                                    <p th:case="0"><strong>无</strong></p>
+                                    <p th:case="1"><span style='color: #5BC0DE'><strong>跟踪</strong></span></p>
+                                    <p th:case="2"><span style='color: #F0AD4E'><strong>搁置</strong></span></p>
+                                    <p th:case="3"><span style='color: #5CB85C'><strong>成功</strong></span></p>
+                                    <p th:case="4"><span style='color: #D9534F'><strong>失败</strong></span></p>
+                                    <p th:case="5"><span style='color: #C8C8C8'><strong>失效</strong></span></p>
                                 </th:block>
                             </div>
                             <div class="form-group">
@@ -278,13 +351,13 @@
                                 <label class="form-label">
                                     开始时间：
                                 </label>
-                                <p th:text="${order.getStartDate()}">无</p>
+                                <p id="startDate" th:text="${order.getStartDate()}">无</p>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
                                     推进时间：
                                 </label>
-                                <p th:text="${order.getLatestPushDate()}">无</p>
+                                <p id="latestPushDate" th:text="${order.getLatestPushDate()}">无</p>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -292,19 +365,19 @@
                                 <label class="form-label">
                                     结束时间：
                                 </label>
-                                <p th:text="${order.getEndDate()}">无</p>
+                                <p id="endDate" th:text="${order.getEndDate()}">无</p>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
                                     预计结束时间：
                                 </label>
-                                <p th:text="${order.getExpectedEndDate()}">无</p>
+                                <p id="expectedEndDate" th:text="${order.getExpectedEndDate()}">无</p>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
                                     下次推进时间：
                                 </label>
-                                <p th:text="${order.getNextPushDate()}">无</p>
+                                <p id="nextPushDate" th:text="${order.getNextPushDate()}">无</p>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
@@ -388,9 +461,12 @@
         <div class="row">
             <div class="col-lg-4 col-lg-offset-4">
                 <div class="form-group">
-                    <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()}" type="button" class="btn btn-lg btn-block btn-success">
-                        推进跟单
-                    </button>
+                    <form role="form" method="post" action="/business/pushOrderPage">
+                        <input type="text" th:value="${order.getId()}" name="orderId" hidden="hidden" placeholder=""/>
+                        <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()||order.getStatus()==3||order.getStatus()==4}" type="submit" class="btn btn-lg btn-block btn-success">
+                            推进跟单
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -461,10 +537,53 @@
         </div>
     </div>
 </div>
+<script src="/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 <script type="text/javascript" th:inline="javascript">
     //<![CDATA[
+    var table = $('#dataTables-example');
     $(document).ready(function () {
-
+        table.dataTable({
+            language: {
+                url: "/json/dataTables_cn.json"
+            },
+            ajax: {
+                type: "POST",
+                url: "/staff/findAllStaffsButSelf",
+                dataSrc: ''
+            },
+            columns: [
+                {data: 'id'},
+                {data: 'name'},
+                {
+                    data: 'sex',
+                    render:function (value, type, row) {
+                        if (value != null) {
+                            if (value == true)
+                                return "男";
+                            else
+                                return "女";
+                        } else
+                            return "";
+                    }
+                },
+                {data: 'role'},
+                {data: 'phoneNumber'}
+            ]
+        });
+        table.find("tbody").on('click', 'tr', function () {
+            var selectedNo = $(this).context._DT_RowIndex;
+            var nTrs = table.fnGetData();
+            $('#selectedId').html(nTrs[selectedNo].id);
+            $('#selectedName').html(nTrs[selectedNo].name);
+            $('#selectedPhoneNumber').html(nTrs[selectedNo].phoneNumber);
+            $('#selectedRole').html(nTrs[selectedNo].role);
+            if (nTrs[selectedNo].sex) {
+                $('#selectedSex').html("男");
+            } else {
+                $('#selectedSex').html("女");
+            }
+        })
     });
     function timeFormatDigits(formatNumber) {
         if (formatNumber < 10)
@@ -507,7 +626,21 @@
             }
         })
     }
-    
+
+    function transferOrder() {
+        $.ajax({
+            type: "POST",
+            url: "/business/transferOrder",
+            data: {
+                staffId: $('#selectedId').html(),
+                orderId: [[${order.getId()}]]
+            },
+            success: function () {
+                window.location.href = "/business/orderInfo?id=" + [[${order.getId()}]];
+            }
+        })
+    }
+
     function hintContent(text) {
         $('#hintContent').html(text);
     }

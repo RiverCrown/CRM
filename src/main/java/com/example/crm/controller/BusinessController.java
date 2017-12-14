@@ -1,16 +1,16 @@
 package com.example.crm.controller;
 
 import com.example.crm.domain.*;
-import com.example.crm.service.CommentServiceImpl;
-import com.example.crm.service.OrderServiceImpl;
-import com.example.crm.service.RouteServiceImpl;
-import com.example.crm.service.StaffServiceImpl;
+import com.example.crm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -20,25 +20,65 @@ public class BusinessController {
     private RouteServiceImpl routeService;
     private StaffServiceImpl staffService;
     private OrderServiceImpl orderService;
-    private CommentServiceImpl commentService;
+    private CustomerServiceImpl customerService;
 
     @Autowired
     public BusinessController(RouteServiceImpl routeService, StaffServiceImpl staffService,
-                              OrderServiceImpl orderService, CommentServiceImpl commentService) {
+                              OrderServiceImpl orderService, CustomerServiceImpl customerService) {
         this.staffService = staffService;
         this.routeService = routeService;
         this.orderService = orderService;
-        this.commentService = commentService;
+        this.customerService = customerService;
+    }
+
+    private void autoGenerateRoute(HttpSession session, FollowOrder followOrder, Customer customer) {
+        if (followOrder == null)
+            return;
+        LocalDate now = LocalDate.now();
+        LocalDate nextPushDate = followOrder.getNextPushDate();
+        long deltDay = now.until(nextPushDate, ChronoUnit.DAYS);
+        //联动日程模块
+        Staff staff = (Staff)session.getAttribute("staffObj");
+        Route route = new Route();
+        route.setStart(nextPushDate.toString());
+        route.setTitle("跟进编号为" + followOrder.getId() + "的订单");
+        route.setDetail("跟进的客户为【" + customer.getName() + "】");
+        route.setStatus(0);
+        if (deltDay <= 7)
+            route.setTaskLevel(3);
+        else if (deltDay <= 14)
+            route.setTaskLevel(2);
+        else if (deltDay <= 21)
+            route.setTaskLevel(1);
+        else
+            route.setTaskLevel(0);
+        staff.getRoutes().add(route);
+        staff = staffService.modifyStaff(staff);
+        session.setAttribute("staffObj", staff);
     }
 
     @RequestMapping(value = "/addOrder")
     @ResponseBody
-    public void addOrder(@RequestBody FollowOrder followOrder) {
-        orderService.addOrder(followOrder);
+    public String addOrder(@RequestBody FollowOrder followOrder,
+                           HttpSession session) {
+        //添加跟单
+        followOrder = orderService.addOrder(followOrder);
+        autoGenerateRoute(session, followOrder, customerService.getCustomerById(followOrder.getCustomerId()));
+        return String.valueOf(followOrder.getId());
     }
 
     @RequestMapping(value = "/newOrderPage")
     public String newOrderPage() {
+        return "newOrder";
+    }
+
+    @RequestMapping(value = "/pushOrderPage")
+    public String pushOrderPage(@RequestParam(value = "orderId") int orderId,
+                                Model model) {
+        FollowOrderView followOrderView = orderService.getOrderById(orderId);
+        Customer customer = customerService.getCustomerById(followOrderView.getCustomerId());
+        model.addAttribute("customer", customer);
+        model.addAttribute("order", followOrderView);
         return "newOrder";
     }
 
@@ -80,6 +120,13 @@ public class BusinessController {
         }
     }
 
+    @RequestMapping(value = "/transferOrder")
+    @ResponseBody
+    public void transferOrder(@RequestParam(value = "staffId") int staffId,
+                              @RequestParam(value = "orderId") int orderId) {
+        orderService.transferOrder(staffId, orderId);
+    }
+
     @RequestMapping(value = "/addRoute")
     @ResponseBody
     public List<Route> addRoute(@RequestBody Route route, HttpSession session) {
@@ -116,7 +163,7 @@ public class BusinessController {
     public String orderInfo(@RequestParam(value = "id") int id,
                             Model model) {
         FollowOrderView followOrderView = orderService.getOrderById(id);
-        List<FollowOrderView> history = orderService.getHistoryByGroupId(followOrderView.getId());
+        List<FollowOrderView> history = orderService.getHistoryByGroupId(followOrderView.getGroupId());
         model.addAttribute("orderHistory", history);
         model.addAttribute("order", followOrderView);
         return "orderInfo";
@@ -125,6 +172,7 @@ public class BusinessController {
     @RequestMapping(value = "/modifyOrder")
     @ResponseBody
     public String modifyOrder(@RequestBody FollowOrder followOrder) {
+
         return String.valueOf(orderService.updateOrder(followOrder).getId());
     }
 

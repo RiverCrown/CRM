@@ -1,14 +1,17 @@
 package com.example.crm.service;
 
 import com.example.crm.dao.CustomerRepository;
+import com.example.crm.dao.OrderRepository;
 import com.example.crm.dao.StaffRepository;
 import com.example.crm.domain.Customer;
+import com.example.crm.domain.FollowOrder;
 import com.example.crm.domain.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -16,10 +19,13 @@ public class CustomerServiceImpl {
 
     private CustomerRepository customerRepository;
     private StaffRepository staffRepository;
+    private OrderRepository orderRepository;
 
     @Autowired
-    CustomerServiceImpl(CustomerRepository customerRepository, StaffRepository staffRepository){
+    CustomerServiceImpl(CustomerRepository customerRepository, StaffRepository staffRepository,
+                        OrderRepository orderRepository){
         this.customerRepository = customerRepository;
+        this.orderRepository = orderRepository;
         this.staffRepository = staffRepository;
     }
 
@@ -82,5 +88,4 @@ public class CustomerServiceImpl {
         customer.setSalesman(staff);
         customerRepository.save(customer);
     }
-
 }

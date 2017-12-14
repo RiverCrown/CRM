@@ -163,15 +163,15 @@
                     render: function (value, type, row) {
                         switch (value) {
                             case 1:
-                                return "跟踪";
+                                return "<span style='color: #5BC0DE'><strong>跟踪</strong></span>";
                             case 2:
-                                return "搁置";
+                                return "<span style='color: #F0AD4E'><strong>搁置</strong></span>";
                             case 3:
-                                return "成功";
+                                return "<span style='color: #5CB85C'><strong>成功</strong></span>";
                             case 4:
-                                return "失败";
+                                return "<span style='color: #D9534F'><strong>失败</strong></span>";
                             case 5:
-                                return "失效";
+                                return "<span style='color: #C8C8C8'><strong>失效</strong></span>";
                             default:
                                 return "";
                         }
