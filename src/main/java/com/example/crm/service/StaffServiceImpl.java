@@ -102,9 +102,11 @@ public class StaffServiceImpl implements StaffService {
             response.addCookie(passwordCookie);
             request.getSession().setAttribute("staffObj", staff);
             request.getSession().setAttribute("isLogin", true);
+            request.getSession().setAttribute("fromInside", true);
             return true;
         }
         request.getSession().setAttribute("isLogin", false);
+        request.getSession().setAttribute("fromInside", false);
         return false;
     }
 }

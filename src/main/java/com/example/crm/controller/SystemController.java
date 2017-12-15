@@ -22,12 +22,16 @@ public class SystemController {
     @RequestMapping("/")
     public String login(HttpSession session){
         session.setAttribute("isLogin", true);
+        session.setAttribute("fromInside", false);
         return "login";
     }
 
     @RequestMapping(value = "/mainPage")
     public String login(HttpServletRequest request, HttpServletResponse response){
-        if (staffService.validateStaffAccount(request, response)){
+        boolean fromInside = (boolean) request.getSession().getAttribute("fromInside");
+        if (fromInside)
+            return "mainPage";
+        else if (staffService.validateStaffAccount(request, response)){
             return "mainPage";
         } else {
             return "login";

@@ -31,39 +31,16 @@ public class BusinessController {
         this.customerService = customerService;
     }
 
-    private void autoGenerateRoute(HttpSession session, FollowOrder followOrder, Customer customer) {
-        if (followOrder == null)
-            return;
-        LocalDate now = LocalDate.now();
-        LocalDate nextPushDate = followOrder.getNextPushDate();
-        long deltDay = now.until(nextPushDate, ChronoUnit.DAYS);
-        //联动日程模块
-        Staff staff = (Staff)session.getAttribute("staffObj");
-        Route route = new Route();
-        route.setStart(nextPushDate.toString());
-        route.setTitle("跟进编号为" + followOrder.getId() + "的订单");
-        route.setDetail("跟进的客户为【" + customer.getName() + "】");
-        route.setStatus(0);
-        if (deltDay <= 7)
-            route.setTaskLevel(3);
-        else if (deltDay <= 14)
-            route.setTaskLevel(2);
-        else if (deltDay <= 21)
-            route.setTaskLevel(1);
-        else
-            route.setTaskLevel(0);
-        staff.getRoutes().add(route);
-        staff = staffService.modifyStaff(staff);
-        session.setAttribute("staffObj", staff);
-    }
-
     @RequestMapping(value = "/addOrder")
     @ResponseBody
     public String addOrder(@RequestBody FollowOrder followOrder,
                            HttpSession session) {
         //添加跟单
         followOrder = orderService.addOrder(followOrder);
-        autoGenerateRoute(session, followOrder, customerService.getCustomerById(followOrder.getCustomerId()));
+        Staff staff = (Staff)session.getAttribute("staffObj");
+        staff = routeService.autoGenerateRoute(staff, followOrder, customerService.getCustomerById(followOrder.getCustomerId()));
+        staff = staffService.modifyStaff(staff);
+        session.setAttribute("staffObj", staff);
         return String.valueOf(followOrder.getId());
     }
 
@@ -171,9 +148,16 @@ public class BusinessController {
 
     @RequestMapping(value = "/modifyOrder")
     @ResponseBody
-    public String modifyOrder(@RequestBody FollowOrder followOrder) {
-
-        return String.valueOf(orderService.updateOrder(followOrder).getId());
+    public String modifyOrder(@RequestBody FollowOrder followOrder,
+                              HttpSession session) {
+        Staff staff = (Staff)session.getAttribute("staffObj");
+        FollowOrderView followOrderView = orderService.updateOrder(followOrder);
+        FollowOrder updatedFollowOrder = orderService.findOrderById(followOrderView.getId());
+        Customer customer = customerService.getCustomerById(followOrderView.getCustomerId());
+        staff = routeService.autoGenerateRoute(staff, updatedFollowOrder, customer);
+        staff = staffService.modifyStaff(staff);
+        session.setAttribute("staffObj", staff);
+        return String.valueOf(followOrderView.getId());
     }
 
     @RequestMapping(value = "/removeOrder")

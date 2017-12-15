@@ -90,7 +90,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">客户关系管理系统</a>
+            <a href="/mainPage" class="navbar-brand" id="UITitle">客户关系管理系统</a>
         </div>
         <!-- /.navbar-header -->
 
@@ -296,7 +296,7 @@
                 <ul class="dropdown-menu dropdown-user">
                     <li><a href="/personalInfo"><i class="fa fa-user fa-fw"></i> 个人信息</a>
                     </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a>
+                    <li><a href="/mainPage" id="personalMainPage"><i class="fa fa-gear fa-fw"></i> 工作台</a>
                     </li>
                     <li class="divider"></li>
                     <li><a href="/"><i class="fa fa-sign-out fa-fw"></i> 退出</a>
@@ -330,7 +330,7 @@
                                 <a href="/customer/customerManagement">客户基本信息</a>
                             </li>
                             <li>
-                                <a href="morris.html">客户分析分类</a>
+                                <a href="/customer/classifyCustomer">客户分类</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -539,6 +539,13 @@
 </div>
 <!-- /#wrapper -->
 
+<script type="text/javascript" th:inline="javascript">
+    //<![CDATA[
+    $('document').ready(function () {
+
+    });
+    //]]>
+</script>
 </body>
 </html>
 

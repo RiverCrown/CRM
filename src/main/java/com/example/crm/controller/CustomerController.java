@@ -69,6 +69,11 @@ public class CustomerController {
         return "customerInfo";
     }
 
+    @RequestMapping(value = "/classifyCustomer")
+    public String classifyCustomer() {
+        return "classifyCustomer";
+    }
+
     @RequestMapping(value = "/removeCustomer")
     @ResponseBody
     public String removeCustomer(int id) {
