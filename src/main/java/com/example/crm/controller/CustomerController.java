@@ -1,7 +1,9 @@
 package com.example.crm.controller;
 
 import com.example.crm.domain.Customer;
+import com.example.crm.domain.CustomerTagView;
 import com.example.crm.domain.Staff;
+import com.example.crm.domain.TagTemplate;
 import com.example.crm.service.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/customer")
@@ -74,11 +77,29 @@ public class CustomerController {
         return "classifyCustomer";
     }
 
+    @RequestMapping(value = "/getAllTagTemplates")
+    @ResponseBody
+    public List<TagTemplate> getAllTagTemplates() {
+        return customerService.getAllTagTemplate();
+    }
+
+    @RequestMapping(value = "/addTagTemplate")
+    @ResponseBody
+    public void addTagTemplate(TagTemplate tagTemplate) {
+        customerService.addTagTemplate(tagTemplate);
+    }
+
     @RequestMapping(value = "/removeCustomer")
     @ResponseBody
     public String removeCustomer(int id) {
         customerService.removeCustomer(id);
         return "customerManagement";
+    }
+
+    @RequestMapping(value = "/getAllCustomerWithTags")
+    @ResponseBody
+    public List<CustomerTagView> getAllCustomerWithTags() {
+        return customerService.getAllCustomerWithTags();
     }
 
     @RequestMapping(value = "/getCustomerById")

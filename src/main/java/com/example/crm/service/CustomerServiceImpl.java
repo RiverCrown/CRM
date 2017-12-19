@@ -1,11 +1,7 @@
 package com.example.crm.service;
 
-import com.example.crm.dao.CustomerRepository;
-import com.example.crm.dao.OrderRepository;
-import com.example.crm.dao.StaffRepository;
-import com.example.crm.domain.Customer;
-import com.example.crm.domain.FollowOrder;
-import com.example.crm.domain.Staff;
+import com.example.crm.dao.*;
+import com.example.crm.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,13 +15,15 @@ public class CustomerServiceImpl {
 
     private CustomerRepository customerRepository;
     private StaffRepository staffRepository;
-    private OrderRepository orderRepository;
+    private TagTemplateRepository tagTemplateRepository;
+    private TagsRepository tagsRepository;
 
     @Autowired
     CustomerServiceImpl(CustomerRepository customerRepository, StaffRepository staffRepository,
-                        OrderRepository orderRepository){
+                        TagTemplateRepository tagTemplateRepository, TagsRepository tagsRepository){
+        this.tagsRepository = tagsRepository;
+        this.tagTemplateRepository = tagTemplateRepository;
         this.customerRepository = customerRepository;
-        this.orderRepository = orderRepository;
         this.staffRepository = staffRepository;
     }
 
@@ -74,6 +72,18 @@ public class CustomerServiceImpl {
         }
     }
 
+    public List<CustomerTagView> getAllCustomerWithTags() {
+        List<CustomerTagView> customerTagViews = new ArrayList<>();
+        List<Customer> customers = (ArrayList<Customer>)customerRepository.findAll();
+        for (Customer customer : customers) {
+            CustomerTagView customerTagView = new CustomerTagView();
+            customerTagView.setCustomer(customer);
+            customerTagView.setTags(tagsRepository.findByCustomerId(customer.getId()));
+            customerTagViews.add(customerTagView);
+        }
+        return customerTagViews;
+    }
+
     public ArrayList<String> getCustomerMainBusiness() {
         return customerRepository.findMainBusiness();
     }
@@ -87,5 +97,13 @@ public class CustomerServiceImpl {
         Customer customer = customerRepository.findOne(customerId);
         customer.setSalesman(staff);
         customerRepository.save(customer);
+    }
+
+    public void addTagTemplate(TagTemplate tagTemplate) {
+        tagTemplateRepository.save(tagTemplate);
+    }
+
+    public List<TagTemplate> getAllTagTemplate() {
+        return (List<TagTemplate>)tagTemplateRepository.findAll();
     }
 }
