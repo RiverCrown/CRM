@@ -23,8 +23,14 @@
                     </div>
                         <div class="form-group">
                             <label class="form-label">优先级</label>
-                            <input id="priority" name="priority" class="form-control" type="text"
-                                   placeholder="服务的优先级"/>
+                            <select id="priority" name="priority" class="form-control">
+                                <option value="0">P1</option>
+                                <option value="1">P2</option>
+                                <option value="2">P3</option>
+                                <option value="3">P4</option>
+                                <option value="4">P5</option>
+                            </select>
+
                         </div>
 
                         <div class="form-group">
@@ -33,14 +39,20 @@
                                    placeholder="前来咨询客户的名称"/>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">商品</label>
+                            <label class="form-label">服务类型</label>
                             <input id="goods" name="goods" class="form-control" type="text"
-                                   placeholder="客户所购买的商品"/>
+                                   placeholder="客户需求的服务类型"/>
                         </div>
                         <div class="form-group">
                             <label class="form-label">满意度</label>
-                            <input id="satisfaction" name="satisfaction" class="form-control" type="text"
-                                   placeholder="客户对服务的满意度"/>
+                            <select id="satisfaction" name="satisfaction" class="form-control">
+                                <option value="0">★</option>
+                                <option value="1">★★</option>
+                                <option value="2">★★★</option>
+                                <option value="3">★★★★</option>
+                                <option value="4">★★★★★</option>
+                            </select>
+
                         </div>
                         <div class="form-group">
                             <label class="form-label">描述</label>
@@ -99,7 +111,7 @@
                                 <tr>
                                     <th>编号</th>
                                     <th>客户</th>
-                                    <th>商品</th>
+                                    <th>服务类型</th>
                                     <th>优先级</th>
                                     <th>状态</th>
                                     <th>满意度</th>
@@ -107,11 +119,36 @@
                                 <tr>
                                     <td>A123</td>
                                     <td>何冠彬</td>
-                                    <td>阿美瑞克大香蕉</td>
+                                    <td>产品维修</td>
                                     <td>P1</td>
                                     <td>已解决</td>
                                     <td>★★★★★</td>
                                 </tr>
+                                <tr>
+                                    <td>A123</td>
+                                    <td>何阿萨德</td>
+                                    <td>产品退货</td>
+                                    <td>P2</td>
+                                    <td>待解决</td>
+                                    <td>★★★★</td>
+                                </tr>
+                                <tr>
+                                    <td>A123</td>
+                                    <td>何阿</td>
+                                    <td>产品退换</td>
+                                    <td>P2</td>
+                                    <td>已解决</td>
+                                    <td>★★</td>
+                                </tr>
+                                <tr>
+                                    <td>A123</td>
+                                    <td>何去问</td>
+                                    <td>后期维护</td>
+                                    <td>P4</td>
+                                    <td>已解决</td>
+                                    <td>★★★</td>
+                                </tr>
+
 
                                 </thead>
                                 <tbody id="tableBody">
@@ -126,7 +163,7 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
-        <label>平均满意度;</label>>
+        <label>平均满意度;</label>
     </div>
 </div>
 
