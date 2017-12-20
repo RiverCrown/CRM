@@ -15,4 +15,5 @@ import java.util.List;
 public interface TagsRepository extends CrudRepository<Tags, Integer>{
 
     List<Tags> findByCustomerId(int customerId);
+    List<Tags> findByTagTemplate(TagTemplate tagTemplate);
 }

@@ -110,4 +110,24 @@ public class CustomerServiceImpl {
     public List<TagTemplate> getAllTagTemplate() {
         return (List<TagTemplate>)tagTemplateRepository.findAll();
     }
+
+    public void addTagToCustomer(int customerId, List<Integer> newTags) {
+        newTags.remove(0);
+        for (int i=0; i<newTags.size(); i++) {
+            Tags tags = new Tags();
+            tags.setCustomerId(customerId);
+            tags.setTagTemplate(tagTemplateRepository.findOne(newTags.get(i)));
+            tagsRepository.save(tags);
+        }
+    }
+
+    public void modifyTagTemplate(TagTemplate tagTemplate) {
+        tagTemplateRepository.save(tagTemplate);
+    }
+
+    public void deleteTagTemplate(int tagTemplateId) {
+        List<Tags> tags = tagsRepository.findByTagTemplate(tagTemplateRepository.findOne(tagTemplateId));
+        tagsRepository.delete(tags);
+        tagTemplateRepository.delete(tagTemplateId);
+    }
 }

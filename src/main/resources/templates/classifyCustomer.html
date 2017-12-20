@@ -3,6 +3,52 @@
 <head th:include="mainPage :: mainHead">
 </head>
 <body onload="roleDiff()">
+<div class="modal fade" id="modifyTagTemplate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form role="form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">修改标签：</h4>
+                </div>
+                <div class="modal-body">
+                    <input id="tagTemplateId" placeholder="" type="hidden" />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label class="form-label">标签名称：
+                                </label>
+                                <input id="mTagTitle" type="text" class="form-control" placeholder=""/>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">标签颜色：
+                                    <input id="mTagColor" type="color" class="form-control" placeholder=""/>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">标签详细描述：
+                                </label>
+                                <textarea placeholder="" style="resize: none" id="mTagDescription" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="modifyTagTemplate()">
+                        修改
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="deleteTagTemplate()">
+                        删除
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        关闭
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="addTagsToCustomer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -13,6 +59,7 @@
                     <h4 class="modal-title">添加客户标签：</h4>
                 </div>
                 <div class="modal-body">
+                    <input hidden="hidden" id="addTagCustomerId" placeholder=""/>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group">
@@ -25,12 +72,13 @@
                             </div>
                             <br/>
                             <div class="form-group">
+                                <label class="form-label">选择要添加的标签：</label>
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered table-hover display" id="customerAddTagsTable"
                                            width="100%">
                                         <thead>
                                         <tr>
-                                            <th>编号</th>
+                                            <th>选择</th>
                                             <th>标签颜色</th>
                                             <th>标签外观</th>
                                             <th>标签详细描述</th>
@@ -46,8 +94,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="addTagTemplate()">
-                        新建
+                    <button type="button" class="btn btn-primary" onclick="addTagToCustomer()">
+                        添加
                     </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">
                         关闭
@@ -187,8 +235,9 @@
     var customerAddTags = $('#customerAddTagsTable');
     var customerTag = $('#customerTagTable');
     var addTagToCustomerModal = $('#addTagsToCustomer');
+    var modifyTagTemplateModal = $('#modifyTagTemplate');
     $(document).ready(function () {
-        $('table.display').dataTable({
+        tagTemplate.dataTable({
             language: {
                 url: "/json/dataTables_cn.json"
             },
@@ -215,9 +264,9 @@
                 },
                 {
                     data: 'title',
-                    render: function (value) {
+                    render: function (value, type, row, meta) {
                         if (value != null) {
-                            return "<button type='button' class='btn  btn-block btn-sm' style='background-color: " +
+                            return "<button data-row='" + meta.row + "' type='button' data-toggle='modal' data-target='#modifyTagTemplate' class='btn  btn-block btn-sm' style='background-color: " +
                                 colorString + "'><span style='color: #FFFFFF;'><strong>" + value + "</strong></span></button>";
                         } else {
                             return "";
@@ -265,25 +314,78 @@
                 }
             ]
         });
+        customerAddTags.dataTable({
+            language: {
+                url: "/json/dataTables_cn.json"
+            },
+            ajax: {
+                type: "GET",
+                url: "/customer/getAllTagTemplates",
+                dataSrc: ''
+            },
+            columns: [
+                {
+                    data: 'id',
+                    render: function (value) {
+                        if (value != null) {
+                            return "<input id='tagTemplate" + value + "' type='checkbox' value='" + value + "'/>"
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                {
+                    data: 'color',
+                    visible: false,
+                    searchable: false,
+                    render: function (value) {
+                        if (value != null) {
+                            colorString = value;
+                            return value;
+                        } else {
+                            colorString = "";
+                            return "";
+                        }
+                    }
+                },
+                {
+                    data: 'title',
+                    render: function (value) {
+                        if (value != null) {
+                            return "<button type='button' class='btn  btn-block btn-sm' style='background-color: " +
+                                colorString + "'><span style='color: #FFFFFF;'><strong>" + value + "</strong></span></button>";
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                {data: 'description'}
+            ]
+        });
         addTagToCustomerModal.on("show.bs.modal", function (e) {
             var btn = $(e.relatedTarget),
                 row = btn.data("row");
             var nTrs = customerTag.fnGetData();
+            $('#addTagCustomerId').val(nTrs[row].customer.id);
             var tagsString = "";
             if (nTrs[row].tags.length == 0)
                 tagsString = "无";
             for (var i=0; i<nTrs[row].tags.length; i++) {
+                $('#tagTemplate' + nTrs[row].tags[i].tagTemplate.id).prop("disabled", true);
                 tagsString += "<button type='button' class='btn btn-sm' style='margin-top: 8px; background-color: " +
                     nTrs[row].tags[i].tagTemplate.color + "'><span style='color: #FFFFFF;'><strong>" + nTrs[row].tags[i].tagTemplate.title + "</strong></span></button> ";
             }
             $('#existTags').html(tagsString);
         });
-        /*
-        customerTag.find("tbody").on('click', 'tr', function () {
-            var selectedNo = $(this).context._DT_RowIndex;
-
+        modifyTagTemplateModal.on("show.bs.modal", function (e) {
+            var btn = $(e.relatedTarget),
+                row = btn.data("row");
+            var nTrs = tagTemplate.fnGetData();
+            $('#mTagTitle').val(nTrs[row].title);
+            $('#mTagColor').val(nTrs[row].color);
+            $('#mTagDescription').val(nTrs[row].description);
+            $('#tagTemplateId').val(nTrs[row].id);
         });
-        */
     });
 
     function deleteCustomerTag(tagsId) {
@@ -292,6 +394,27 @@
             url: "/customer/deleteCustomerTag",
             data: {
                 tagsId: tagsId
+            },
+            success: function () {
+                window.location.href = "/customer/classifyCustomer";
+            }
+        })
+    }
+    
+    function addTagToCustomer() {
+        var tags = tagTemplate.fnGetData();
+        var newTagsIdArray = [-1];
+        for (var i=0; i<tags.length; i++) {
+            if ($('#tagTemplate' + tags[i].id).prop("checked")) {
+                newTagsIdArray.push(tags[i].id);
+            }
+        }
+        $.ajax({
+            type: "POST",
+            url: "/customer/addTagToCustomer",
+            data: {
+                customerId: $('#addTagCustomerId').val(),
+                tags: newTagsIdArray
             },
             success: function () {
                 window.location.href = "/customer/classifyCustomer";
@@ -307,6 +430,36 @@
                 title: $('#tagTitle').val(),
                 color: $('#tagColor').val(),
                 description: $('#tagDescription').val()
+            },
+            success: function () {
+                window.location.href = "/customer/classifyCustomer";
+            }
+        })
+    }
+
+    function modifyTagTemplate() {
+        $.ajax({
+            type: "POST",
+            url: "/customer/modifyTagTemplate",
+            data: JSON.stringify({
+                id: $('#tagTemplateId').val(),
+                title: $('#mTagTitle').val(),
+                color: $('#mTagColor').val(),
+                description: $('#mTagDescription').val()
+            }),
+            contentType: "application/json;charset=utf-8",
+            success: function () {
+                window.location.href = "/customer/classifyCustomer";
+            }
+        })
+    }
+
+    function deleteTagTemplate() {
+        $.ajax({
+            type: "POST",
+            url: "/customer/deleteTagTemplate",
+            data: {
+                id: $('#tagTemplateId').val()
             },
             success: function () {
                 window.location.href = "/customer/classifyCustomer";

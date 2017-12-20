@@ -120,4 +120,23 @@ public class CustomerController {
                                  @RequestParam(value = "customerId") int customerId) {
         customerService.transferCustomer(customerId, staffId);
     }
+
+    @RequestMapping(value = "/addTagToCustomer")
+    @ResponseBody
+    public void addTagToCustomer(@RequestParam(value = "customerId") int customerId,
+                                 @RequestParam(value = "tags[]") List<Integer> newTags) {
+        customerService.addTagToCustomer(customerId, newTags);
+    }
+
+    @RequestMapping(value = "/modifyTagTemplate")
+    @ResponseBody
+    public void modifyTagTemplate(@RequestBody TagTemplate tagTemplate) {
+        customerService.modifyTagTemplate(tagTemplate);
+    }
+
+    @RequestMapping(value = "/deleteTagTemplate")
+    @ResponseBody
+    public void deleteTagTemplate(@RequestParam(value = "id") int tagTemplateId) {
+        customerService.deleteTagTemplate(tagTemplateId);
+    }
 }
