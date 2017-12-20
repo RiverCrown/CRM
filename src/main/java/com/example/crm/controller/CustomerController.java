@@ -89,6 +89,12 @@ public class CustomerController {
         customerService.addTagTemplate(tagTemplate);
     }
 
+    @RequestMapping(value = "/deleteCustomerTag")
+    @ResponseBody
+    public void deleteCustomerTag(@RequestParam(value = "tagsId") int tagsId) {
+        customerService.deleteCustomerTag(tagsId);
+    }
+
     @RequestMapping(value = "/removeCustomer")
     @ResponseBody
     public String removeCustomer(int id) {

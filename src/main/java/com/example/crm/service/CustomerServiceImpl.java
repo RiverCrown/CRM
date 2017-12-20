@@ -72,6 +72,10 @@ public class CustomerServiceImpl {
         }
     }
 
+    public void deleteCustomerTag(int tagsId) {
+        tagsRepository.delete(tagsId);
+    }
+
     public List<CustomerTagView> getAllCustomerWithTags() {
         List<CustomerTagView> customerTagViews = new ArrayList<>();
         List<Customer> customers = (ArrayList<Customer>)customerRepository.findAll();

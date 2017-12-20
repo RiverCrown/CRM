@@ -1,5 +1,6 @@
 package com.example.crm.dao;
 
+import com.example.crm.domain.TagTemplate;
 import com.example.crm.domain.Tags;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.repository.CrudRepository;
