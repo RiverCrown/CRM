@@ -1,10 +1,10 @@
 package com.example.crm.service;
 
 import com.example.crm.dao.CustomerRepository;
+import com.example.crm.dao.DepartureFormRepository;
+import com.example.crm.dao.OrderRepository;
 import com.example.crm.dao.StaffRepository;
-import com.example.crm.domain.Customer;
-import com.example.crm.domain.Route;
-import com.example.crm.domain.Staff;
+import com.example.crm.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +22,16 @@ import java.util.List;
 public class StaffServiceImpl implements StaffService {
 
     private StaffRepository staffRepository;
+    private OrderRepository orderRepository;
+    private CustomerRepository customerRepository;
+    private DepartureFormRepository departureFormRepository;
 
     @Autowired
-    public StaffServiceImpl(StaffRepository staffRepository) {
+    public StaffServiceImpl(StaffRepository staffRepository, OrderRepository orderRepository,
+                            CustomerRepository customerRepository, DepartureFormRepository departureFormRepository) {
+        this.orderRepository = orderRepository;
+        this.departureFormRepository = departureFormRepository;
+        this.customerRepository = customerRepository;
         this.staffRepository = staffRepository;
     }
 
@@ -34,7 +41,28 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public void createStaff(String name, boolean sex) {
+    public boolean createStaff(Staff staff) {
+        if (staffRepository.findStaffByName(staff.getName()) != null)
+            return false;
+        else
+        {
+            staff.setPassword("1234");
+            staffRepository.save(staff);
+            return true;
+        }
+
+    }
+
+    public boolean deleteStaff(int staffId) {
+        Staff staff = staffRepository.findOne(staffId);
+        List<Customer> customers = customerRepository.findBySalesman(staff.getName());
+        List<FollowOrder> followOrders = orderRepository.findBySalesmanId(staffId);
+        if ((customers != null && customers.size() != 0) || (followOrders != null && followOrders.size() != 0))
+            return false;
+        else {
+            staffRepository.delete(staffId);
+            return true;
+        }
 
     }
 
@@ -49,6 +77,16 @@ public class StaffServiceImpl implements StaffService {
                 break;
             }
         }
+    }
+
+    public boolean hasSubmitted(HttpSession session) {
+        Staff staff = (Staff) session.getAttribute("staffObj");
+        List<DepartureForm> departureForms = departureFormRepository.findByStaffId(staff.getId());
+        return (departureForms != null && departureForms.size() != 0);
+    }
+
+    public void submitResignForm(DepartureForm departureForm) {
+        departureFormRepository.save(departureForm);
     }
 
     public void removeRoute(List<Route> routes, int routeId) {

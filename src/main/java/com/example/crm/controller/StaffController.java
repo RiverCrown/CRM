@@ -1,11 +1,13 @@
 package com.example.crm.controller;
 
 import com.example.crm.domain.Customer;
+import com.example.crm.domain.DepartureForm;
 import com.example.crm.domain.Staff;
 import com.example.crm.service.CustomerServiceImpl;
 import com.example.crm.service.StaffService;
 import com.example.crm.service.StaffServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +32,35 @@ public class StaffController {
     public StaffController(StaffServiceImpl staffService, CustomerServiceImpl customerService) {
         this.customerService = customerService;
         this.staffService = staffService;
+    }
+
+    @RequestMapping(value = "/addStaff")
+    @ResponseBody
+    public boolean addStaff(@RequestBody Staff staff) {
+        return staffService.createStaff(staff);
+    }
+
+    @RequestMapping(value = "/deleteStaff")
+    @ResponseBody
+    public boolean deleteStaff(@RequestParam(value = "staffId") int staffId) {
+        return staffService.deleteStaff(staffId);
+    }
+
+    @RequestMapping(value = "/resignManagementOfSalesman")
+    public String resignManagementOfSalesman(Model model, HttpSession session){
+        model.addAttribute("hasSubmitted", staffService.hasSubmitted(session));
+        return "resignManagementOfSalesman";
+    }
+
+    @RequestMapping(value = "/resignManagementOfBoss")
+    public String resignManagementOfBoss(){
+        return "resignManagementOfBoss";
+    }
+
+    @RequestMapping(value = "/getAllStaffs")
+    @ResponseBody
+    public List<Staff> getAllStaffs() {
+        return staffService.findAllStaffs();
     }
 
     @RequestMapping(value = "/modifyStaff")
@@ -80,4 +112,15 @@ public class StaffController {
         return staffService.getStaff(staffId);
     }
 
+    @RequestMapping(value = "/accountManagement")
+    public String accountManagement() {
+        return "accountManagement";
+    }
+
+    @RequestMapping(value = "/resign")
+    @ResponseBody
+    public void resign(@RequestBody DepartureForm departureForm) {
+        departureForm.setApplicationDate(LocalDate.now());
+        staffService.submitResignForm(departureForm);
+    }
 }
