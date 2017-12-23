@@ -2,6 +2,7 @@ package com.example.crm.controller;
 
 import com.example.crm.domain.Customer;
 import com.example.crm.domain.DepartureForm;
+import com.example.crm.domain.DepartureFormView;
 import com.example.crm.domain.Staff;
 import com.example.crm.service.CustomerServiceImpl;
 import com.example.crm.service.StaffService;
@@ -95,7 +96,7 @@ public class StaffController {
     @RequestMapping(value = "/findAllStaffsButSelf")
     @ResponseBody
     public List<Staff> findAllStaffsButSelf(HttpSession session) {
-        List<Staff> staffs = staffService.findAllStaffs();
+        List<Staff> staffs = staffService.findAllOnTheJobStaffs();
         Staff user = (Staff)session.getAttribute("staffObj");
         for (int i=0; i<staffs.size(); i++) {
             if (user.getId() == staffs.get(i).getId()) {
@@ -104,6 +105,24 @@ public class StaffController {
             }
         }
         return staffs;
+    }
+
+    @RequestMapping(value = "/auditDeparture")
+    @ResponseBody
+    public void auditDeparture(@RequestParam(value = "id") String formId) {
+        staffService.auditDeparture(Integer.parseInt(formId));
+    }
+
+    @RequestMapping(value = "/rejectDeparture")
+    @ResponseBody
+    public void rejectDeparture(@RequestParam(value = "id") String formId) {
+        staffService.rejectDeparture(Integer.parseInt(formId));
+    }
+
+    @RequestMapping(value = "/getAllDepartureForms")
+    @ResponseBody
+    public List<DepartureFormView> getAllDepartureForms() {
+        return staffService.getAllDepartureForms();
     }
 
     @RequestMapping(value = "/getStaffById")

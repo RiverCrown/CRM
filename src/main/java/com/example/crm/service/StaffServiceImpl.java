@@ -46,6 +46,7 @@ public class StaffServiceImpl implements StaffService {
             return false;
         else
         {
+            staff.setStatus("在职");
             staff.setPassword("1234");
             staffRepository.save(staff);
             return true;
@@ -60,6 +61,9 @@ public class StaffServiceImpl implements StaffService {
         if ((customers != null && customers.size() != 0) || (followOrders != null && followOrders.size() != 0))
             return false;
         else {
+            DepartureForm departureForm = departureFormRepository.findDepartureFormByStaffId(staffId);
+            if (departureForm != null)
+                departureFormRepository.delete(departureForm);
             staffRepository.delete(staffId);
             return true;
         }
@@ -68,6 +72,10 @@ public class StaffServiceImpl implements StaffService {
 
     public List<Staff> findAllStaffs() {
         return (ArrayList<Staff>)staffRepository.findAll();
+    }
+
+    public List<Staff> findAllOnTheJobStaffs() {
+        return staffRepository.findByStatus("在职");
     }
 
     public void modifyRoute(List<Route> routes, Route route) {
@@ -79,6 +87,30 @@ public class StaffServiceImpl implements StaffService {
         }
     }
 
+    public void auditDeparture(int formId) {
+        DepartureForm departureForm = departureFormRepository.findOne(formId);
+        Staff staff = staffRepository.findOne(departureForm.getStaffId());
+        staff.setStatus("离职交接");
+        departureForm.setAudited(true);
+        departureFormRepository.save(departureForm);
+    }
+
+    public void rejectDeparture(int formId) {
+        departureFormRepository.delete(formId);
+    }
+
+    public List<DepartureFormView> getAllDepartureForms() {
+        List<DepartureForm> departureForms = (List<DepartureForm>)departureFormRepository.findAll();
+        List<DepartureFormView> departureFormViews = new ArrayList<>();
+        for (DepartureForm departureForm : departureForms) {
+            DepartureFormView departureFormView = new DepartureFormView(departureForm);
+            departureFormView.setStaffName(staffRepository.findOne(departureForm.getStaffId()).getName());
+            departureFormView.setHandoverStaffName(staffRepository.findOne(departureForm.getHandoverStaffId()).getName());
+            departureFormViews.add(departureFormView);
+        }
+        return departureFormViews;
+    }
+
     public boolean hasSubmitted(HttpSession session) {
         Staff staff = (Staff) session.getAttribute("staffObj");
         List<DepartureForm> departureForms = departureFormRepository.findByStaffId(staff.getId());
@@ -86,6 +118,9 @@ public class StaffServiceImpl implements StaffService {
     }
 
     public void submitResignForm(DepartureForm departureForm) {
+        Staff staff = staffRepository.findOne(departureForm.getStaffId());
+        staff.setStatus("离职申请中");
+        staffRepository.save(staff);
         departureFormRepository.save(departureForm);
     }
 

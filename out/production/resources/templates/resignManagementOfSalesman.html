@@ -15,7 +15,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                <button onclick="window.location.href = '/staff/resignManagementOfSalesman'" type="button" class="btn btn-primary" data-dismiss="modal">
                     关闭
                 </button>
             </div>
@@ -154,7 +154,7 @@
             },
             ajax: {
                 type: "GET",
-                url: "/staff/getAllStaffs",
+                url: "/staff/findAllStaffsButSelf",
                 dataSrc: ''
             },
             columns: [
@@ -199,6 +199,7 @@
            type: "POST",
            url: "/staff/resign",
            data: JSON.stringify({
+               audited: false,
                staffId: [[${session.staffObj.getId()}]],
                departureDate: $('#departureDate').val(),
                reason: $('#reason').val(),

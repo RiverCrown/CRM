@@ -14,4 +14,6 @@ import java.util.List;
 public interface DepartureFormRepository extends CrudRepository<DepartureForm, Integer>{
 
     List<DepartureForm> findByStaffId(int id);
+
+    DepartureForm findDepartureFormByStaffId(int id);
 }

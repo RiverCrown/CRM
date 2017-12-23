@@ -19,6 +19,15 @@ public class DepartureForm {
     private int handoverStaffId;
     private LocalDate departureDate;
     private String advise;
+    private boolean isAudited;
+
+    public boolean isAudited() {
+        return isAudited;
+    }
+
+    public void setAudited(boolean audited) {
+        isAudited = audited;
+    }
 
     public String getAdvise() {
         return advise;
@@ -75,5 +84,9 @@ public class DepartureForm {
     public void setDepartureDate(String departureDate) {
         if (departureDate != null && !departureDate.equals(""))
             this.departureDate = LocalDate.parse(departureDate);
+    }
+
+    public void setDepartureDate(LocalDate departureDate) {
+        this.departureDate = departureDate;
     }
 }

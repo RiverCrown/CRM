@@ -4,6 +4,25 @@
 
 </head>
 <body onload="roleDiff()">
+<div class="modal fade" id="hint" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="hintTitle">提示：</h4>
+            </div>
+            <div class="modal-body" id="hintContent">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="wrapper">
     <nav th:replace="mainPage :: navi" class="navbar navbar-default navbar-fixed-top" role="navigation"
          style="margin-bottom: 0"></nav>
@@ -37,87 +56,92 @@
                     <div class="tab-pane fade active in" id="basicInfo">
                         <div class="row">
                             <div class="col-lg-10 col-lg-offset-1">
+                                <form role="form" data-toggle="validator" id="firstStepForm">
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">
                                         <h4 style="text-align: center">设置订单基本信息</h4>
                                     </div>
                                     <br/>
                                     <div class="panel-body">
-                                        <div class="col-lg-6 col-lg-offset-3">
-                                            <div class="form-group">
-                                                <label class="form-label">摘要：</label>
-                                                <textarea id="digest" class="form-control" placeholder="订单概述"
-                                                          style="resize: none"></textarea>
+                                            <div class="col-lg-6 col-lg-offset-3">
+                                                <div class="form-group">
+                                                    <label class="form-label">摘要：</label>
+                                                    <textarea required="required" name="digest" id="digest" class="form-control" placeholder="订单概述"
+                                                              style="resize: none"></textarea>
+                                                    <div class="help-block with-errors"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label">状态：
+                                                        <select name="status" id="status" class="form-control">
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==0)}"
+                                                                    value="0"></option>
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==1)}"
+                                                                    value="1">跟踪
+                                                            </option>
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==2)}"
+                                                                    value="2">搁置
+                                                            </option>
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==3)}"
+                                                                    value="3">成功
+                                                            </option>
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==4)}"
+                                                                    value="4">失效
+                                                            </option>
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==5)}"
+                                                                    value="5">失败
+                                                            </option>
+                                                        </select>
+                                                    </label>
+                                                    <label class="form-label pull-right">阶段：
+                                                        <select id="phase" class="form-control">
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==0)}"
+                                                                    value="0"></option>
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==1)}"
+                                                                    value="1">1/7 初期沟通
+                                                            </option>
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==2)}"
+                                                                    value="2">2/7 立项评估
+                                                            </option>
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==3)}"
+                                                                    value="3">3/7 需求分析
+                                                            </option>
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==4)}"
+                                                                    value="4">4/7 方案制定
+                                                            </option>
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==5)}"
+                                                                    value="5">5/7 招投标竞争
+                                                            </option>
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==6)}"
+                                                                    value="6">6/7 商务谈判
+                                                            </option>
+                                                            <option th:selected="${(order!=null)and(order.getStatus()==7)}"
+                                                                    value="7">7/7 合同签约
+                                                            </option>
+                                                        </select>
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label">开始时间：</label>
+                                                    <input data-dateAfterStart="" data-dateBeforeToday="" required="required" name="startDate" id="startDate" type="date" placeholder="" class="form-control"/>
+                                                    <div class="help-block with-errors"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label">最近推进时间：</label>
+                                                    <input data-dateAfterStart="" required="required" name="latestDate" id="latestDate" type="date" placeholder="" class="form-control"/>
+                                                    <div class="help-block with-errors"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label">详细内容：</label>
+                                                    <textarea required="required" name="detail" id="detail" class="form-control" placeholder="和客户交流的详细内容..."
+                                                              style="resize: none"></textarea>
+                                                    <div class="help-block with-errors"></div>
+                                                </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="form-label">状态：
-                                                    <select id="status" class="form-control">
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==0)}"
-                                                                value="0"></option>
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==1)}"
-                                                                value="1">跟踪
-                                                        </option>
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==2)}"
-                                                                value="2">搁置
-                                                        </option>
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==3)}"
-                                                                value="3">成功
-                                                        </option>
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==4)}"
-                                                                value="4">失效
-                                                        </option>
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==5)}"
-                                                                value="5">失败
-                                                        </option>
-                                                    </select>
-                                                </label>
-                                                <label class="form-label pull-right">阶段：
-                                                    <select id="phase" class="form-control">
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==0)}"
-                                                                value="0"></option>
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==1)}"
-                                                                value="1">1/7 初期沟通
-                                                        </option>
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==2)}"
-                                                                value="2">2/7 立项评估
-                                                        </option>
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==3)}"
-                                                                value="3">3/7 需求分析
-                                                        </option>
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==4)}"
-                                                                value="4">4/7 方案制定
-                                                        </option>
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==5)}"
-                                                                value="5">5/7 招投标竞争
-                                                        </option>
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==6)}"
-                                                                value="6">6/7 商务谈判
-                                                        </option>
-                                                        <option th:selected="${(order!=null)and(order.getStatus()==7)}"
-                                                                value="7">7/7 合同签约
-                                                        </option>
-                                                    </select>
-                                                </label>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">开始时间：</label>
-                                                <input id="startDate" type="date" placeholder="" class="form-control"/>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">最近推进时间：</label>
-                                                <input id="latestDate" type="date" placeholder="" class="form-control"/>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">详细内容：</label>
-                                                <textarea id="detail" class="form-control" placeholder="和客户交流的详细内容..."
-                                                          style="resize: none"></textarea>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="panel-footer">
                                         <div class="row">
                                             <div class="col-lg-6 col-lg-offset-3">
-                                                <button type="button" class="btn btn-lg btn-success btn-block"
+                                                <button type="submit" class="btn btn-lg btn-success btn-block"
                                                         data-toggle="tab" data-target="#customer"
                                                         onclick="switchTab('first')">
                                                     下一步
@@ -125,7 +149,9 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -208,6 +234,12 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                            </div>
+                                                            <div class="panel-footer">
+                                                                <button type="submit" class="btn btn-block btn-success btn-lg"
+                                                                        onclick="switchTab('second')">
+                                                                    下一步
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -400,17 +432,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="panel-footer">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-lg-offset-3">
-                                                <button type="button" class="btn btn-lg btn-success btn-block"
-                                                        data-toggle="tab" data-target="#expected"
-                                                        onclick="switchTab('second')">
-                                                    下一步
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -496,7 +517,25 @@
     var customerWay = "exist";
     var table = $('#dataTables-example');
     var salesmanName = [[${session.staffObj.getName()}]];
+    var hintModal = $('#hint');
     $('document').ready(function () {
+        $('#firstStepForm').validator({
+            delay: 100,
+            custom: {
+                dateBeforeToday: function ($el) {
+                    var now = new Date();
+                    var today = now.toISOString().substr(0, 10);
+                    if ($el.val() > today)
+                        return "开始时间不能超过今天。";
+                },
+                dateAfterStart: function ($el) {
+                    var startDate = $('#startDate').val();
+                    var latestPushDate = $('#latestDate').val();
+                    if (latestPushDate < startDate)
+                        return "最近推进时间不能早于开始时间。";
+                }
+            }
+        });
         if ([[${order!=null}]]) {
             var startDate = $('#startDate');
             var startYear = timeFormatDigits(orderObj.startDate.year);
@@ -542,6 +581,7 @@
                 $('#selectedName').html(nTrs[selectedNo].name);
                 $('#selectedContact').html(nTrs[selectedNo].representative.name);
                 $('#selectedMainBusiness').html(nTrs[selectedNo].mainBusiness);
+                $('#selectedCustomer').val("yes");
                 if (nTrs[selectedNo].company) {
                     $('#selectedType').html("企业公司");
                 } else {
@@ -611,6 +651,13 @@
                 secondTab.addClass("active");
                 break;
             case "second":
+                if (customerWay == "exist" && $('#selectedId').html() == "") {
+                    $('#hintContent').html("请选择一个客户！");
+                    hintModal.modal('show');
+                    return;
+                }
+                $('#customer').removeClass("active in");
+                $('#expected').addClass("active in");
                 secondTab.removeClass("active");
                 thirdTab.addClass("active");
                 break;

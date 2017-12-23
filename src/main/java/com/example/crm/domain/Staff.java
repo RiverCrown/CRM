@@ -13,6 +13,7 @@ public class Staff extends People{
     private Integer id;
     private String role;
     private String password;
+    private String status;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "staff_id")
     private List<Route> routes;
@@ -34,6 +35,14 @@ public class Staff extends People{
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getRole() {
