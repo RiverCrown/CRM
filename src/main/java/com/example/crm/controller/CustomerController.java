@@ -97,9 +97,8 @@ public class CustomerController {
 
     @RequestMapping(value = "/removeCustomer")
     @ResponseBody
-    public String removeCustomer(int id) {
-        customerService.removeCustomer(id);
-        return "customerManagement";
+    public boolean removeCustomer(int id) {
+        return customerService.removeCustomer(id);
     }
 
     @RequestMapping(value = "/getAllCustomerWithTags")

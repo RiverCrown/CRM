@@ -80,7 +80,7 @@
 <div class="modal fade" id="newComment" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form role="form">
+            <form role="form" data-toggle="validator" onsubmit="return false">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                     </button>
@@ -89,13 +89,14 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="form-label">评论内容：</label>
-                        <textarea id="commentContent" class="form-control" style="resize: none" placeholder="">
+                        <textarea required="required" name="commentContent" id="commentContent" class="form-control" style="resize: none" placeholder="">
 
                         </textarea>
+                        <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="addComment()" data-dismiss="modal">
+                    <button type="submit" class="btn btn-primary" onclick="addComment()" data-dismiss="modal">
                         发表
                     </button>
                     <button type="reset" class="btn btn-default">
@@ -134,7 +135,7 @@
 <div class="modal fade" id="modifyOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form role="form" id="modifyOrderForm">
+            <form role="form" id="modifyOrderForm" data-toggle="validator" onsubmit="return false">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span>
@@ -152,10 +153,11 @@
                                 <label class="form-label">
                                     摘要：
                                 </label>
-                                <textarea name="digest" th:text="${order.getDigest()}" style="resize: none"
+                                <textarea required="required" name="digest" th:text="${order.getDigest()}" style="resize: none"
                                           class="form-control"
                                           placeholder="大致摘要">
                             </textarea>
+                                <div class="help-block with-errors"></div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">状态：
@@ -185,13 +187,15 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">开始时间：</label>
-                                <input name="startDate" th:value="${order.getStartDate()}" type="date" class="form-control"
+                                <input id="mStartDate" required="required" data-dateBeforeToday="" name="startDate" th:value="${order.getStartDate()}" type="date" class="form-control"
                                        placeholder="开始时间"/>
+                                <div class="help-block with-errors"></div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">推进时间：</label>
-                                <input name="latestPushDate" th:value="${order.getLatestPushDate()}" class="form-control" type="date"
+                                <input id="mLatestDate" required="required" data-dateAfterStart="" name="latestPushDate" th:value="${order.getLatestPushDate()}" class="form-control" type="date"
                                        placeholder="推进时间"/>
+                                <div class="help-block with-errors"></div>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -199,16 +203,19 @@
                                 <label class="form-label">结束时间：</label>
                                 <input name="endDate" th:value="${order.getEndDate()}" class="form-control" type="date"
                                        placeholder="结束时间"/>
+                                <div class="help-block with-errors"></div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">预计结束时间：</label>
-                                <input name="expectedEndDate" th:value="${order.getExpectedEndDate()}" class="form-control" type="date"
+                                <input id="mExpectedEndDate" data-dateAfterNext="" name="expectedEndDate" th:value="${order.getExpectedEndDate()}" class="form-control" type="date"
                                        placeholder="预计结束时间"/>
+                                <div class="help-block with-errors"></div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">下次推进时间：</label>
-                                <input name="nextPushDate" th:value="${order.getNextPushDate()}" class="form-control" type="date"
+                                <input id="mNextDate" required="required" data-dateAfterLatest="" name="nextPushDate" th:value="${order.getNextPushDate()}" class="form-control" type="date"
                                        placeholder="下次推进时间"/>
+                                <div class="help-block with-errors"></div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">成功可能性：
@@ -240,15 +247,16 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">跟单详细记录： </label>
-                                <textarea name="detail" th:text="${order.getDetail()}" style="resize: none" class="form-control"
+                                <textarea required="required" name="detail" th:text="${order.getDetail()}" style="resize: none" class="form-control"
                                           placeholder="">
                                 </textarea>
+                                <div class="help-block with-errors"></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="modifyOrder()">
+                    <button type="submit" class="btn btn-primary" onclick="modifyOrder()">
                         修改
                     </button>
                     <button type="reset" class="btn btn-default" data-dismiss="modal">
@@ -543,6 +551,46 @@
     //<![CDATA[
     var table = $('#dataTables-example');
     $(document).ready(function () {
+        $('#modifyOrderForm').validator({
+            delay: 100,
+            custom: {
+                dateBeforeToday: function ($el) {
+                    var now = new Date();
+                    var today = now.toISOString().substr(0, 10);
+                    if ($el.val() > today)
+                        return "开始时间不能超过今天。";
+                },
+                dateAfterStart: function ($el) {
+                    var startDate = $('#mStartDate').val();
+                    var latestPushDate = $('#mLatestDate').val();
+                    if (latestPushDate < startDate)
+                        return "最近推进时间不能早于开始时间。";
+                },
+                dateAfterNext: function ($el) {
+                    var latestDate = $('#mLatestDate').val();
+                    var nextDate = $('#mNextDate').val();
+                    var expectedEndDate = $('#mExpectedEndDate').val();
+                    if (expectedEndDate == "")
+                        return "";
+                    if (latestDate >= expectedEndDate)
+                        return "预计结束时间不能早于最近推进时间";
+                    if (nextDate == "")
+                        return "";
+                    if (nextDate > expectedEndDate)
+                        return "预计结束时间不能早于下次推进时间";
+                },
+                dateAfterLatest: function ($el) {
+                    var latestDate = $('#mLatestDate').val();
+                    var nextDate = $('#mNextDate').val();
+                    var expectedEndDate = $('#mExpectedEndDate').val();
+                    if (latestDate != "" && latestDate >= nextDate)
+                        return "下次推进时间不能早于最近推进时间";
+                    if (expectedEndDate != "" && nextDate > expectedEndDate) {
+                        return "预计结束时间不能早于下次推进时间";
+                    }
+                }
+            }
+        });
         table.dataTable({
             language: {
                 url: "/json/dataTables_cn.json"

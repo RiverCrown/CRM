@@ -11,45 +11,49 @@
                 </button>
                 <h4 class="modal-title">录入客户</h4>
             </div>
-            <form role="form" id="addCustomerForm">
+            <form role="form" id="addCustomerForm" onsubmit="return false" data-toggle="validator">
                 <div class="modal-body row">
                     <div class="col-lg-5">
-
                         <div class="form-group">
                             <label class="form-label">客户单位名称</label>
-                            <textarea class="form-control" placeholder="个体户填写联系人姓名，公司填写公司名称" style="resize: none;"
+                            <textarea required="required" class="form-control" placeholder="个体户填写联系人姓名，公司填写公司名称" style="resize: none;"
                                       id="companyName" name="companyName"></textarea>
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">客户性质</label>
                             <br/>
                             <label class="radio-inline">
-                                <input type="radio" name="customerType" id="company" value="company"/>企业公司
+                                <input required="required" type="radio" name="customerType" id="company" value="company"/>企业公司
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="customerType" id="self" value="self"/>个体户
+                                <input required="required" type="radio" name="customerType" id="self" value="self"/>个体户
                             </label>
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">潜在客户</label>
                             <br/>
                             <label class="radio-inline">
-                                <input type="radio" name="potential" id="potential" value="potential"/>是
+                                <input required="required" type="radio" name="potential" id="potential" value="potential"/>是
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="potential" id="notPotential" value="notPotential"/>否
+                                <input required="required" type="radio" name="potential" id="notPotential" value="notPotential"/>否
                             </label>
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">客户主要业务</label>
-                            <textarea class="form-control" placeholder="客户公司的主营业务" style="resize: none;"
+                            <textarea required="required" class="form-control" placeholder="客户公司的主营业务" style="resize: none;"
                                       id="mainBusiness"
                                       name="mainBusiness"></textarea>
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">客户单位地址</label>
-                            <input type="text" class="form-control" placeholder="个体户填写联系人地址，公司填写公司地址"
+                            <input required="required" type="text" class="form-control" placeholder="个体户填写联系人地址，公司填写公司地址"
                                       id="companyAddress" name="companyAddress"/>
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">公司类型
@@ -71,68 +75,63 @@
                     <div class="col-lg-7">
                         <div class="form-group">
                             <label class="form-label">联系人姓名</label>
-                            <input id="contactName" name="contactName" class="form-control" type="text"
+                            <input required="required" id="contactName" name="contactName" class="form-control" type="text"
                                    placeholder="联系人姓名"/>
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">联系人年龄</label>
-                            <input id="contactAge" name="contactAge" class="form-control" type="text"
+                            <input required="required" id="contactAge" name="contactAge" class="form-control" type="number"
+                                   max="80" min="18"
                                    placeholder="联系人年龄"/>
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">联系人性别</label>
                             <br/>
                             <label class="radio-inline">
-                                <input type="radio" name="sex" id="man" value="man"/>男
+                                <input required="required" type="radio" name="sex" id="man" value="man"/>男
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="sex" id="woman" value="woman"/>女
+                                <input required="required" type="radio" name="sex" id="woman" value="woman"/>女
                             </label>
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">联系人手机号码</label>
-                            <input id="contactPhoneNumber" name="contactPhoneNumber" class="form-control" type="text"
+                            <input required="required" id="contactPhoneNumber" name="contactPhoneNumber" class="form-control" type="tel"
+                                   pattern="^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$"
                                    placeholder="联系人手机号码"/>
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">联系人邮箱</label>
-                            <input id="contactEmail" name="contactEmail" class="form-control" type="text"
+                            <input id="contactEmail" name="contactEmail" class="form-control" type="email"
+                                   pattern="^[a-zA-Z0-9][0-9a-zA-Z]*@{1}[0-9a-zA-Z]+\.(com|net|cn|com\.cn)$"
                                    placeholder="联系人邮箱"/>
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">联系人住址</label>
                             <input id="contactAddress" name="contactAddress" class="form-control" type="text"
                                    placeholder="联系人住址"/>
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">联系人兴趣爱好</label>
                             <input id="contactHobby" name="contactHobby" class="form-control" type="text"
                                    placeholder="联系人兴趣爱好"/>
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">联系人生日</label>
-                            <div class="form-inline">
-                                <label class="form-label">
-                                    <select class="form-control" id="year">
-                                    </select>
-                                    年
-                                </label>
-                                <label class="form-label">
-                                    <select class="form-control" id="month">
-                                    </select>
-                                    月
-                                </label>
-                                <label class="form-label">
-                                    <select class="form-control" id="day">
-                                    </select>
-                                    日
-                                </label>
-                            </div>
+                            <input id="birthDate" class="form-control" required="required" type="date" name="birthDate" placeholder=""/>
+                            <div class="help-block with-errors"></div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="addCustomer()">
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="addCustomer()">
                         提交
                     </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal" onclick="cancel('addCustomerForm')">
@@ -243,7 +242,6 @@
         </div>
     </div>
 </div>
-<script src="/js/birthday.js"></script>
 <script src="/js/plugins/dataTables/jquery.dataTables.js"></script>
 <script src="/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 <script type="text/javascript" th:inline="javascript">
@@ -251,8 +249,6 @@
     var globalCustomerId;
     var table = $('#dataTables-example');
     $(document).ready(function () {
-        var initDate = new Date();
-        timeSelectGenerate('year', 'month', 'day', 1900, initDate.getFullYear());
         table.dataTable({
             language: {
                 url: "/json/dataTables_cn.json"
@@ -326,11 +322,7 @@
         var isCompany = ($("input[name='customerType']:checked").val() == "company");
         var isPotential = ($("input[name='potential']:checked").val() == "potential");
         var sex = ($("input[name='sex']:checked").val() == "man");
-        var date;
-        var year = $('#year').find("option:selected").text().toString();
-        var month = $('#month').find("option:selected").text().toString();
-        var day = $('#day').find("option:selected").text().toString();
-        date = year + "-" + month + "-" + day;
+        var date = $('#birthDate').val();
         $.ajax({
             type: "POST",
             url: "/customer/addCustomer",

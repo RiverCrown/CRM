@@ -17,10 +17,13 @@ public class CustomerServiceImpl {
     private StaffRepository staffRepository;
     private TagTemplateRepository tagTemplateRepository;
     private TagsRepository tagsRepository;
+    private OrderRepository orderRepository;
 
     @Autowired
     CustomerServiceImpl(CustomerRepository customerRepository, StaffRepository staffRepository,
-                        TagTemplateRepository tagTemplateRepository, TagsRepository tagsRepository){
+                        TagTemplateRepository tagTemplateRepository, TagsRepository tagsRepository,
+                        OrderRepository orderRepository){
+        this.orderRepository = orderRepository;
         this.tagsRepository = tagsRepository;
         this.tagTemplateRepository = tagTemplateRepository;
         this.customerRepository = customerRepository;
@@ -92,8 +95,17 @@ public class CustomerServiceImpl {
         return customerRepository.findMainBusiness();
     }
 
-    public void removeCustomer(int id) {
-        customerRepository.delete(id);
+    public boolean removeCustomer(int id) {
+        List<FollowOrder> followOrders = orderRepository.findByCustomerId(id);
+        List<Tags> tags = tagsRepository.findByCustomerId(id);
+        if (followOrders != null && followOrders.size() != 0) {
+            return false;
+        } else {
+            if (tags != null)
+                tagsRepository.delete(tags);
+            customerRepository.delete(id);
+            return true;
+        }
     }
 
     public void transferCustomer(int customerId, int staffId) {

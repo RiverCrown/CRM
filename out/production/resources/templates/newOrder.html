@@ -254,58 +254,64 @@
                                                         </div>
                                                         <div id="collapseTwo" class="panel-collapse collapse"
                                                              style="height: 0px;">
-                                                            <div class="panel-body">
+                                                            <form role="form" data-toggle="validator">
+                                                                <div class="panel-body">
                                                                 <div class="col-lg-10 col-lg-offset-1">
                                                                     <div class="col-lg-6">
                                                                         <div class="form-group">
                                                                             <label class="form-label">客户单位名称</label>
-                                                                            <textarea class="form-control"
+                                                                            <textarea required="required" class="form-control"
                                                                                       placeholder="个体户填写联系人姓名，公司填写公司名称"
                                                                                       style="resize: none;"
                                                                                       id="companyName"
                                                                                       name="companyName"></textarea>
+                                                                            <div class="help-block with-errors"></div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label">客户性质</label>
                                                                             <br/>
                                                                             <label class="radio-inline">
-                                                                                <input type="radio" name="customerType"
+                                                                                <input required="required" type="radio" name="customerType"
                                                                                        id="company"
                                                                                        value="company"/>企业公司
                                                                             </label>
                                                                             <label class="radio-inline">
-                                                                                <input type="radio" name="customerType"
+                                                                                <input required="required" type="radio" name="customerType"
                                                                                        id="self" value="self"/>个体户
                                                                             </label>
+                                                                            <div class="help-block with-errors"></div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label">潜在客户</label>
                                                                             <br/>
                                                                             <label class="radio-inline">
-                                                                                <input type="radio" name="potential"
+                                                                                <input required="required" type="radio" name="potential"
                                                                                        id="potential"
                                                                                        value="potential"/>是
                                                                             </label>
                                                                             <label class="radio-inline">
-                                                                                <input type="radio" name="potential"
+                                                                                <input required="required" type="radio" name="potential"
                                                                                        id="notPotential"
                                                                                        value="notPotential"/>否
                                                                             </label>
+                                                                            <div class="help-block with-errors"></div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label">客户主要业务</label>
-                                                                            <textarea class="form-control"
+                                                                            <textarea required="required" class="form-control"
                                                                                       placeholder="客户公司的主营业务"
                                                                                       style="resize: none;"
                                                                                       id="mainBusiness"
                                                                                       name="mainBusiness"></textarea>
+                                                                            <div class="help-block with-errors"></div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label">客户单位地址</label>
-                                                                            <input type="text" class="form-control"
+                                                                            <input required="required" type="text" class="form-control"
                                                                                    placeholder="个体户填写联系人地址，公司填写公司地址"
                                                                                    id="companyAddress"
                                                                                    name="companyAddress"/>
+                                                                            <div class="help-block with-errors"></div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label">公司类型
@@ -328,44 +334,52 @@
                                                                     <div class="col-lg-6">
                                                                         <div class="form-group">
                                                                             <label class="form-label">联系人姓名</label>
-                                                                            <input id="contactName" name="contactName"
+                                                                            <input required="required" id="contactName" name="contactName"
                                                                                    class="form-control"
                                                                                    type="text"
                                                                                    placeholder="联系人姓名"/>
+                                                                            <div class="help-block with-errors"></div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label">联系人年龄</label>
-                                                                            <input id="contactAge" name="contactAge"
+                                                                            <input required="required" id="contactAge" name="contactAge"
                                                                                    class="form-control"
-                                                                                   type="text"
+                                                                                   type="number"
+                                                                                   min="18"
+                                                                                   max="80"
                                                                                    placeholder="联系人年龄"/>
+                                                                            <div class="help-block with-errors"></div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label">联系人性别</label>
                                                                             <br/>
                                                                             <label class="radio-inline">
-                                                                                <input type="radio" name="sex" id="man"
+                                                                                <input required="required" type="radio" name="sex" id="man"
                                                                                        value="woman"/>男
                                                                             </label>
                                                                             <label class="radio-inline">
-                                                                                <input type="radio" name="sex"
+                                                                                <input required="required" type="radio" name="sex"
                                                                                        id="woman"
                                                                                        value="woman"/>女
                                                                             </label>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label">联系人手机号码</label>
-                                                                            <input id="contactPhoneNumber"
+                                                                            <input required="required" id="contactPhoneNumber"
                                                                                    name="contactPhoneNumber"
-                                                                                   class="form-control" type="text"
-                                                                                   placeholder="联系人手机号码"/>
+                                                                                   pattern="^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$"
+                                                                                   class="form-control" type="tel"
+                                                                                   placeholder="请输入手机号码的格式"/>
+                                                                            <div class="help-block with-errors"></div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label">联系人邮箱</label>
                                                                             <input id="contactEmail" name="contactEmail"
                                                                                    class="form-control"
-                                                                                   type="text"
-                                                                                   placeholder="联系人邮箱"/>
+                                                                                   pattern="^[a-zA-Z0-9][0-9a-zA-Z]*@{1}[0-9a-zA-Z]+\.(com|net|cn|com\.cn)$"
+                                                                                   type="email"
+                                                                                   placeholder="请按邮箱格式输入"/>
+                                                                            <div class="help-block with-errors"></div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label">联系人住址</label>
@@ -373,6 +387,7 @@
                                                                                    name="contactAddress"
                                                                                    class="form-control" type="text"
                                                                                    placeholder="联系人住址"/>
+                                                                            <div class="help-block with-errors"></div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label">联系人兴趣爱好</label>
@@ -380,15 +395,25 @@
                                                                                    class="form-control"
                                                                                    type="text"
                                                                                    placeholder="联系人兴趣爱好"/>
+                                                                            <div class="help-block with-errors"></div>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label">联系人生日</label>
-                                                                            <input id="birthDate" type="date"
+                                                                            <input required="required" id="birthDate" type="date"
                                                                                    placeholder="" class="form-control"/>
+                                                                            <div class="help-block with-errors"></div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                                <div class="panel-footer">
+                                                                    <button type="submit" class="btn btn-block btn-success btn-lg"
+                                                                            data-toggle="tab" data-target="#expected"
+                                                                            onclick="switchTab('second')">
+                                                                        下一步
+                                                                    </button>
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 <div th:if="${order!=null}">
@@ -427,6 +452,13 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="panel-footer">
+                                                            <button type="button" class="btn btn-block btn-success btn-lg"
+                                                                    data-toggle="tab" data-target="#expected"
+                                                                    onclick="switchTab('second')">
+                                                                下一步
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -444,16 +476,18 @@
                                         <h4 style="text-align: center">设置订单预期</h4>
                                     </div>
                                     <br/>
+                                    <form id="submitStep" onsubmit="return false" role="form" data-toggle="validator">
                                     <div class="panel-body">
                                         <div class="col-lg-6 col-lg-offset-3">
                                             <div class="form-group">
                                                 <label class="form-label">产品大致信息：</label>
-                                                <textarea id="productInfo" style="resize: none" class="form-control"
+                                                <textarea name="productInfo" id="productInfo" style="resize: none" class="form-control"
                                                           placeholder="客户所需产品信息"></textarea>
+                                                <div class="help-block with-errors"></div>
                                             </div>
                                             <label class="form-label">预计收入：</label>
                                             <div class="form-group input-group">
-                                                <input id="expectedIncome" type="number" step="0.01"
+                                                <input name="expectedIncome" id="expectedIncome" type="number" step="0.01"
                                                        class="form-control" placeholder="预计收入"/>
                                                 <span class="input-group-addon">￥</span>
                                             </div>
@@ -476,25 +510,28 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">预计结束时间：</label>
-                                                <input id="expectedEndDate" type="date" placeholder=""
+                                                <input data-dateAfterNext="" name="expectedEndDate" id="expectedEndDate" type="date" placeholder=""
                                                        class="form-control"/>
+                                                <div class="help-block with-errors"></div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">下次推进时间：</label>
-                                                <input id="nextDate" type="date" placeholder="" class="form-control"/>
+                                                <input data-dateAfterLatest="" required="required" name="nextDate" id="nextDate" type="date" placeholder="" class="form-control"/>
+                                                <div class="help-block with-errors"></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="panel-footer">
                                         <div class="row">
                                             <div class="col-lg-6 col-lg-offset-3">
-                                                <button type="button" class="btn btn-lg btn-success btn-block"
+                                                <button type="submit" class="btn btn-lg btn-success btn-block"
                                                         onclick="switchTab('third')">
                                                     提交
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -533,6 +570,34 @@
                     var latestPushDate = $('#latestDate').val();
                     if (latestPushDate < startDate)
                         return "最近推进时间不能早于开始时间。";
+                }
+            }
+        });
+        $('#submitStep').validator({
+            delay: 100,
+            custom: {
+                dateAfterNext: function ($el) {
+                    var latestDate = $('#latestDate').val();
+                    var nextDate = $('#nextDate').val();
+                    var expectedEndDate = $('#expectedEndDate').val();
+                    if (expectedEndDate == "")
+                        return "";
+                    if (latestDate >= expectedEndDate)
+                        return "预计结束时间不能早于最近推进时间";
+                    if (nextDate == "")
+                        return "";
+                    if (nextDate > expectedEndDate)
+                        return "预计结束时间不能早于下次推进时间";
+                },
+                dateAfterLatest: function ($el) {
+                    var latestDate = $('#latestDate').val();
+                    var nextDate = $('#nextDate').val();
+                    var expectedEndDate = $('#expectedEndDate').val();
+                    if (latestDate != "" && latestDate >= nextDate)
+                        return "下次推进时间不能早于最近推进时间";
+                    if (expectedEndDate != "" && nextDate > expectedEndDate) {
+                        return "预计结束时间不能早于下次推进时间";
+                    }
                 }
             }
         });

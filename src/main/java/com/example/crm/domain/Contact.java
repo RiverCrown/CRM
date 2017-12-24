@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -16,7 +17,7 @@ public class Contact extends People{
     @GeneratedValue
     private int id;
     private String hobby;
-    private Calendar birthday;
+    private LocalDate birthday;
 
     Contact(){
 
@@ -30,12 +31,16 @@ public class Contact extends People{
         this.hobby = hobby;
     }
 
-    public Calendar getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Calendar birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = LocalDate.parse(birthday);
     }
 
     public int getId() {
@@ -46,20 +51,4 @@ public class Contact extends People{
         this.id = id;
     }
 
-    public String getFormatBirthday(int type) {
-        switch (type) {
-            case 0:
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                return format.format(birthday.getTime());
-            case 1:
-                return String.valueOf(birthday.get(Calendar.YEAR));
-            case 2:
-                return String.valueOf(birthday.get(Calendar.MONTH) + 1);
-            case 3:
-                return String.valueOf(birthday.get(Calendar.DAY_OF_MONTH));
-            default:
-                return "";
-        }
-
-    }
 }

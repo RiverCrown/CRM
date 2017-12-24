@@ -6,45 +6,48 @@
 <div class="modal fade" id="modifyTagTemplate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form role="form">
+            <form role="form" onsubmit="return false" data-toggle="validator">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title">修改标签：</h4>
                 </div>
-                <div class="modal-body">
-                    <input id="tagTemplateId" placeholder="" type="hidden" />
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label class="form-label">标签名称：
-                                </label>
-                                <input id="mTagTitle" type="text" class="form-control" placeholder=""/>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">标签颜色：
-                                    <input id="mTagColor" type="color" class="form-control" placeholder=""/>
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">标签详细描述：
-                                </label>
-                                <textarea placeholder="" style="resize: none" id="mTagDescription" class="form-control"></textarea>
+                    <div class="modal-body">
+                        <input id="tagTemplateId" placeholder="" type="hidden" />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">标签名称：
+                                    </label>
+                                    <input required="required" id="mTagTitle" type="text" class="form-control" placeholder=""/>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">标签颜色：
+                                        <input required="required" id="mTagColor" type="color" class="form-control" placeholder=""/>
+                                    </label>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">标签详细描述：
+                                    </label>
+                                    <textarea required="required" placeholder="" style="resize: none" id="mTagDescription" class="form-control"></textarea>
+                                    <div class="help-block with-errors"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="modifyTagTemplate()">
-                        修改
-                    </button>
-                    <button type="button" class="btn btn-danger" onclick="deleteTagTemplate()">
-                        删除
-                    </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        关闭
-                    </button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" onclick="modifyTagTemplate()">
+                            修改
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="deleteTagTemplate()">
+                            删除
+                        </button>
+                        <button type="reset" class="btn btn-default" data-dismiss="modal">
+                            关闭
+                        </button>
+                    </div>
             </form>
         </div>
     </div>
@@ -108,41 +111,47 @@
 <div class="modal fade" id="newTagTemplate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form role="form">
+            <form role="form" data-toggle="validator" onsubmit="return false">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title" id="myModalLabel">新建标签：</h4>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label class="form-label">标签名称：
-                                </label>
-                                <input id="tagTitle" type="text" class="form-control" placeholder=""/>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">标签颜色：
-                                    <input id="tagColor" type="color" class="form-control" placeholder=""/>
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">标签详细描述：
-                                </label>
-                                <textarea placeholder="" style="resize: none" id="tagDescription" class="form-control"></textarea>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">标签名称：
+                                    </label>
+                                    <input required="required" id="tagTitle" type="text" class="form-control" placeholder=""/>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">标签颜色：
+                                        <input required="required" id="tagColor" type="color" class="form-control" placeholder=""/>
+                                    </label>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">标签详细描述：
+                                    </label>
+                                    <textarea required="required" placeholder="" style="resize: none" id="tagDescription" class="form-control"></textarea>
+                                    <div class="help-block with-errors"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="addTagTemplate()">
-                        新建
-                    </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        关闭
-                    </button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" onclick="addTagTemplate()">
+                            新建
+                        </button>
+                        <button type="reset" class="btn btn-default">
+                            重置
+                        </button>
+                        <button type="reset" class="btn btn-default" data-dismiss="modal">
+                            关闭
+                        </button>
+                    </div>
             </form>
         </div>
     </div>

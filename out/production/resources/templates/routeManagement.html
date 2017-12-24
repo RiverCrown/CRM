@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:include="mainPage :: mainHead">
-
 </head>
 <body onload="roleDiff()">
 <!--模态框-->
@@ -13,56 +12,60 @@
                 </button>
                 <h4 class="modal-title" id="myModalLabel">Modal title</h4>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label class="form-label">日程摘要：
-                                <input id="title" name="title" class="form-control" placeholder="日程摘要，显示为标题"/>
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">任务等级：
-                                <select class="form-control" id="taskLevel" name="taskLevel">
-                                    <option value="0">不重要且不紧急</option>
-                                    <option value="1">重要且不紧急</option>
-                                    <option value="2">不重要且紧急</option>
-                                    <option value="3">重要且紧急</option>
-                                </select>
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">阶段：
-                                <select class="form-control" id="status" name="status">
-                                    <option value="0">未开始</option>
-                                    <option value="1">进行中</option>
-                                    <option value="2">完成</option>
-                                    <option value="3">取消</option>
-                                </select>
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">日程详细安排：</label>
-                            <textarea class="form-control" style="resize:none" id="routeDetail"
-                                      placeholder="日程安排"></textarea>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label class="form-label">日程摘要：
+                                    <input required="required" id="title" name="title" class="form-control" placeholder="日程摘要，显示为标题"/>
+                                </label>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">任务等级：
+                                    <select class="form-control" id="taskLevel" name="taskLevel">
+                                        <option value="0">不重要且不紧急</option>
+                                        <option value="1">重要且不紧急</option>
+                                        <option value="2">不重要且紧急</option>
+                                        <option value="3">重要且紧急</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">阶段：
+                                    <select class="form-control" id="status" name="status">
+                                        <option value="0">未开始</option>
+                                        <option value="1">进行中</option>
+                                        <option value="2">完成</option>
+                                        <option value="3">取消</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">日程详细安排：</label>
+                                <textarea required="required" class="form-control" style="resize:none" id="routeDetail"
+                                          placeholder="日程安排"></textarea>
+                                <div class="help-block with-errors"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button id="cancelRoute" type="button" onclick="cancelRoute()" class="btn btn-default"
-                        data-dismiss="modal">关闭
-                </button>
-                <button id="modifyRoute" type="button" onclick="modifyRoute()" class="btn btn-primary"
-                        data-dismiss="modal">修改
-                </button>
-                <button id="deleteRoute" type="button" onclick="deleteRoute()" class="btn btn-danger"
-                        data-dismiss="modal">删除
-                </button>
-                <button id="saveRoute" type="button" onclick="saveRoute()" class="btn btn-primary" data-dismiss="modal">
-                    保存
-                </button>
-            </div>
+                <div class="modal-footer">
+                    <button id="cancelRoute" type="button" onclick="cancelRoute()" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button id="modifyRoute" type="button" onclick="modifyRoute()" class="btn btn-primary"
+                            data-dismiss="modal">修改
+                    </button>
+                    <button id="deleteRoute" type="button" onclick="deleteRoute()" class="btn btn-danger"
+                            data-dismiss="modal">删除
+                    </button>
+                    <button id="saveRoute" type="submit" onclick="saveRoute()" class="btn btn-primary" data-dismiss="modal">
+                        保存
+                    </button>
+                </div>
+
         </div>
     </div>
 </div>
@@ -193,8 +196,8 @@
     });
 
     function cancelRoute() {
-        routeLevel.val("");
-        routeStatus.val("");
+        routeLevel.val("0");
+        routeStatus.val("0");
         routeContent.val("");
         routeDetail.val("");
     }
