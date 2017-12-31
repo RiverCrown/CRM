@@ -20,6 +20,8 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
 
     ArrayList<Customer> findByNameAndMainBusiness(String name, String mainBusiness);
 
+    Customer findCustomerByName(String name);
+
     @Query("select customer from Customer customer join customer.representative contact where contact.name = ?1 and customer.mainBusiness = ?2")
     ArrayList<Customer> findByRepresentativeNameAndMainBusiness(String contactName, String mainBusiness);
 

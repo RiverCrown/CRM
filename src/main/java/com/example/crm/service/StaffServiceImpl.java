@@ -96,6 +96,9 @@ public class StaffServiceImpl implements StaffService {
     }
 
     public void rejectDeparture(int formId) {
+        DepartureForm departureForm = departureFormRepository.findOne(formId);
+        Staff staff = staffRepository.findOne(departureForm.getStaffId());
+        staff.setStatus("在职（离职申请驳回）");
         departureFormRepository.delete(formId);
     }
 

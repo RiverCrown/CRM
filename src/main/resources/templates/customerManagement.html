@@ -125,7 +125,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">联系人生日</label>
-                            <input id="birthDate" class="form-control" required="required" type="date" name="birthDate" placeholder=""/>
+                            <input data-synWithAge="" id="birthDate" class="form-control" required="required" type="date" name="birthDate" placeholder=""/>
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
@@ -140,6 +140,25 @@
                     <input type="reset" class="btn btn-default" value="重置"/>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="hint" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" >提示：</h4>
+            </div>
+            <div id="hintContent" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -299,6 +318,19 @@
                 {data: 'salesman.name'}
             ]
         });
+        $('#addCustomerForm').validator({
+            delay: 100,
+            custom: {
+                synWithAge: function ($el) {
+                    var now = new Date();
+                    var year = parseInt($('#birthDate').val().substr(0, 4), 10);
+                    var age = parseInt($('#contactAge').val(), 10);
+                    if (now.getFullYear() - year + 1 != age) {
+                        return "出生的年和年龄不匹配！";
+                    }
+                }
+            }
+        });
         getMainBusiness();
     });
 
@@ -347,10 +379,15 @@
             }),
             contentType: "application/json;charset=utf-8",
             dataType: "text",
-            success: function (msg) {
-                getMainBusiness();
-                searchCustomer();
-                $('#addCustomerForm')[0].reset();
+            success: function (isClean) {
+                if (isClean == "false") {
+                    $('#hintContent').html("企业已存在！（公司名已存在）");
+                    $('#hint').modal('show');
+                } else {
+                    getMainBusiness();
+                    searchCustomer();
+                    $('#addCustomerForm')[0].reset();
+                }
             }
         })
     }

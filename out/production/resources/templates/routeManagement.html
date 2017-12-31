@@ -138,6 +138,12 @@
                 modalF.modal('show');
             },
 
+            selectAllow: function (selectInfo) {
+                var today = new Date().toISOString().substr(0, 10);
+                var selectStart = selectInfo.start.format();
+                return (selectStart >= today);
+            },
+
             eventResize: function (event) {
                 eventDateChange(event);
             },

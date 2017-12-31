@@ -41,14 +41,12 @@
         <div class="row">
             <div class="col-lg-12">
                 <ul class="nav nav-tabs">
-                    <li id="first" class="active col-lg-4 lead" style="text-align: center"><a href="#basicInfo"
-                                                                                              data-toggle="tab">第一步></a>
+
+                    <li id="first" class="active col-lg-4 lead" style="text-align: center"><a id="firstA" onclick="disableAfter('first')">第一步></a>
                     </li>
-                    <li id="second" class="col-lg-4 lead" style="text-align: center"><a href="#customer"
-                                                                                        data-toggle="tab">第二步></a>
+                    <li id="second" class="col-lg-4 lead" style="text-align: center"><a id="secondA" onclick="disableAfter('second')">第二步></a>
                     </li>
-                    <li id="third" class="col-lg-4 lead" style="text-align: center"><a href="#expected"
-                                                                                       data-toggle="tab">第三步></a>
+                    <li id="third" class="col-lg-4 lead" style="text-align: center"><a id="thirdA" onclick="disableAfter('third')">第三步></a>
                     </li>
                 </ul>
                 <br/><br/><br/>
@@ -254,7 +252,7 @@
                                                         </div>
                                                         <div id="collapseTwo" class="panel-collapse collapse"
                                                              style="height: 0px;">
-                                                            <form role="form" data-toggle="validator">
+                                                            <form role="form" id="secondStepForm" data-toggle="validator">
                                                                 <div class="panel-body">
                                                                 <div class="col-lg-10 col-lg-offset-1">
                                                                     <div class="col-lg-6">
@@ -399,7 +397,7 @@
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label">联系人生日</label>
-                                                                            <input required="required" id="birthDate" type="date"
+                                                                            <input data-synWithAge="" required="required" id="birthDate" type="date"
                                                                                    placeholder="" class="form-control"/>
                                                                             <div class="help-block with-errors"></div>
                                                                         </div>
@@ -555,6 +553,9 @@
     var table = $('#dataTables-example');
     var salesmanName = [[${session.staffObj.getName()}]];
     var hintModal = $('#hint');
+    var firstA = $('#firstA');
+    var secondA = $('#secondA');
+    var thirdA = $('#thirdA');
     $('document').ready(function () {
         $('#firstStepForm').validator({
             delay: 100,
@@ -570,6 +571,19 @@
                     var latestPushDate = $('#latestDate').val();
                     if (latestPushDate < startDate)
                         return "最近推进时间不能早于开始时间。";
+                }
+            }
+        });
+        $('#secondStepForm').validator({
+            delay: 100,
+            custom: {
+                synWithAge: function ($el) {
+                    var now = new Date();
+                    var year = parseInt($('#birthDate').val().substr(0, 4), 10);
+                    var age = parseInt($('#contactAge').val(), 10);
+                    if (now.getFullYear() - year + 1 != age) {
+                        return "出生的年和年龄不匹配！";
+                    }
                 }
             }
         });
@@ -657,6 +671,17 @@
         }
     });
 
+    function disableAfter(which) {
+        switch (which) {
+            case "first":
+                secondA.prop("href", "#");
+                secondA.attr("data-toggle", "");
+                break;
+            default:
+                break;
+        }
+    }
+
     function timeFormatDigits(formatNumber) {
         if (formatNumber < 10)
             return "0" + formatNumber;
@@ -714,6 +739,8 @@
             case "first":
                 firstTab.removeClass("active");
                 secondTab.addClass("active");
+                firstA.prop("href", "#basicInfo");
+                firstA.attr("data-toggle", "tab");
                 break;
             case "second":
                 if (customerWay == "exist" && $('#selectedId').html() == "") {
@@ -721,6 +748,8 @@
                     hintModal.modal('show');
                     return;
                 }
+                secondA.prop("href", "#customer");
+                secondA.attr("data-toggle", "tab");
                 $('#customer').removeClass("active in");
                 $('#expected').addClass("active in");
                 secondTab.removeClass("active");

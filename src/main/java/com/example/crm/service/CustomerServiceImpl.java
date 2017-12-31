@@ -38,6 +38,16 @@ public class CustomerServiceImpl {
         return customerRepository.save(customer);
     }
 
+    public boolean addCustomer(Customer customer) {
+        Customer customerExist = customerRepository.findCustomerByName(customer.getName());
+        if (customerExist == null) {
+            customerRepository.save(customer);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public ArrayList<Customer> findAllCustomer(){
         return (ArrayList<Customer>) customerRepository.findAll();
     }

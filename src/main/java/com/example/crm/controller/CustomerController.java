@@ -35,10 +35,10 @@ public class CustomerController {
 
     @RequestMapping(value = "/addCustomer")
     @ResponseBody
-    public Customer addCustomer(@RequestBody Customer customer,
+    public boolean addCustomer(@RequestBody Customer customer,
                               HttpSession session) {
         customer.setSalesman((Staff)session.getAttribute("staffObj"));
-        return customerService.addOrUpdateCustomer(customer);
+        return customerService.addCustomer(customer);
     }
 
     @RequestMapping(value = "/searchCustomer")

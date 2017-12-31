@@ -125,7 +125,7 @@
                 </button>
                 <h4 class="modal-title">修改客户</h4>
             </div>
-            <form role="form" data-toggle="validator" onsubmit="return false">
+            <form role="form" id="addCustomerForm" data-toggle="validator" onsubmit="return false">
                 <div class="modal-body row">
                     <div class="col-lg-5">
                         <div class="form-group">
@@ -235,7 +235,7 @@
                         <div class="form-group">
                             <label class="form-label">联系人生日</label>
                             <input th:value="${customer.getRepresentative().getBirthday()}" name="birthDate" id="birthDate" class="form-control" type="date"
-                                   required="required" placeholder=""/>
+                                   required="required" data-synWithAge="" placeholder=""/>
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
@@ -389,6 +389,19 @@
 <script type="text/javascript" th:inline="javascript">
     var table = $('#dataTables-example');
     $('document').ready(function () {
+        $('#addCustomerForm').validator({
+            delay: 100,
+            custom: {
+                synWithAge: function ($el) {
+                    var now = new Date();
+                    var year = parseInt($('#birthDate').val().substr(0, 4), 10);
+                    var age = parseInt($('#contactAge').val(), 10);
+                    if (now.getFullYear() - year + 1 != age) {
+                        return "出生的年和年龄不匹配！";
+                    }
+                }
+            }
+        });
         table.dataTable({
             language: {
                 url: "/json/dataTables_cn.json"
