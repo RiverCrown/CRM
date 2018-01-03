@@ -125,7 +125,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="form-label">最近推进时间：</label>
-                                                    <input data-dateAfterStart="" required="required" name="latestDate" id="latestDate" type="date" placeholder="" class="form-control"/>
+                                                    <input data-dateAfterStart="" data-dateBeforeToday="" required="required" name="latestDate" id="latestDate" type="date" placeholder="" class="form-control"/>
                                                     <div class="help-block with-errors"></div>
                                                 </div>
                                                 <div class="form-group">
@@ -564,7 +564,7 @@
                     var now = new Date();
                     var today = now.toISOString().substr(0, 10);
                     if ($el.val() > today)
-                        return "开始时间不能超过今天。";
+                        return "时间不能超过今天。";
                 },
                 dateAfterStart: function ($el) {
                     var startDate = $('#startDate').val();
@@ -671,6 +671,7 @@
         }
     });
 
+    //tab切换
     function disableAfter(which) {
         switch (which) {
             case "first":
@@ -725,8 +726,13 @@
             }),
             contentType: "application/json;charset=utf-8",
             dataType: "text",
-            success: function (orderId) {
-                window.location.href = "/business/orderInfo?id=" + orderId;
+            success: function (msg) {
+                if (msg == "false") {
+                    $('#hintContent').html("与该客户正在进行的订单还没有结束！");
+                    $('#hint').modal('show');
+                } else {
+                    window.location.href = "/business/orderInfo?id=" + msg;
+                }
             }
         });
     }

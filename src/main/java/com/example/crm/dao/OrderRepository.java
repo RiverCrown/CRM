@@ -34,4 +34,6 @@ public interface OrderRepository extends CrudRepository<FollowOrder, Integer>{
 
     List<FollowOrder> findByCustomerId(Integer customerId);
 
+    List<FollowOrder> findFollowOrderBySalesmanIdAndCustomerId(int staffId, int customerId);
+
 }

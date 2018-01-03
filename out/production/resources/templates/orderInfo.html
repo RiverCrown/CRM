@@ -282,7 +282,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="form-group pull-right">
-                    <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()||order.getStatus()==3||order.getStatus()==4}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#transferOrder">跟单移交
+                    <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()||order.getStatus()>=3}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#transferOrder">跟单移交
                     </button>
                     <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyOrder">修改
                     </button>
@@ -471,7 +471,7 @@
                 <div class="form-group">
                     <form role="form" method="post" action="/business/pushOrderPage">
                         <input type="text" th:value="${order.getId()}" name="orderId" hidden="hidden" placeholder=""/>
-                        <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()||order.getStatus()==3||order.getStatus()==4}" type="submit" class="btn btn-lg btn-block btn-success">
+                        <button th:disabled="${order.getSalesmanId()!=session.staffObj.getId()||order.getStatus()>=3}" type="submit" class="btn btn-lg btn-block btn-success">
                             推进跟单
                         </button>
                     </form>
@@ -500,7 +500,9 @@
                                 </thead>
                                 <tbody id="historyBody">
                                 <tr th:each="orderH : ${orderHistory}">
-                                    <td th:text="${orderH.getId()}"></td>
+                                    <td>
+                                        <a th:text="${orderH.getId()}" th:href="'/business/orderInfo?id='+${orderH.getId()}"></a>
+                                    </td>
                                     <th:block th:switch="${orderH.getStatus()}">
                                         <td th:case="0">无</td>
                                         <td th:case="1">跟踪</td>

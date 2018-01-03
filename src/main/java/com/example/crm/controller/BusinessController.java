@@ -37,6 +37,8 @@ public class BusinessController {
                            HttpSession session) {
         //添加跟单
         followOrder = orderService.addOrder(followOrder);
+        if (followOrder == null)
+            return "false";
         Staff staff = (Staff)session.getAttribute("staffObj");
         staff = routeService.autoGenerateRoute(staff, followOrder, customerService.getCustomerById(followOrder.getCustomerId()));
         staff = staffService.modifyStaff(staff);

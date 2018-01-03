@@ -45,10 +45,18 @@ public class OrderServiceImpl {
     }
 
     public FollowOrder addOrder(FollowOrder followOrder) {
-        followOrder = orderRepository.save(followOrder);
-        followOrder.setGroupId(followOrder.getId());
-
-        return orderRepository.save(followOrder);
+        boolean isOver = true;
+        List<FollowOrder> followOrders = orderRepository.findFollowOrderBySalesmanIdAndCustomerId(followOrder.getSalesmanId(), followOrder.getCustomerId());
+        for (FollowOrder orderTemp : followOrders) {
+            isOver = orderTemp.getStatus() >= 3;
+        }
+        if (isOver) {
+            followOrder = orderRepository.save(followOrder);
+            followOrder.setGroupId(followOrder.getId());
+            return orderRepository.save(followOrder);
+        } else {
+            return null;
+        }
     }
 
     public List<FollowOrderView> getHistoryByGroupId(int groupId) {
